@@ -1,0 +1,49 @@
+
+    <link rel="icon" href="Olho WFR PEQUENO ICONE WEB.ico.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="Olho WFR PEQUENO ICONE WEB.ico.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="css.css">
+    <script src="script.js"></script>
+    <script src="server.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+    
+    <img id="logo" src="unnamed.png" alt="Logo">
+    
+    <div id="content">
+        <!-- Adicionadar o cabeçalho da corrida -->
+        <h1 id="header">Comunicação Arduino Yun - Nome da Corrida</h1>
+        <button id="addButton" onclick="inputRace()">Insert Race Name</button>
+        <!-- Adicionar botões com eventos associados -->
+        <button id="addButton" onclick="abrirPopup(); obterHoraAtual()">Adicionar Linha</button>
+        <button onclick="limparTabela()">Limpar Tabela</button>
+        <button onclick="exportarTabela()">Salvar Informações</button>
+    </div>
+
+    <!-- PopUp para adicionar dados -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+          <span class="close" onclick="fecharPopup()">&times;</span>
+          <input type="text" id="curvaInput" placeholder="Curva/Posto">
+          <input type="text" id="horainput" value="" placeholder="hora">
+          <input type="checkbox" id="videoCheck"> Vídeo<br>
+          <input type="checkbox" id="reportCheck"> Report<br>
+          <textarea id="obsInput" placeholder="obs"></textarea><br>
+          <button onclick="fecharPopup(); adicionarLinha()">Adicionar</button>
+        </div>
+      </div>
+    
+         <!-- Adicionar a tabela com cabeçalho e uma linha inicial -->
+        <table id="tabela">
+            <thead>
+                <tr>
+                    <th>Curva/Posto</th>
+                    <th class="hora-editavel" onclick="editarHora()">Hora</th>
+                    <th>Vídeo</th>
+                    <th>Report</th>
+                    <th>Observações</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>           
+    </div>

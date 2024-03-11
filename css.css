@@ -1,0 +1,91 @@
+/* Estilos CSS */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: rgb(3, 3, 3);
+}
+
+#logo {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 250px;
+    height: auto;
+}
+
+#content {
+    text-align: center;
+    margin-top: 70px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #E30613;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #575656;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    min-width: 100px;  /* Definir a largura mínima desejada para as colunas */
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #575656;
+}
+
+.hora-editavel {
+    cursor: pointer;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/**/
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 20%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
