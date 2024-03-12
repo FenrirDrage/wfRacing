@@ -5,6 +5,12 @@ function inputRace() {
   }
 }
 
+//limpar LocalStorage
+function limparLS() {
+            localStorage.clear();
+            console.log("localStorage foi limpo.");      
+}
+
 // Recuperar informações salvas no localStorage e atualizar checkboxes
 const informacoesSalvas = localStorage.getItem("informacoes");
 if (informacoesSalvas) {
@@ -35,6 +41,17 @@ function adicionarLinha() {
   const report = document.getElementById("reportCheck").checked;
   const obs = document.getElementById("obsInput").value;
 
+  // Armazenar os dados no localStorage
+  const newData = {
+    curva: curv,
+    hora: hora,
+    video: video,
+    report: report,
+    obs: obs
+  };
+  // Convertendo para JSON e armazenando no localStorage
+  localStorage.setItem('novaLinhaData', JSON.stringify(newData));
+
   // Adicionar células à nova linha
   novaLinha.innerHTML = `
         <td contenteditable="true">${curv}</td>
@@ -51,52 +68,45 @@ function adicionarLinha() {
   // Adicionar a nova linha à tabela
   tabela.appendChild(novaLinha);
 
-  // Enviadar o número atual de linhas para o servidor
-  //enviarNumeroDeLinhas(tabela.rows.length);
-
   // Atualizar a hora se a célula da curva não estiver vazia
   const curva = novaLinha.querySelector("td:first-child").innerText.trim();
   if (curva !== "") {
-    atualizarHoraAtual(novaLinha);
+    obterHoraAtual(novaLinha);
   }
 
-  // Salvar as informações no localStorage e emitido evento para o servidor
-  salvarInformacoes();
-  socket.emit("novaLinha", {
-    type: "novaLinha",
-    data: "Nova linha adicionada",
-  });
-  document.getElementById("popup").style.display = "none";
-
-  enviarDados();
-
   // Enviar os dados para o servidor
-  enviarDadosParaServidor(curv, hora, video, report, obs);
+  enviarJson();
 }
 
 //envio dados para servidor
-function enviarDadosParaServidor(curv, hora, video, report, obs) {
-  const dados = {
-    curva: curv,
-    hora: hora,
-    video: video,
-    report: report,
-    obs: obs,
-  };
+function enviarJson() {
+  // Recuperar os dados do localStorage
+  const localStorageData = localStorage.getItem('novaLinhaData');
 
-  fetch("/addData", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(dados),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) =>
-      console.error("Erro ao enviar dados para o servidor:", error)
-    );
+  // Definir o URL para onde enviar os dados
+  const url = "http://192.168.1.148:3000/addData";
+  
+  // Verificar se existem dados no localStorage
+  if(localStorageData) {
+    const parsedData = JSON.parse(localStorageData);
+    // Enviar os dados para o servidor
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error("Erro ao enviar dados para o servidor:", error)
+      );
+  } else {
+    console.log("Nenhum dado encontrado no localStorage.");
+  }
 }
+
 
 //abre o popup
 function abrirPopup() {
@@ -107,9 +117,6 @@ function abrirPopup() {
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
 }
-
-//enviar dados para BD
-function enviarDados() {}
 
 // Adicionadar o evento de editar a hora
 function editarHora() {
@@ -266,11 +273,11 @@ function exportarTabela() {
   });
 }
 // Adicionar a função para salvar informações no localStorage e no servidor
-function salvarInformacoes() {
+/*function salvarInformacoes() {
   const tabela = document.querySelector("tbody").innerHTML;
   localStorage.setItem("informacoes", tabela);
   socket.emit("salvarInformacoes", { type: "salvarInformacoes", data: tabela });
-}
+}*/
 
 // Adicionar a função para atualizar a hora atual em uma linha
 function atualizarHoraAtual(linha) {
@@ -301,13 +308,13 @@ function enviarNumeroDeLinhas(numeroLinhas) {
 }
 
 // Adicionar o evento para ouvir mensagens do servidor
-socket.on("message", function (data) {
+/*socket.on("message", function (data) {
   console.log("Mensagem do servidor:", data);
 });
 socket.on("nomeCorridaDefinido", (data) => {
   console.log("Nome da corrida definido:", data);
   raceName = data;
-});
+});*/
 
 // Adicionada a função para limpar a tabela
 function limparTabela() {

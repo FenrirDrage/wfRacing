@@ -2,8 +2,11 @@
     <link rel="icon" href="Olho WFR PEQUENO ICONE WEB.ico.jpg" type="image/x-icon">
     <link rel="shortcut icon" href="Olho WFR PEQUENO ICONE WEB.ico.jpg" type="image/x-icon">
     <link rel="stylesheet" href="css.css">
+
     <script src="script.js"></script>
     <script src="server.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
     
     <img id="logo" src="unnamed.png" alt="Logo">
@@ -19,7 +22,7 @@
     </div>
 
     <!-- PopUp para adicionar dados -->
-    <div id="popup" class="popup">
+    <div id="popup" class="popup"  onload="limparLS()">
         <div class="popup-content">
           <span class="close" onclick="fecharPopup()">&times;</span>
           <input type="text" id="curvaInput" placeholder="Curva/Posto">
