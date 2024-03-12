@@ -12,11 +12,16 @@ body {
     left: 10px;
     width: 250px;
     height: auto;
+    display: block;
 }
 
 #content {
     text-align: center;
     margin-top: 70px;
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    background-color: #f4f4f4;
 }
 
 button {
@@ -59,13 +64,12 @@ th {
 .popup {
     display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 20%;
+    left:0;
+    top: 150;
+    width: 25%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    /*background-color: rgba(0,0,0,0.4);*/
   }
   
   .popup-content {
