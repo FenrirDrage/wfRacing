@@ -51,9 +51,9 @@ function adicionarLinha() {
   };
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem('novaLinhaData', JSON.stringify(newData));
-
+  
   // Adicionar células à nova linha
-  novaLinha.innerHTML = `
+  /*novaLinha.innerHTML = `
         <td contenteditable="true">${curv}</td>
         <td contenteditable="true">${hora}</td>
         <td contenteditable="true"><input type="checkbox" ${
@@ -73,7 +73,7 @@ function adicionarLinha() {
   if (curva !== "") {
     obterHoraAtual(novaLinha);
   }
-
+  */
   // Enviar os dados para o servidor
   enviarJson();
 }
@@ -116,7 +116,57 @@ function abrirPopup() {
 //fecha o popup
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
+
+  // Definir o URL para onde enviar os dados
+  const url = "http://192.168.1.148:3000/getData";
+
+  // Faz uma requisição GET para obter os dados do servidor
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      // Atualiza a tabela com os dados recebidos
+      atualizarTabela(data);
+    })
+    .catch(error => console.error('Erro ao obter dados:', error));
 }
+
+// Atualiza a tabela com os dados recebidos
+function atualizarTabela(data) {
+  const tabela = document.getElementById("tabela");
+
+  // Limpa apenas as linhas de dados da tabela, mantendo o cabeçalho
+  while (tabela.rows.length > 1) {
+    tabela.deleteRow(1);
+  }
+
+  // Adiciona linhas à tabela com os dados recebidos
+  data.forEach(item => {
+    const novaLinha = document.createElement('tr');
+    novaLinha.innerHTML = `
+      <td>${item.curva}</td>
+      <td>${item.hora}</td>
+      <td><input type="checkbox" ${item.video ? 'checked' : ''} disabled></td>
+      <td><input type="checkbox" ${item.report ? 'checked' : ''} disabled></td>
+      <td>${item.obs}</td>
+    `;
+    tabela.appendChild(novaLinha);
+  });
+}
+
+// Define a função para carregar os dados quando a página é carregada
+function carregarDados() {
+  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
+  fetch('http://192.168.1.148:3000/getData')
+    .then(response => response.json())
+    .then(data => {
+      // Atualiza a tabela com os dados recebidos
+      atualizarTabela(data);
+    })
+    .catch(error => console.error('Erro ao obter dados:', error));
+}
+
+// Chama a função para carregar os dados quando a página é carregada
+window.onload = carregarDados;
 
 // Adicionadar o evento de editar a hora
 function editarHora() {
