@@ -46,7 +46,7 @@ th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-    min-width: 100px;  /* Definir a largura mínima desejada para as colunas */
+    min-width: 80px;  /* Definir a largura mínima desejada para as colunas */
 }
 
 th {
@@ -92,4 +92,21 @@ th {
     color: black;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  #thcolor {
+    color: #575656;
+  }
+
+  #tdlg{
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    min-width: 30%;
+  }
+  #editlg{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
   }

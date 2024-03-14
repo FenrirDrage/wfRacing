@@ -5,7 +5,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const routes = require("./routes/routing");
-const { addController, getController } = require("./controller/indexcont");
+const {
+  addController,
+  getController,
+  editController,
+} = require("./controller/indexcont");
+const daily_expenses_model = require("moongose/models/daily_expenses_model");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -28,6 +33,7 @@ app.use(bodyParser.json());
 
 app.post("/addData", addController.addData);
 app.get("/getData", getController.getData);
+app.post("/editData", editController.editData);
 
 //use routing
 app.use(express.json());
