@@ -11,24 +11,6 @@ function limparLS() {
   console.log("localStorage foi limpo.");
 }
 
-// Recuperar informações salvas no localStorage e atualizar checkboxes
-const informacoesSalvas = localStorage.getItem("informacoes");
-if (informacoesSalvas) {
-  const tabela = document.querySelector("tbody");
-  tabela.innerHTML = informacoesSalvas;
-}
-
-// notdefinned
-const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-checkboxes.forEach((checkbox) => {
-  const estado = localStorage.getItem(
-    `checkbox_${checkbox.parentElement.parentElement.rowIndex}`
-  );
-  if (estado) {
-    checkbox.dataset.estado = estado;
-    checkbox.checked = estado === "1";
-  }
-});
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
@@ -60,9 +42,15 @@ function enviarJson() {
   // Recuperar os dados do localStorage
   const localStorageData = localStorage.getItem("novaLinhaData");
   console.log(localStorageData);
-  // Definir o URL para onde enviar os dados
-  const url = "http://localhost:3000/addData";
-  //const url = "http://192.168.1.148:3000/addData";
+  
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  //const url = "http://localhost:3000/addData";
+  //IP config WFR
+  const url = "http://192.168.1.148:3000/addData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.XYZ:3000/addData";
+
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -94,9 +82,13 @@ function abrirPopup() {
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
 
-  // Definir o URL para onde enviar os dados
-  const url = "http://localhost:3000/getData";
-  //const url = "http://192.168.1.148:3000/getData";
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  //const url = "http://localhost:3000/addData";
+  //IP config WFR
+  const url = "http://192.168.1.148:3000/addData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.XYZ:3000/addData";
 
   // Faz uma requisição GET para obter os dados do servidor
   fetch(url)
@@ -170,8 +162,14 @@ function preencherPopupComDetalhes(detalhes) {
 // Define a função para carregar os dados quando a página é carregada
 function carregarDados() {
   // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
-  fetch("http://localhost:3000/getData")
-    //fetch("http://192.168.1.148:3000/getData")
+      
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  //fetch("http://localhost:3000/getData")
+  //IP config WFR
+  fetch("http://192.168.1.148:3000/getData")
+  //IP CORRIDAS
+  //fetch("http://192.168.1.148:3000/getData")
 
     .then((response) => response.json())
     .then((data) => {
