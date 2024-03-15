@@ -1,6 +1,6 @@
 
     <link rel="icon" href="images/wfrLogo.jpg" type="image/x-icon">
-    <link rel="shortcut icon" href="images/wfrLogo.jpgs" type="image/x-icon">
+    <link rel="shortcut icon" href="images/wfrLogo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="css.css">
 
     <script src="script.js"></script>
@@ -30,18 +30,18 @@
           <input type="checkbox" id="videoCheck"> Vídeo<br>
           <input type="checkbox" id="reportCheck"> Report<br>
           <textarea id="obsInput" placeholder="obs"></textarea><br>
-          <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
+          <button onclick="fechaddPopup(); adicionarLinha()">Add Report</button>
         </div>
       </div>
 
     <div id="popup2" class="popup">
-        <div id="popupContent"></div>
-        <span class="close" onclick="fecharPopup()">&times;</span>
-          <input type="text" id="curvaInput" placeholder="Curva/Posto">
-          <input type="text" id="horainput" value="" placeholder="hora">
-          <input type="checkbox" id="videoCheck"> Vídeo<br>
-          <input type="checkbox" id="reportCheck"> Report<br>
-          <textarea id="obsInput" placeholder="obs"></textarea><br>
+        <div class="popup-content">
+        <span class="close" onclick="fecharPopup2()">&times;</span>
+          <input type="text" id="curvaInput2" placeholder="Curva/Posto">
+          <input type="text" id="horainput2" value="" placeholder="hora">
+          <input type="checkbox" id="videoCheck2"> Vídeo<br>
+          <input type="checkbox" id="reportCheck2"> Report<br>
+          <textarea id="obsInput2" placeholder="obs"></textarea><br>
           <button onclick="">Update</button>
         </div>
     </div>

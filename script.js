@@ -1,3 +1,8 @@
+window.onload = function() {
+  // Chama a função abrirDetalhes após o carregamento completo da página
+  abrirDetalhes(id);
+};
+
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
   if (rname != null) {
@@ -71,6 +76,7 @@ function enviarJson() {
   } else {
     console.log("Nenhum dado encontrado no localStorage.");
   }
+  
 }
 
 //abre o popup
@@ -78,9 +84,45 @@ function abrirPopup() {
   document.getElementById("popup").style.display = "block";
 }
 
+//abre o popup2
+function abrirPopup2() {
+  document.getElementById("popup2").style.display = "block";
+}
+
 //fecha o popup
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
+}
+//fecha o popup
+function fechaddPopup() {
+  document.getElementById("popup").style.display = "none";
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  //const url = "http://localhost:3000/addData";
+  //IP config WFR
+  const url = "http://192.168.1.148:3000/addData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.XYZ:3000/addData";
+  // Faz uma requisição GET para obter os dados do servidor
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      // Atualiza a tabela com os dados recebidos
+      atualizarTabela(data);
+    })
+    .catch((error) => console.error("Erro ao obter dados:", error));
+    location.reload();
+}
+
+//fecha o pupup
+function fecharPopup2() {
+  document.getElementById("popup2").style.display = "none";
+}
+
+//fecha o pupup
+function fechaddPopup2() {
+  document.getElementById("popup2").style.display = "none";
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
@@ -122,21 +164,23 @@ function atualizarTabela(data) {
         item.report ? "checked" : ""
       } disabled></td>
       <td contenteditable="true">${item.obs}</td>
-      <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes()"></td>
+      <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${item._id}')"></td>
       `;
-
     tabela.appendChild(novaLinha);
   });
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
-function abrirDetalhes(index) {
-  const data = getDataFromLocalStorage(); // Função que você deve definir para obter os dados da linha correspondente
-  const detalhes = data[index]; // Obtém os detalhes da linha com base no índice
-
-  // Preencha o pop-up com os detalhes da linha e exiba-o
-  preencherPopupComDetalhes(detalhes); // Função que você deve definir para preencher o pop-up
-  abrirPopup(); // Função que já está definida para abrir o pop-up
+function abrirDetalhes(id) {
+  const data = JSON.parse(localStorage.getItem("dadosTabela")); // Obtemos os dados da localStorage
+  const detalhes = data.find(item => item._id === id); // Encontramos o item com o id correspondente
+  if (detalhes) {
+    // Se encontrarmos os detalhes, preenchemos o pop-up e o exibimos
+    preencherPopupComDetalhes(detalhes);
+    abrirPopup2();
+  } else {
+    console.error("Detalhes não encontrados para o ID:", id);
+  }
 }
 
 function getDataFromLocalStorage() {
@@ -145,18 +189,29 @@ function getDataFromLocalStorage() {
 }
 
 function preencherPopupComDetalhes(detalhes) {
-  const curvaInput = document.getElementById("curvaInput");
-  const horainput = document.getElementById("horainput");
-  const videoCheck = document.getElementById("videoCheck");
-  const reportCheck = document.getElementById("reportCheck");
-  const obsInput = document.getElementById("obsInput");
+  // Verifica se os detalhes são válidos
+  if (detalhes) {
+    // Obtém os elementos do popup
+    const curvaInput = document.getElementById("curvaInput2");
+    const horainput = document.getElementById("horainput2");
+    const videoCheck = document.getElementById("videoCheck2");
+    const reportCheck = document.getElementById("reportCheck2");
+    const obsInput = document.getElementById("obsInput2");
 
-  // Preencha os campos do popup com os detalhes fornecidos
-  curvaInput.value = detalhes.curva;
-  horainput.value = detalhes.hora;
-  videoCheck.checked = detalhes.video;
-  reportCheck.checked = detalhes.report;
-  obsInput.value = detalhes.obs;
+    // Verifica se os elementos existem no DOM
+    if (curvaInput && horainput && videoCheck && reportCheck && obsInput) {
+      // Atribui os valores dos detalhes aos campos do popup
+      curvaInput.value = detalhes.curva || "";
+      horainput.value = detalhes.hora || "";
+      videoCheck.checked = detalhes.video || false;
+      reportCheck.checked = detalhes.report || false;
+      obsInput.value = detalhes.obs || "";
+    } else {
+      console.error("Um ou mais elementos do popup não foram encontrados no DOM.");
+    }
+  } else {
+    console.error("Detalhes inválidos.");
+  }
 }
 
 // Define a função para carregar os dados quando a página é carregada
@@ -175,8 +230,12 @@ function carregarDados() {
     .then((data) => {
       // Atualiza a tabela com os dados recebidos
       atualizarTabela(data);
+  
+      // Armazena os dados localmente para uso posterior
+      localStorage.setItem("dadosTabela", JSON.stringify(data));
     })
     .catch((error) => console.error("Erro ao obter dados:", error));
+    
 }
 
 // Adicionadar o evento de editar a hora
@@ -225,12 +284,12 @@ function limparTabela() {
   })
     .then((response) => response.json())
     .then((data) => {
+      refreshPage();
       console.log(data.message); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
       console.error("Erro ao apagar dados:", error);
     });
-  refreshPage();
 }
 
 // Adicionada a função para atualizar o estado do checkbox no localStorage
