@@ -93,7 +93,13 @@ function abrirPopup2() {
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
 }
-//fecha o popup
+
+//fecha o pupup
+function fecharPopup2() {
+  document.getElementById("popup2").style.display = "none";
+}
+
+//fecha o popup e acrescenta dados
 function fechaddPopup() {
   document.getElementById("popup").style.display = "none";
 
@@ -115,22 +121,17 @@ function fechaddPopup() {
     location.reload();
 }
 
-//fecha o pupup
-function fecharPopup2() {
-  document.getElementById("popup2").style.display = "none";
-}
-
-//fecha o pupup
+//fecha o pupup e acrescenta dados 
 function fechaddPopup2() {
   document.getElementById("popup2").style.display = "none";
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/addData";
+  //const url = "http://localhost:3000/upData";
   //IP config WFR
-  const url = "http://192.168.1.148:3000/addData";
+  const url = "http://192.168.1.148:3000/upData";
   //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/addData";
+  //const url = "http://192.168.1.XYZ:3000/upData";
 
   // Faz uma requisição GET para obter os dados do servidor
   fetch(url)

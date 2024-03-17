@@ -5,6 +5,7 @@ const {
   getController,
   editController,
   dropController,
+  putController,
 } = require("../controller/indexcont");
 
 // Rota para adicionar dados ao banco de dados
@@ -18,5 +19,8 @@ router.post("/editData", editController.editData);
 
 // Rota para apagar todos os dados do banco de dados
 router.post("/dropData", dropController.dropData);
+
+// Rota para atualizar todos os dados do banco de dados
+router.post("/updateData/:id", putController.upData);
 
 module.exports = router;
