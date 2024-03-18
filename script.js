@@ -1,7 +1,3 @@
-window.onload = function() {
-  // Chama a função abrirDetalhes após o carregamento completo da página
-  abrirDetalhes(id);
-};
 
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
@@ -79,6 +75,85 @@ function enviarJson() {
   
 }
 
+function updateLinha() {
+  // Captura os valores atualizados dos campos do pop-up
+  const curva = document.getElementById("curvaInput2").value;
+  const hora = document.getElementById("horainput2").value;
+  const video = document.getElementById("videoCheck2").checked;
+  const report = document.getElementById("reportCheck2").checked;
+  const obs = document.getElementById("obsInput2").value;
+  
+  // Cria um objeto com os dados atualizados
+  const updatedData = {
+    curva: curva,
+    hora: hora,
+    video: video,
+    report: report,
+    obs: obs,
+  };
+  
+  // Recupera o ID dos detalhes armazenados no localStorage
+  const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
+  if (detalhes && detalhes._id) {
+    // Adiciona o ID aos dados atualizados
+    updatedData._id = detalhes._id;
+  } else {
+    console.error("Erro: ID não encontrado nos detalhes armazenados no localStorage.");
+    return; // Encerra a função se o ID não estiver disponível
+  }
+
+  // Armazena os dados atualizados no localStorage
+  localStorage.setItem("novaLinhaData", JSON.stringify(updatedData));
+
+  // Oculta o formulário de edição
+  document.getElementById("popup").style.display = "none";
+
+  envUpJson();
+}
+
+function envUpJson() {
+  // Obtém os dados atualizados do localStorage
+  const updatedDataString = localStorage.getItem("novaLinhaData");
+  console.log(updatedDataString);
+  // Verifica se há dados no localStorage
+  if (updatedDataString) {
+    const updatedData = JSON.parse(updatedDataString);
+    console.log(updatedData);
+    
+    // Define o ID do documento a ser atualizado (obtido do localStorage)
+    const id = updatedData._id;
+    console.log(id);
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  //const url = "http://localhost:3000/updateData/";
+  //IP config WFR
+  const url = `http://192.168.1.148:3000/updateData/${id}`;
+  //IP CORRIDAS
+  //const url = "http://192.168.1.XYZ:3000/updateData/";
+    console.log(url);
+    // Envia os dados atualizados para o servidor
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dados atualizados com sucesso:", data);
+        
+        // Limpa os dados do localStorage após a atualização
+        localStorage.removeItem("novaLinhaData");
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar dados atualizados para o servidor:", error);
+      });
+  } else {
+    console.error("Nenhum dado encontrado no localStorage para enviar.");
+  }
+}
+
 //abre o popup
 function abrirPopup() {
   document.getElementById("popup").style.display = "block";
@@ -101,46 +176,9 @@ function fecharPopup2() {
 
 //fecha o popup e acrescenta dados
 function fechaddPopup() {
-  document.getElementById("popup").style.display = "none";
-
-  // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  //const url = "http://localhost:3000/addData";
-  //IP config WFR
-  const url = "http://192.168.1.148:3000/addData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/addData";
-  // Faz uma requisição GET para obter os dados do servidor
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      // Atualiza a tabela com os dados recebidos
-      atualizarTabela(data);
-    })
-    .catch((error) => console.error("Erro ao obter dados:", error));
-    location.reload();
-}
-
-//fecha o pupup e acrescenta dados 
-function fechaddPopup2() {
   document.getElementById("popup2").style.display = "none";
 
-  // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  //const url = "http://localhost:3000/upData";
-  //IP config WFR
-  const url = "http://192.168.1.148:3000/upData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/upData";
-
-  // Faz uma requisição GET para obter os dados do servidor
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      // Atualiza a tabela com os dados recebidos
-      atualizarTabela(data);
-    })
-    .catch((error) => console.error("Erro ao obter dados:", error));
+  //location.reload();//para ja comentado
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -190,6 +228,9 @@ function getDataFromLocalStorage() {
 }
 
 function preencherPopupComDetalhes(detalhes) {
+  // Armazena os detalhes no localStorage
+  localStorage.setItem("detalhesPopup", JSON.stringify(detalhes));
+
   // Verifica se os detalhes são válidos
   if (detalhes) {
     // Obtém os elementos do popup
@@ -221,11 +262,13 @@ function carregarDados() {
       
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //fetch("http://localhost:3000/getData")
+  //const url = "http://localhost:3000/getData";
   //IP config WFR
-  fetch("http://192.168.1.148:3000/getData")
+  const url = "http://192.168.1.148:3000/getData";
   //IP CORRIDAS
-  //fetch("http://192.168.1.148:3000/getData")
+  //const url = "http://192.168.1.XYZ:3000/getData";
+
+  fetch(url)
 
     .then((response) => response.json())
     .then((data) => {
@@ -277,7 +320,21 @@ function enviarNumeroDeLinhas(numeroLinhas) {
 
 // Adicionada a função para limpar a tabela
 function limparTabela() {
-  fetch("http://localhost:3000/dropData", {
+
+  // Mensagem de confirmação
+  if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
+    return; // Se o usuário cancelar, sair da função
+  }
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  //const url = "http://localhost:3000/dropData";
+  //IP config WFR
+  const url = "http://192.168.1.148:3000/dropData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.XYZ:3000/dropData";
+
+  fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -311,6 +368,8 @@ document.addEventListener("DOMContentLoaded", function () {
 // Chama a função para carregar os dados quando a página é carregada
 window.onload = refreshPage;
 
+// Adicionar tratamento de erros para requisições fetch
 function refreshPage() {
   carregarDados(); // Chama a função para carregar os dados ao carregar a página
 }
+

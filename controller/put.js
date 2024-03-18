@@ -1,22 +1,24 @@
 const Dados = require("../models/schema");
 
-// Controlador para lidar com a atualização de dados
-exports.upData = async (req, res) => {
+// Função para atualizar os dados pelo ID
+exports.putData = async (req, res) => {
+  const updates = req.body;
+
   try {
-    // Extraia os dados do corpo da requisição
-    const { curva, hora, video, report, obs } = req.body;
-
-    // Aqui você pode fazer validações dos dados, se necessário
-
-    // Atualize os dados no banco de dados
-    const dadosAtualizados = await Dados.findOneAndUpdate(
-      { _id: req.params.id }, // Condição de pesquisa: substitua "id" pelo nome do parâmetro de rota
-      { curva, hora, video, report, obs }, // Novos dados a serem atualizados
+    // Encontra o documento pelo ID e atualiza os campos fornecidos
+    const updatedData = await Dados.findByIdAndUpdate(
+      req.params.id, // ID do documento a ser atualizado
+      updates, // Campos a serem atualizados
       { new: true } // Opção para retornar o documento atualizado
     );
 
-    // Responda com os dados atualizados
-    res.json(dadosAtualizados);
+    // Verifica se o documento foi encontrado e atualizado
+    if (!updatedData) {
+      return res.status(404).json({ message: "Data not found" });
+    }
+
+    // Responde com os dados atualizados
+    res.status(200).json(updatedData);
   } catch (error) {
     console.error("Erro ao atualizar dados:", error);
     res.status(500).json({ error: "Erro interno do servidor ao atualizar dados." });

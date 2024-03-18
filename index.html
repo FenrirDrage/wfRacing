@@ -11,7 +11,7 @@
     
     <img id="logo" src="images/unnamed.png" alt="Logo">
     
-    <div id="content">
+    <div id="content-top">
         <!-- Adicionadar o cabeçalho da corrida -->
         <h1 id="header">Comunicação Arduino Yun - Nome da Corrida</h1>
         <button id="addButton" onclick="inputRace()">Insert Race Name</button>
@@ -42,7 +42,7 @@
           <input type="checkbox" id="videoCheck2"> Vídeo<br>
           <input type="checkbox" id="reportCheck2"> Report<br>
           <textarea id="obsInput2" placeholder="obs"></textarea><br>
-          <button onclick="fecharPopup2();">Update</button>
+          <button onclick="fecharPopup2(); refreshPage(); updateLinha()">Update</button>
         </div>
     </div>
     

@@ -7,7 +7,7 @@ body {
 }
 
 #logo {
-    position: fixed;
+    position: sticky;
     top: 10px;
     left: 10px;
     width: 250px;
@@ -15,7 +15,7 @@ body {
     display: block;
 }
 
-#content {
+#content-top {
     text-align: center;
     margin-top: 70px;
     position: sticky;

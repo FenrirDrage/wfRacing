@@ -8,7 +8,6 @@ const routes = require("./routes/routing");
 const {
   addController,
   getController,
-  editController,
   putController,
 } = require("./controller/indexcont");
 
@@ -33,8 +32,7 @@ app.use(bodyParser.json());
 
 app.post("/addData", addController.addData);
 app.get("/getData", getController.getData);
-app.post("/editData", editController.editData);
-app.put("/upData",putController.upData);
+app.put("/updateData/:id", putController.putData);
 
 //use routing
 app.use(express.json());
