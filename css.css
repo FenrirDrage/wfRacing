@@ -13,15 +13,19 @@ body {
     width: 250px;
     height: auto;
     display: block;
+    z-index: 999; /* Ensures the logo stays above other content */
 }
 
 #content-top {
-    text-align: center;
-    margin-top: 70px;
-    position: sticky;
-    top: 0px;
-    left: 0px;
-    background-color: #f4f4f4;
+  position: sticky;
+  top: 0px; /* Adjust this value according to your logo's height */
+  left: 300px;
+  width: 100%; /* To make it span the full width */
+  max-width: 700px;;
+  background-color: #ffffff; /* Change this to your desired background color */
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow */
+  z-index: 998; /* Ensures the content-top stays below the logo */
 }
 
 button {
@@ -116,4 +120,5 @@ th {
     width: 50%;
   }
 
+  
   

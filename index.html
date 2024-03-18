@@ -21,6 +21,23 @@
         <button onclick="exportarTabela()">Salvar Informações</button>
     </div>
 
+    <!-- Adicionar a tabela com cabeçalho e uma linha inicial -->
+    <table id="tabela">
+        <thead>
+            <tr>
+                <th id="thcolor">Turn/Post</th>
+                <th id="thcolor" class="hora-editavel" onclick="editarHora()">Hour</th>
+                <th id="thcolor">Vídeo</th>
+                <th id="thcolor">Report</th>
+                <th id="thcolor">Obs</th>
+                <th id="tdlg">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table> 
+
     <!-- PopUp para adicionar dados -->
     <div id="popup" class="popup"  onload="limparLS()">
         <div class="popup-content">
@@ -42,24 +59,9 @@
           <input type="checkbox" id="videoCheck2"> Vídeo<br>
           <input type="checkbox" id="reportCheck2"> Report<br>
           <textarea id="obsInput2" placeholder="obs"></textarea><br>
-          <button onclick="fecharPopup2(); refreshPage(); updateLinha()">Update</button>
+          <button onclick="fecharPopup2(); updateLinha()">Update</button>
         </div>
     </div>
     
-         <!-- Adicionar a tabela com cabeçalho e uma linha inicial -->
-        <table id="tabela">
-            <thead>
-                <tr>
-                    <th id="thcolor">Turn/Post</th>
-                    <th id="thcolor" class="hora-editavel" onclick="editarHora()">Hour</th>
-                    <th id="thcolor">Vídeo</th>
-                    <th id="thcolor">Report</th>
-                    <th id="thcolor">Obs</th>
-                    <th id="tdlg">Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>           
+                   
     </div>

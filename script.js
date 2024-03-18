@@ -172,13 +172,15 @@ function fecharPopup() {
 //fecha o pupup
 function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
+
+  location.reload();
 }
 
 //fecha o popup e acrescenta dados
 function fechaddPopup() {
   document.getElementById("popup2").style.display = "none";
 
-  //location.reload();//para ja comentado
+  location.reload();//para ja comentado
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -365,11 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
   carregarDados();
 });
 
-// Chama a função para carregar os dados quando a página é carregada
-window.onload = refreshPage;
-
 // Adicionar tratamento de erros para requisições fetch
 function refreshPage() {
   carregarDados(); // Chama a função para carregar os dados ao carregar a página
 }
-
