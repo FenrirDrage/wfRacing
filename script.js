@@ -386,24 +386,20 @@ function atualizarPagina() {
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
-setInterval(atualizarPagina, 5000);
+//setInterval(atualizarPagina, 5000);
 
-// Função para salvar a posição de rolagem atual no Local Storage
-function salvarPosicaoRolagem() {
-  localStorage.setItem('posicaoRolagem', window.scrollY);
+// Função para salvar as posições de rolagem horizontal e vertical
+function saveScrollPositions() {
+  var elements = document.querySelectorAll('.tabela');
+  elements.forEach(function(element) {
+    var scrolly = typeof window.pageYOffset != 'undefined' ? window.pageYOffset : document.documentElement.scrollTop;
+    var scrollx = typeof window.pageXOffset != 'undefined' ? window.pageXOffset : document.documentElement.scrollLeft;
+    element.querySelector('.scrollx').setAttribute('value', scrollx);
+    element.querySelector('.scrolly').setAttribute('value', scrolly);
+  });
 }
 
-// Função para carregar a posição de rolagem do Local Storage e rolar para ela
-function carregarPosicaoRolagem() {
-  const posicaoRolagem = localStorage.getItem('posicaoRolagem');
-  if (posicaoRolagem) {
-      window.scrollTo(0, posicaoRolagem);
-      localStorage.removeItem('posicaoRolagem'); // Remover depois de usá-lo
-  }
-}
-
-// Chamada para salvar a posição de rolagem antes de recarregar a página
-window.addEventListener('beforeunload', salvarPosicaoRolagem);
-
-// Chamada para carregar a posição de rolagem quando a página for carregada
-window.addEventListener('load', carregarPosicaoRolagem);
+// Chamar a função para salvar as posições de rolagem quando a página for descarregada
+window.addEventListener('beforeunload', function() {
+  saveScrollPositions();
+});

@@ -3,7 +3,8 @@ body {
   font-family: Arial, sans-serif;
   margin: 20px;
   background-color: #f4f4f4;
-  color: rgb(3, 3, 3);
+  /*color: rgb(3, 3, 3);*/
+  color: #575656;
 }
 
 #logo {
@@ -21,6 +22,7 @@ body {
 text-align: center; /* Centraliza o texto horizontalmente */
 margin: 0 auto; /* Centraliza horizontalmente */
 max-width: 80%; /* Largura máxima para manter o alinhamento */
+color: white;
 }
 
 /* Estilo para centralizar os botões */
@@ -37,7 +39,7 @@ top: 0;
 margin: 20px auto; /* Centraliza horizontalmente e adiciona espaçamento superior e inferior */
 width: 100%;
 max-width: 700px;
-background-color: #ffffff;
+background-color: #E30613;
 padding: 10px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 z-index: 998;
@@ -54,8 +56,8 @@ button {
   cursor: pointer;
   background-color: #E30613;
   color: white;
-  border: none;
-  border-radius: 5px;
+  border: 2px solid white;
+  border-radius: 50px;
 }
 
 table {
@@ -63,7 +65,7 @@ table {
   width: 50%;
   margin: auto;
   margin-top: 20px;
-  background-color: #575656;
+  background-color: white;
 }
 
 th, td {
@@ -71,7 +73,7 @@ th, td {
   padding: 8px;
   text-align: left;
   min-width: 80px;  /* Definir a largura mínima desejada para as colunas */
-  color: white;
+  color: #575656;
 }
 
 th {
@@ -167,4 +169,11 @@ line-height: 20px; /* Alinhamento vertical */
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+}
+
+#tabela thead {
+  position: sticky;
+  top: 140px; /* Adjust this value according to your header's height */
+  background-color: #ffffff; /* Change this to your desired background color */
+  z-index: 999; /* Ensures the header stays above other content */
 }
