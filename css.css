@@ -171,6 +171,19 @@ line-height: 20px; /* Alinhamento vertical */
   width: 50%;
 }
 
+#editlg:hover {
+  animation: spin 1s linear infinite; /* Adiciona a animação ao passar o mouse */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Define o ponto inicial da rotação */
+  }
+  100% {
+    transform: rotate(360deg); /* Define o ponto final da rotação */
+  }
+}
+
 #tabela thead {
   position: sticky;
   top: 140px; /* Adjust this value according to your header's height */
