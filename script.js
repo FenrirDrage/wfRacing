@@ -2,7 +2,7 @@
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
   if (rname != null) {
-    document.getElementById("header").innerHTML = "Race - " + rname;
+    document.getElementById("header").innerHTML = rname;
   }
 }
 
@@ -22,6 +22,7 @@ function adicionarLinha() {
   const hora = document.getElementById("horainput").value;
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
+  const nfa = document.getElementById("nfaCheck").checked;
   const obs = document.getElementById("obsInput").value;
   // Armazenar os dados no localStorage
   const newData = {
@@ -29,6 +30,7 @@ function adicionarLinha() {
     hora: hora,
     video: video,
     report: report,
+    nfa: nfa,
     obs: obs,
   };
   // Convertendo para JSON e armazenando no localStorage
@@ -80,6 +82,7 @@ function updateLinha() {
   const hora = document.getElementById("horainput2").value;
   const video = document.getElementById("videoCheck2").checked;
   const report = document.getElementById("reportCheck2").checked;
+  const nfa = document.getElementById("nfacheck2").checked;
   const obs = document.getElementById("obsInput2").value;
   
   // Cria um objeto com os dados atualizados
@@ -88,6 +91,7 @@ function updateLinha() {
     hora: hora,
     video: video,
     report: report,
+    nfa: nfa,
     obs: obs,
   };
   
@@ -206,6 +210,9 @@ function atualizarTabela(data) {
       } disabled></td>
       <td contenteditable="true"><input type="checkbox" ${
         item.report ? "checked" : ""
+      } disabled></td>
+      <td contenteditable="true"><input type="checkbox" ${
+        item.nfa ? "checked" : ""
       } disabled></td>
       <td contenteditable="true">${item.obs}</td>
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${item._id}')"></td>
@@ -386,20 +393,22 @@ function atualizarPagina() {
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
-//setInterval(atualizarPagina, 5000);
+setInterval(atualizarPagina, 10000);
 
-// Função para salvar as posições de rolagem horizontal e vertical
-function saveScrollPositions() {
-  var elements = document.querySelectorAll('.tabela');
-  elements.forEach(function(element) {
-    var scrolly = typeof window.pageYOffset != 'undefined' ? window.pageYOffset : document.documentElement.scrollTop;
-    var scrollx = typeof window.pageXOffset != 'undefined' ? window.pageXOffset : document.documentElement.scrollLeft;
-    element.querySelector('.scrollx').setAttribute('value', scrollx);
-    element.querySelector('.scrolly').setAttribute('value', scrolly);
-  });
+// Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
+function scrollToBottomWithDelay() {
+  setTimeout(function() {
+    var table = document.getElementById('tabela'); // ID da sua tabela
+    if (table) {
+      var lastRow = table.rows[table.rows.length - 1];
+      if (lastRow) {
+        lastRow.scrollIntoView();
+      }
+    }
+  }, 100); // Ajuste o valor do atraso conforme necessário
 }
 
-// Chamar a função para salvar as posições de rolagem quando a página for descarregada
-window.addEventListener('beforeunload', function() {
-  saveScrollPositions();
+// Chamar a função para rolar até o final da página quando a página for carregada
+window.addEventListener('load', function() {
+  scrollToBottomWithDelay();
 });

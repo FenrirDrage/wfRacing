@@ -34,11 +34,12 @@ max-width: 80%; /* Largura máxima para manter o alinhamento */
 }
 
 #content-top {
-position: sticky;
+position: fixed;
 top: 0;
-margin: 20px auto; /* Centraliza horizontalmente e adiciona espaçamento superior e inferior */
+left: 50%; /* Move o elemento para o centro da janela de visualização */
+transform: translateX(-50%); /* Centraliza horizontalmente */
 width: 100%;
-max-width: 700px;
+max-width: 900px;
 background-color: #E30613;
 padding: 10px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -71,7 +72,7 @@ table {
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: center;
   min-width: 80px;  /* Definir a largura mínima desejada para as colunas */
   color: #575656;
 }
@@ -164,11 +165,12 @@ line-height: 20px; /* Alinhamento vertical */
   text-align: left;
   min-width: 30%;
 }
+
 #editlg{
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 30%;
 }
 
 #editlg:hover {
@@ -186,7 +188,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 140px; /* Adjust this value according to your header's height */
+  top: 120px; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }

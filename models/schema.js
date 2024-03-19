@@ -14,6 +14,9 @@ const dadoSchema = new mongoose.Schema({
   report: {
     type: Boolean,
   },
+  fna: {
+    type: Boolean,
+  },
   obs: {
     type: String,
   },
