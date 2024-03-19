@@ -12,7 +12,6 @@ function limparLS() {
   console.log("localStorage foi limpo.");
 }
 
-
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
   const tabela = document.querySelector("tbody");
@@ -157,23 +156,27 @@ function envUpJson() {
 //abre o popup
 function abrirPopup() {
   document.getElementById("popup").style.display = "block";
+  popupAberto = true;
 }
 
 //abre o popup2
 function abrirPopup2() {
   document.getElementById("popup2").style.display = "block";
+  popup2Aberto = true;
+
 }
 
 //fecha o popup
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
+  popupAberto = false;
 }
 
-//fecha o pupup
+//fecha o pupup2
 function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
 
-  location.reload();
+  popup2Aberto = false;
 }
 
 //fecha o popup e acrescenta dados
@@ -371,3 +374,36 @@ document.addEventListener("DOMContentLoaded", function () {
 function refreshPage() {
   carregarDados(); // Chama a função para carregar os dados ao carregar a página
 }
+
+let popupAberto = false;
+let popup2Aberto = false;
+
+function atualizarPagina() {
+  if (!popupAberto && !popup2Aberto) {
+      // Lógica para atualizar a página
+      location.reload();
+  } 
+}
+
+// Chamar a função atualizarPagina a cada 5 segundos
+setInterval(atualizarPagina, 5000);
+
+// Função para salvar a posição de rolagem atual no Local Storage
+function salvarPosicaoRolagem() {
+  localStorage.setItem('posicaoRolagem', window.scrollY);
+}
+
+// Função para carregar a posição de rolagem do Local Storage e rolar para ela
+function carregarPosicaoRolagem() {
+  const posicaoRolagem = localStorage.getItem('posicaoRolagem');
+  if (posicaoRolagem) {
+      window.scrollTo(0, posicaoRolagem);
+      localStorage.removeItem('posicaoRolagem'); // Remover depois de usá-lo
+  }
+}
+
+// Chamada para salvar a posição de rolagem antes de recarregar a página
+window.addEventListener('beforeunload', salvarPosicaoRolagem);
+
+// Chamada para carregar a posição de rolagem quando a página for carregada
+window.addEventListener('load', carregarPosicaoRolagem);

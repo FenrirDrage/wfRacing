@@ -1,124 +1,170 @@
 /* Estilos CSS */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f4f4f4;
-    color: rgb(3, 3, 3);
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f4f4f4;
+  color: rgb(3, 3, 3);
 }
 
 #logo {
-    position: sticky;
-    top: 10px;
-    left: 10px;
-    width: 250px;
-    height: auto;
-    display: block;
-    z-index: 999; /* Ensures the logo stays above other content */
+  position: sticky;
+  top: 10px;
+  left: 10px;
+  width: 250px;
+  height: auto;
+  display: block;
+  z-index: 999; /* Ensures the logo stays above other content */
+}
+
+/* Estilo para centralizar o título */
+#header {
+text-align: center; /* Centraliza o texto horizontalmente */
+margin: 0 auto; /* Centraliza horizontalmente */
+max-width: 80%; /* Largura máxima para manter o alinhamento */
+}
+
+/* Estilo para centralizar os botões */
+.buttons-container {
+display: flex; /* Ativa o flexbox */
+justify-content: center; /* Centraliza os itens horizontalmente */
+margin: 20px auto; /* Centraliza e adiciona um espaçamento superior e inferior */
+max-width: 80%; /* Largura máxima para manter o alinhamento */
 }
 
 #content-top {
-  position: sticky;
-  top: 0px; /* Adjust this value according to your logo's height */
-  left: 300px;
-  width: 100%; /* To make it span the full width */
-  max-width: 700px;;
-  background-color: #ffffff; /* Change this to your desired background color */
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow */
-  z-index: 998; /* Ensures the content-top stays below the logo */
+position: sticky;
+top: 0;
+margin: 20px auto; /* Centraliza horizontalmente e adiciona espaçamento superior e inferior */
+width: 100%;
+max-width: 700px;
+background-color: #ffffff;
+padding: 10px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+z-index: 998;
+text-align: center; /* Centraliza os elementos dentro de #content-top */
+}
+
+#content-top button {
+margin: 5px; /* Adiciona espaçamento entre os botões */
 }
 
 button {
-    margin: 5px;
-    padding: 10px;
-    cursor: pointer;
-    background-color: #E30613;
-    color: white;
-    border: none;
-    border-radius: 5px;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #E30613;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: auto;
-    margin-top: 20px;
-    background-color: #575656;
+  border-collapse: collapse;
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
+  background-color: #575656;
 }
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    min-width: 80px;  /* Definir a largura mínima desejada para as colunas */
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  min-width: 80px;  /* Definir a largura mínima desejada para as colunas */
+  color: white;
 }
 
 th {
-    background-color: #f2f2f2;
-    color: #575656;
+  background-color: #f2f2f2;
+  color: #575656;
 }
 
 .hora-editavel {
-    cursor: pointer;
-    color: #ffffff;
-    text-decoration: none;
+  cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+}
+/* Estilizando checkboxes */
+input[type="checkbox"] {
+/* Escondendo a checkbox padrão */
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+/* Definindo um tamanho padrão para a checkbox */
+width: 20px;
+height: 20px;
+/* Definindo o fundo branco */
+background-color: white;
+/* Adicionando uma borda */
+border: 1px solid #ccc;
+/* Definindo um cursor personalizado */
+cursor: pointer;
+/* Posicionando o texto ao lado da checkbox */
+vertical-align: middle;
+margin-right: 5px; /* Espaço entre a checkbox e o texto */
+}
+
+/* Estilizando a marcação quando a checkbox está marcada */
+input[type="checkbox"]:checked::before {
+/* Adicionando um visto vermelho */
+content: "\2713"; /* Código unicode para visto */
+color: red; /* Cor do visto */
+font-size: 25px; /* Tamanho do visto */
+line-height: 20px; /* Alinhamento vertical */
 }
 
 /**/
 .popup {
 
-    display: none;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    left: 25%;
-    top: 25%;
-    width: 20%;
-    height: 100%;
-    overflow: auto;
-    /*background-color: rgba(0,0,0,0.4);*/
-    z-index: 9999;
-  }
-  
-  .popup-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Adicione sombra para destacar o popup */
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 25%;
+  top: 25%;
+  width: 20%;
+  height: 100%;
+  overflow: auto;
+  /*background-color: rgba(0,0,0,0.4);*/
+  z-index: 9999;
+}
 
-  #thcolor {
-    color: #575656;
-  }
+.popup-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Adicione sombra para destacar o popup */
+}
 
-  #tdlg{
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    min-width: 30%;
-  }
-  #editlg{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-  }
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-  
-  
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#thcolor {
+  color: #575656;
+}
+
+#tdlg{
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  min-width: 30%;
+}
+#editlg{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
