@@ -15,11 +15,17 @@
     <!-- Adicionadar o cabeçalho da corrida -->
     <h1 id="header">Comunicação Arduino Yun - Nome da Corrida</h1>
     <button id="addButton" onclick="inputRace()">Insert Race Name</button>
-    <!-- Adicionar botões com eventos associados -->
-    <button id="addButton" onclick="abrirPopup(); obterHoraAtual()">Adicionar Linha</button>
-    <button onclick="limparTabela()">Limpar Tabela</button>
-    <button onclick="exportarTabela()">Salvar Informações</button>
+    <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
+    <button id="addButton" onclick="exportarTabela()">Salvar Informações</button>
 </div>
+
+<div id="menu">
+    
+    <button id="penasdicionar" onclick="abrirPopup(); obterHoraAtual()">Adicionar Linha</button>
+    
+</div>
+
+<div id="clock"></div>
 
 <!-- Adicionar a tabela com cabeçalho e uma linha inicial -->
 <table id="tabela">

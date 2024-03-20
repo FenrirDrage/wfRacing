@@ -412,3 +412,22 @@ function scrollToBottomWithDelay() {
 window.addEventListener('load', function() {
   scrollToBottomWithDelay();
 });
+
+function updateClock() {
+  var now = new Date();
+  var hours = now.getHours().toString().padStart(2, '0');
+  var minutes = now.getMinutes().toString().padStart(2, '0');
+  var seconds = now.getSeconds().toString().padStart(2, '0');
+  var timeString = hours + ':' + minutes + ':' + seconds;
+
+  var clockElement = document.getElementById('clock');
+  if (clockElement) {
+    clockElement.textContent = timeString;
+  }
+}
+
+// Atualizar o relógio a cada segundo
+setInterval(updateClock, 1000);
+
+// Chamar a função updateClock() para exibir a hora atual quando a página for carregada
+window.addEventListener('load', updateClock);

@@ -59,8 +59,21 @@ button {
   color: white;
   border: 2px solid white;
   border-radius: 50px;
+  margin-bottom: 50px;
 }
 
+#penasdicionar{
+width: 150px;
+height: 150px;
+margin: 5px;
+padding: 10px;
+cursor: pointer;
+background-color: #E30613;
+color: white;
+border: 2px solid white;
+border-radius: 50px;
+margin-bottom: 50px;
+}
 table {
   border-collapse: collapse;
   width: 50%;
@@ -188,7 +201,33 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 120px; /* Adjust this value according to your header's height */
+  top: 110px; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
+}
+
+#menu {
+  position: fixed;
+  top: 50%; /* Ajuste a altura conforme necessário */
+  right: 0;
+  transform: translateY(-50%);
+  width: auto; /* Defina a largura da sua div */
+  height: auto;
+  height: 50px;
+  background-color: #f0f0f0; /* Cor de fundo opcional */
+  padding: 10px; /* Espaçamento interno opcional */
+  /*background-color: #E30613;*/
+  text-align: center;
+}
+
+#clock {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #E30613;
+  color: white;
+  padding: 30px;
+  border-radius: 50px;
+  font-size: 38px;
+  text-align: right; /* Alinhamento do texto à direita */
 }
