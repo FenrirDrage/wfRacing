@@ -393,7 +393,7 @@ function atualizarPagina() {
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
-setInterval(atualizarPagina, 10000);
+//setInterval(atualizarPagina, 10000);
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
 function scrollToBottomWithDelay() {
