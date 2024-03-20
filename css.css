@@ -159,12 +159,14 @@ line-height: 20px; /* Alinhamento vertical */
 }
 .numpad-cell{
   all:unset;
+  vertical-align: middle;
 }
 .numpad-row{
   min-width: none;
   text-align: center;  
   background-color: #E30613;
   background: transparent ;
+
 
 }
 .numpad-Button{
@@ -177,7 +179,12 @@ line-height: 20px; /* Alinhamento vertical */
   border: 2px solid white;
   border-radius: 50px;
   margin-bottom: 10px;
-  font-size: 30px;
+  font-size: 20px;
+}
+
+#raceStart,#raceRF{
+  width: 80px;
+  height: 100px;
 }
 /**/
 .popup {
