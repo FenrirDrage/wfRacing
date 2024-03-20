@@ -135,7 +135,7 @@ line-height: 20px; /* Alinhamento vertical */
 #numpad{
   width:25%;
   position: absolute;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   right: 50px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
@@ -183,7 +183,21 @@ line-height: 20px; /* Alinhamento vertical */
   font-size: 20px;
 }
 
-#raceStart,#raceRF{
+#popupNumpad{
+  z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
+}
+#popupNumpadTable{
+  background: transparent;
+  width: 20%;
+}
+.primary-numpad-Button{
+  width: 150px;
+  height: 60px;
+  vertical-align: middle;
+  border: 10px double;
+}
+
+#raceStart,#raceRF,#raceSF{
   width: 150px;
   height: 60px;
   vertical-align: middle;

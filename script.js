@@ -133,6 +133,8 @@ function envUpJson() {
     const id = updatedData._id;
     console.log(id);
   // Definir o IP/URL para onde enviar os dados
+  //Ip casa
+  //const url = `http://localhost:3000/updateData/${id}`;
   //IP config WFR
   const url = `http://192.168.1.148:3000/updateData/${id}`;
   //IP CORRIDAS
@@ -174,6 +176,12 @@ function abrirPopup2() {
 
 }
 
+// Abre popup numpad
+function abrirPopupNumpad() {
+  document.getElementById("popupNumpad").style.display = "block";
+  popupNumpadAberto = true;
+}
+
 //fecha o popup
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
@@ -185,6 +193,12 @@ function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
 
   popup2Aberto = false;
+}
+// Fecha o popup Numpad
+function fecharPopupNumpad() {
+  document.getElementById("popupNumpad").style.display = "none";
+
+  popupNumpadAberto = false;
 }
 
 //fecha o popup e acrescenta dados
@@ -324,7 +338,7 @@ function obterHoraAtual() {
 
 //Red Flag e Start
 function obterStartOrRF(valor){
-  document.getElementById("obsInput").value = document.getElementById(`race${valor}`).value;
+  document.getElementById("curvaInput").value = document.getElementById(`race${valor}`).value;
   //adicionarLinha();
 }
 
@@ -400,6 +414,7 @@ function refreshPage() {
 
 let popupAberto = false;
 let popup2Aberto = false;
+let popupNumpadAbero = false;
 
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {

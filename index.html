@@ -55,6 +55,7 @@
 <!-- <div id ="numpad">
   <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button></br>
   <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button>
+  <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('SF')" id="raceSF" value="Slow Flag">Slow Flag!</button>
     
     <table id ="numpad-table">
       <th class="numpad-header">
@@ -138,8 +139,9 @@
 
 <!--Protótipo numpad em comentário (Com pop up)-->
 <div id ="numpad">
-  <button class="numpad-Button" onclick="abrirPopup(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button></br>
-  <button class="numpad-Button" onclick="abrirPopup(); obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button>
+  <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button></br>
+  <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button></br>
+  <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('SF')" id="raceSF" value="Slow Flag">Slow Flag!</button>
   <table id ="numpad-table">
     <th class="numpad-header">
       <p>Curvas:</p>
@@ -218,6 +220,23 @@
     </tr>
   </table>
 </div>
+<!-- Pop up Camera select -->
+<div id="popupNumpad" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="fecharPopupNumpad()">&times;</span>
+    <table id="popupNumpadTable">
+      <tr>
+        <td>
+          <button class="primary-numpad-Button">Camera</button>
+        </td>
+        <td>
+          <button class="primary-numpad-Button">Post</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
 
 <!-- PopUp para adicionar dados -->
 <div id="popup" class="popup"  onload="limparLS()">
