@@ -22,8 +22,14 @@ function adicionarLinha() {
   const hora = document.getElementById("horainput").value;
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
-  const nfa = document.getElementById("nfaCheck").checked;
   const obs = document.getElementById("obsInput").value;
+
+  // Se report for 0, definir nfa como 1
+  let nfa = false;
+  if (!report) {
+    nfa = true;
+  }
+
   // Armazenar os dados no localStorage
   const newData = {
     curva: curva,
@@ -36,7 +42,7 @@ function adicionarLinha() {
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
-  refreshPage;
+  //refreshPage;
 }
 
 //envio dados para servidor
@@ -127,8 +133,6 @@ function envUpJson() {
     const id = updatedData._id;
     console.log(id);
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  //const url = "http://localhost:3000/updateData/";
   //IP config WFR
   const url = `http://192.168.1.148:3000/updateData/${id}`;
   //IP CORRIDAS
@@ -187,7 +191,7 @@ function fecharPopup2() {
 function fechaddPopup() {
   document.getElementById("popup2").style.display = "none";
 
-  location.reload();//para ja comentado
+  //location.reload();//para ja comentado
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -286,7 +290,7 @@ function carregarDados() {
     .then((data) => {
       // Atualiza a tabela com os dados recebidos
       atualizarTabela(data);
-  
+      
       // Armazena os dados localmente para uso posterior
       localStorage.setItem("dadosTabela", JSON.stringify(data));
     })
