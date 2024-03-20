@@ -19,11 +19,11 @@
     <button id="addButton" onclick="exportarTabela()">Salvar Informações</button>
 </div>
 
-<div id="menu">
+<!-- <div id="menu">
     
     <button id="penasdicionar" onclick="abrirPopup(); obterHoraAtual()">Adicionar Linha</button>
     
-</div>
+</div> -->
 
 
 
@@ -51,21 +51,15 @@
 
 
 <!--Protótipo numpad(instantâneo) em comentário (É necessário descomentar a função AdicionarLinha() dentro das funções obterCurvaNum() e obterStartOrRF)-->
-<!-- 
-<div id ="numpad">
+
+<!-- <div id ="numpad">
+  <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button></br>
+  <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button>
     
     <table id ="numpad-table">
       <th class="numpad-header">
         <p>Curvas:</p>
       </th>
-      <tr class="numpad-row">
-        <td class="numpad-cell">
-          <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button>
-        </td>
-        <td class="numpad-cell">
-          <button class="numpad-Button" onclick="obterHoraAtual(); obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button>
-        </td>
-      </tr>
       <tr class="numpad-row">
         <td class="numpad-cell">
           <button class="numpad-Button" onclick="obterHoraAtual(); obterCurvaNum(1)" id="curva1" value="1">1</button>
@@ -144,18 +138,12 @@
 
 <!--Protótipo numpad em comentário (Com pop up)-->
 <div id ="numpad">
+  <button class="numpad-Button" onclick="abrirPopup(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button></br>
+  <button class="numpad-Button" onclick="abrirPopup(); obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button>
   <table id ="numpad-table">
     <th class="numpad-header">
       <p>Curvas:</p>
     </th>
-    <tr class="numpad-row">
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button>
-      </td>
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button>
-      </td>
-    </tr>
     <tr class="numpad-row">
       <td class="numpad-cell">
         <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(1)" id="curva1" value="1">1</button>
