@@ -322,6 +322,11 @@ function obterHoraAtual() {
   document.getElementById("horainput").value = hour;
 }
 
+// Preencher informação com a curva quando utilizar Numpad
+function obterCurvaNum(curva){
+  document.getElementById("curvaInput").value = document.getElementById(`curva${curva}`).value;
+}
+
 // Adicionar a função para parar a contagem de hora
 function pararContagemHora(elementoCurva) {
   const linha = elementoCurva.parentNode;
