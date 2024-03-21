@@ -21,7 +21,7 @@ body {
 #header {
 text-align: center; /* Centraliza o texto horizontalmente */
 margin: 0 auto; /* Centraliza horizontalmente */
-max-width: 80%; /* Largura máxima para manter o alinhamento */
+max-width: auto; /* Largura máxima para manter o alinhamento */
 color: white;
 }
 
@@ -134,8 +134,8 @@ line-height: 20px; /* Alinhamento vertical */
 
 #numpad{
   width:25%;
-  position: absolute;
-  top: 45%;
+  position: fixed;
+  top: 55%;
   transform: translateY(-50%);
   right: 50px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
@@ -205,7 +205,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 #extraButtons{
   width:25%;
-  position: absolute;
+  position: fixed;
   top: 25%;
   transform: translateY(-50%);
   left: 50px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
@@ -269,10 +269,11 @@ line-height: 20px; /* Alinhamento vertical */
   margin-left: auto;
   margin-right: auto;
   width: 60%;
+  justify-content: center;
 }
 
 #editlg:hover {
-  animation: spin 1s linear infinite; /* Adiciona a animação ao passar o mouse */
+  animation: spin 2s linear infinite; /* Adiciona a animação ao passar o mouse */
 }
 
 @keyframes spin {
@@ -293,7 +294,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 #menu {
   position: fixed;
-  top: 50%; /* Ajuste a altura conforme necessário */
+  top: 70%; /* Ajuste a altura conforme necessário */
   right: 0;
   transform: translateY(-50%);
   width: auto; /* Defina a largura da sua div */
