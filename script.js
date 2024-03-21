@@ -52,9 +52,10 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/addData";
+  const url = "http://localhost:3000/addData";
   //IP config WFR
-  const url = "http://192.168.1.53:3000/addData";
+  //const url = "http://192.168.1.148:3000/addData";
+  //const url = "http://192.168.1.53:3000/addData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/addData";
 
@@ -133,9 +134,10 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    //const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP config WFR
-    const url = `http://192.168.1.53:3000/updateData/${id}`;
+    //const url = `http://192.168.1.148:3000/updateData/${id}`;
+    //const url = `http://192.168.1.53:3000/updateData/${id}`;
     //IP CORRIDAS
     //const url = "http://192.168.1.XYZ:3000/updateData/";
     console.log(url);
@@ -292,9 +294,9 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/getData";
+  const url = "http://localhost:3000/getData";
   //IP config WFR
-  const url = "http://192.168.1.53:3000/getData";
+  //const url = "http://192.168.1.53:3000/getData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/getData";
 
@@ -338,6 +340,7 @@ function obterStartOrRF(valor) {
   document.getElementById("curvaInput").value = document.getElementById(
     `race${valor}`
   ).value;
+  console.log(numpadLinhas);
   //adicionarLinha();
 }
 
@@ -375,9 +378,9 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/dropData";
+  const url = "http://localhost:3000/dropData";
   //IP config WFR
-  const url = "http://192.168.1.53:3000/dropData";
+  //const url = "http://192.168.1.53:3000/dropData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/dropData";
 
@@ -428,6 +431,14 @@ function atualizarPagina() {
   }
 }
 
+// Função para carregar o mesmo número introduzido no numpad(quando é feito reload)
+function carregarNumpad(){
+  console.log(localStorage.getItem('numCurves'))
+  document.getElementById("numberCurvas").value = localStorage.getItem('numCurves');
+  generateNumpad();
+  
+}
+
 // Chamar a função atualizarPagina a cada 5 segundos
 //setInterval(atualizarPagina, 10000);
 
@@ -472,6 +483,7 @@ window.addEventListener("load", updateClock);
 // Gerar Número de curvas no numpad
 
 let generatedNumber=0;
+let numpadLinhas;
 
 function generateNumpad(){
   //Se já existir um numpad gerado, não acrescenta mais um
@@ -509,8 +521,10 @@ function generateNumpad(){
         numpadTable.appendChild(numpadRow);
       }
     }
+    localStorage.setItem('numCurves', num);
+
     //Numpad gerado guardado temporariamente
-    //localStorage.setItem("novaLinhaData", numpadDiv);
+    localStorage.setItem("numpadLinhas", numpadDiv);
   }else{ //Caso já exista uma, remover e adicionar novo input
     const num = document.getElementById("numberCurvas").value;
     generatedNumber = num;
@@ -543,7 +557,7 @@ function generateNumpad(){
         numpadTable.appendChild(numpadRow);
       }
     }
-
+    localStorage.setItem('numCurves', num);
   }
   
 }
