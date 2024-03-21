@@ -1,4 +1,3 @@
-
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
   if (rname != null) {
@@ -42,7 +41,7 @@ function adicionarLinha() {
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
-  //refreshPage;
+  location.reload;
 }
 
 //envio dados para servidor
@@ -50,7 +49,7 @@ function enviarJson() {
   // Recuperar os dados do localStorage
   const localStorageData = localStorage.getItem("novaLinhaData");
   console.log(localStorageData);
-  
+
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
   //const url = "http://localhost:3000/addData";
@@ -58,7 +57,6 @@ function enviarJson() {
   const url = "http://192.168.1.148:3000/addData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/addData";
-
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -79,7 +77,6 @@ function enviarJson() {
   } else {
     console.log("Nenhum dado encontrado no localStorage.");
   }
-  
 }
 
 function updateLinha() {
@@ -90,7 +87,7 @@ function updateLinha() {
   const report = document.getElementById("reportCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
   const obs = document.getElementById("obsInput2").value;
-  
+
   // Cria um objeto com os dados atualizados
   const updatedData = {
     curva: curva,
@@ -100,14 +97,16 @@ function updateLinha() {
     nfa: nfa,
     obs: obs,
   };
-  
+
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
   if (detalhes && detalhes._id) {
     // Adiciona o ID aos dados atualizados
     updatedData._id = detalhes._id;
   } else {
-    console.error("Erro: ID não encontrado nos detalhes armazenados no localStorage.");
+    console.error(
+      "Erro: ID não encontrado nos detalhes armazenados no localStorage."
+    );
     return; // Encerra a função se o ID não estiver disponível
   }
 
@@ -128,17 +127,17 @@ function envUpJson() {
   if (updatedDataString) {
     const updatedData = JSON.parse(updatedDataString);
     console.log(updatedData);
-    
+
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     console.log(id);
-  // Definir o IP/URL para onde enviar os dados
-  //Ip casa
-  //const url = `http://localhost:3000/updateData/${id}`;
-  //IP config WFR
-  const url = `http://192.168.1.148:3000/updateData/${id}`;
-  //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/updateData/";
+    // Definir o IP/URL para onde enviar os dados
+    //Ip casa
+    //const url = `http://localhost:3000/updateData/${id}`;
+    //IP config WFR
+    const url = `http://192.168.1.148:3000/updateData/${id}`;
+    //IP CORRIDAS
+    //const url = "http://192.168.1.XYZ:3000/updateData/";
     console.log(url);
     // Envia os dados atualizados para o servidor
     fetch(url, {
@@ -151,12 +150,15 @@ function envUpJson() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Dados atualizados com sucesso:", data);
-        
+
         // Limpa os dados do localStorage após a atualização
         localStorage.removeItem("novaLinhaData");
       })
       .catch((error) => {
-        console.error("Erro ao enviar dados atualizados para o servidor:", error);
+        console.error(
+          "Erro ao enviar dados atualizados para o servidor:",
+          error
+        );
       });
   } else {
     console.error("Nenhum dado encontrado no localStorage para enviar.");
@@ -173,7 +175,6 @@ function abrirPopup() {
 function abrirPopup2() {
   document.getElementById("popup2").style.display = "block";
   popup2Aberto = true;
-
 }
 
 // Abre popup numpad
@@ -186,6 +187,7 @@ function abrirPopupNumpad() {
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
   popupAberto = false;
+  location.reload();
 }
 
 //fecha o pupup2
@@ -193,19 +195,13 @@ function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
 
   popup2Aberto = false;
+  location.reload();
 }
 // Fecha o popup Numpad
 function fecharPopupNumpad() {
   document.getElementById("popupNumpad").style.display = "none";
 
   popupNumpadAberto = false;
-}
-
-//fecha o popup e acrescenta dados
-function fechaddPopup() {
-  document.getElementById("popup2").style.display = "none";
-
-  //location.reload();//para ja comentado
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -233,7 +229,9 @@ function atualizarTabela(data) {
         item.nfa ? "checked" : ""
       } disabled></td>
       <td contenteditable="true">${item.obs}</td>
-      <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${item._id}')"></td>
+      <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
+        item._id
+      }')"></td>
       `;
     tabela.appendChild(novaLinha);
   });
@@ -242,7 +240,7 @@ function atualizarTabela(data) {
 // Função para abrir o pop-up com os detalhes da linha correspondente
 function abrirDetalhes(id) {
   const data = JSON.parse(localStorage.getItem("dadosTabela")); // Obtemos os dados da localStorage
-  const detalhes = data.find(item => item._id === id); // Encontramos o item com o id correspondente
+  const detalhes = data.find((item) => item._id === id); // Encontramos o item com o id correspondente
   if (detalhes) {
     // Se encontrarmos os detalhes, preenchemos o pop-up e o exibimos
     preencherPopupComDetalhes(detalhes);
@@ -279,7 +277,9 @@ function preencherPopupComDetalhes(detalhes) {
       reportCheck.checked = detalhes.report || false;
       obsInput.value = detalhes.obs || "";
     } else {
-      console.error("Um ou mais elementos do popup não foram encontrados no DOM.");
+      console.error(
+        "Um ou mais elementos do popup não foram encontrados no DOM."
+      );
     }
   } else {
     console.error("Detalhes inválidos.");
@@ -289,7 +289,7 @@ function preencherPopupComDetalhes(detalhes) {
 // Define a função para carregar os dados quando a página é carregada
 function carregarDados() {
   // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
-      
+
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
   //const url = "http://localhost:3000/getData";
@@ -299,17 +299,14 @@ function carregarDados() {
   //const url = "http://192.168.1.XYZ:3000/getData";
 
   fetch(url)
-
     .then((response) => response.json())
     .then((data) => {
       // Atualiza a tabela com os dados recebidos
       atualizarTabela(data);
-      
       // Armazena os dados localmente para uso posterior
       localStorage.setItem("dadosTabela", JSON.stringify(data));
     })
     .catch((error) => console.error("Erro ao obter dados:", error));
-    
 }
 
 // Adicionadar o evento de editar a hora
@@ -337,14 +334,18 @@ function obterHoraAtual() {
 }
 
 //Red Flag e Start
-function obterStartOrRF(valor){
-  document.getElementById("curvaInput").value = document.getElementById(`race${valor}`).value;
+function obterStartOrRF(valor) {
+  document.getElementById("curvaInput").value = document.getElementById(
+    `race${valor}`
+  ).value;
   //adicionarLinha();
 }
 
 // Preencher informação com a curva quando utilizar Numpad
-function obterCurvaNum(curva){
-  document.getElementById("curvaInput").value = document.getElementById(`curva${curva}`).value;
+function obterCurvaNum(curva) {
+  document.getElementById("curvaInput").value = document.getElementById(
+    `curva${curva}`
+  ).value;
   //adicionarLinha();
 }
 
@@ -362,7 +363,6 @@ function enviarNumeroDeLinhas(numeroLinhas) {
 
 // Adicionada a função para limpar a tabela
 function limparTabela() {
-
   // Mensagem de confirmação
   if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
     return; // Se o usuário cancelar, sair da função
@@ -384,7 +384,7 @@ function limparTabela() {
   })
     .then((response) => response.json())
     .then((data) => {
-      refreshPage();
+      location.reload;
       console.log(data.message); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
@@ -418,18 +418,18 @@ let popupNumpadAbero = false;
 
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
-      // Lógica para atualizar a página
-      location.reload();
-  } 
+    // Lógica para atualizar a página
+    location.reload();
+  }
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
-//setInterval(atualizarPagina, 10000);
+setInterval(atualizarPagina, 10000);
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
 function scrollToBottomWithDelay() {
-  setTimeout(function() {
-    var table = document.getElementById('tabela'); // ID da sua tabela
+  setTimeout(function () {
+    var table = document.getElementById("tabela"); // ID da sua tabela
     if (table) {
       var lastRow = table.rows[table.rows.length - 1];
       if (lastRow) {
@@ -440,18 +440,18 @@ function scrollToBottomWithDelay() {
 }
 
 // Chamar a função para rolar até o final da página quando a página for carregada
-window.addEventListener('load', function() {
+window.addEventListener("load", function () {
   scrollToBottomWithDelay();
 });
 
 function updateClock() {
   var now = new Date();
-  var hours = now.getHours().toString().padStart(2, '0');
-  var minutes = now.getMinutes().toString().padStart(2, '0');
-  var seconds = now.getSeconds().toString().padStart(2, '0');
-  var timeString = hours + ':' + minutes + ':' + seconds;
+  var hours = now.getHours().toString().padStart(2, "0");
+  var minutes = now.getMinutes().toString().padStart(2, "0");
+  var seconds = now.getSeconds().toString().padStart(2, "0");
+  var timeString = hours + ":" + minutes + ":" + seconds;
 
-  var clockElement = document.getElementById('clock');
+  var clockElement = document.getElementById("clock");
   if (clockElement) {
     clockElement.textContent = timeString;
   }
@@ -461,4 +461,4 @@ function updateClock() {
 setInterval(updateClock, 1000);
 
 // Chamar a função updateClock() para exibir a hora atual quando a página for carregada
-window.addEventListener('load', updateClock);
+window.addEventListener("load", updateClock);

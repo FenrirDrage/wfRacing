@@ -212,14 +212,15 @@ line-height: 20px; /* Alinhamento vertical */
   position: fixed;
   left: 25%;
   top: 25%;
-  width: 20%;
-  height: 100%;
+  width: 15%;
+  height: 40%;
   overflow: auto;
   /*background-color: rgba(0,0,0,0.4);*/
   z-index: 9999;
 }
 
 .popup-content {
+  align-items: center;
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
