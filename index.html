@@ -137,85 +137,89 @@
   </div>
  -->
 
-<!--Protótipo numpad em comentário (Com pop up)-->
-<div id ="numpad">
+<div id="extraButtons">
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start!</button></br>
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag!</button></br>
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('SF')" id="raceSF" value="Slow Flag">Slow Flag!</button>
+</div>
+
+<!--Protótipo numpad em comentário (Com pop up)-->
+<div id ="numpad">
+  
   <table id ="numpad-table">
     <th class="numpad-header">
       <p>Curvas:</p>
     </th>
     <tr class="numpad-row">
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(1)" id="curva1" value="1">1</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(1)" id="curva1" value="1">1</button>
       </td>
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(2)" id="curva2" value="2">2</button>
-      </td>
-    </tr>
-    <tr class="numpad-row">
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(3)" id="curva3" value="3">3</button>
-      </td>
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(4)" id="curva4" value="4">4</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(2)" id="curva2" value="2">2</button>
       </td>
     </tr>
     <tr class="numpad-row">
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(5)" id="curva5" value="5">5</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(3)" id="curva3" value="3">3</button>
       </td>
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(6)" id="curva6" value="6">6</button>
-      </td>
-    </tr>
-    <tr class="numpad-row">
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(7)" id="curva7" value="7">7</button>
-      </td>
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(8)" id="curva8" value="8">8</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(4)" id="curva4" value="4">4</button>
       </td>
     </tr>
     <tr class="numpad-row">
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(9)" id="curva9" value="9">9</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(5)" id="curva5" value="5">5</button>
       </td>
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(10)" id="curva10" value="10">10</button>
-      </td>
-    </tr>
-    <tr class="numpad-row">
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(11)" id="curva11" value="11">11</button>
-      </td>
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(12)" id="curva12" value="12">12</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(6)" id="curva6" value="6">6</button>
       </td>
     </tr>
     <tr class="numpad-row">
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(13)" id="curva13" value="13">13</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(7)" id="curva7" value="7">7</button>
       </td>
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(14)" id="curva14" value="14">14</button>
-      </td>
-    </tr>
-    <tr class="numpad-row">
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(15)" id="curva15" value="15">15</button>
-      </td>
-      <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(16)" id="curva16" value="16">16</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(8)" id="curva8" value="8">8</button>
       </td>
     </tr>
     <tr class="numpad-row">
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(17)" id="curva17" value="17">17</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(9)" id="curva9" value="9">9</button>
       </td>
       <td class="numpad-cell">
-        <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterCurvaNum(18)" id="curva18" value="18">18</button>
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(10)" id="curva10" value="10">10</button>
+      </td>
+    </tr>
+    <tr class="numpad-row">
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(11)" id="curva11" value="11">11</button>
+      </td>
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(12)" id="curva12" value="12">12</button>
+      </td>
+    </tr>
+    <tr class="numpad-row">
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(13)" id="curva13" value="13">13</button>
+      </td>
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(14)" id="curva14" value="14">14</button>
+      </td>
+    </tr>
+    <tr class="numpad-row">
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(15)" id="curva15" value="15">15</button>
+      </td>
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(16)" id="curva16" value="16">16</button>
+      </td>
+    </tr>
+    <tr class="numpad-row">
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(17)" id="curva17" value="17">17</button>
+      </td>
+      <td class="numpad-cell">
+        <button class="numpad-Button" onclick="abrirPopupNumpad();abrirPopup(); obterHoraAtual(); obterCurvaNum(18)" id="curva18" value="18">18</button>
       </td>
     </tr>
   </table>
@@ -227,10 +231,10 @@
     <table id="popupNumpadTable">
       <tr>
         <td>
-          <button class="primary-numpad-Button">Camera</button>
+          <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Camera');fecharPopupNumpad()" id="opcaoCamera" value="-C">Camera</button>
         </td>
         <td>
-          <button class="primary-numpad-Button">Post</button>
+          <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Post');fecharPopupNumpad()" id="opcaoPost" value="-P">Post</button>
         </td>
       </tr>
     </table>
@@ -243,7 +247,7 @@
     <div class="popup-content">
       <span class="close" onclick="fecharPopup()">&times;</span>
       <input type="text" id="curvaInput" placeholder="Curva/Posto">
-      <input type="text" id="horainput" value="" placeholder="hora">
+      <input type="text" id="horainput" value="" placeholder="hora"><br>
       <input type="checkbox" id="videoCheck">Vídeo<br>
       <input type="checkbox" id="reportCheck">Report<br>
       <textarea id="obsInput" placeholder="obs"></textarea><br>
@@ -255,7 +259,7 @@
     <div class="popup-content">
     <span class="close" onclick="fecharPopup2()">&times;</span>
       <input type="text" id="curvaInput2" placeholder="Curva/Posto">
-      <input type="text" id="horainput2" value="" placeholder="hora">
+      <input type="text" id="horainput2" value="" placeholder="hora"><br>
       <input type="checkbox" id="videoCheck2"> Vídeo<br>
       <input type="checkbox" id="reportCheck2"> Report<br>
       <input type="checkbox" id="nfacheck2"> N.F.A.<br>

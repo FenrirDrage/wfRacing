@@ -52,9 +52,9 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/addData";
+  const url = "http://localhost:3000/addData";
   //IP config WFR
-  const url = "http://192.168.1.148:3000/addData";
+  //const url = "http://192.168.1.148:3000/addData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/addData";
 
@@ -133,9 +133,9 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    //const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP config WFR
-    const url = `http://192.168.1.148:3000/updateData/${id}`;
+    //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //IP CORRIDAS
     //const url = "http://192.168.1.XYZ:3000/updateData/";
     console.log(url);
@@ -292,9 +292,9 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/getData";
+  const url = "http://localhost:3000/getData";
   //IP config WFR
-  const url = "http://192.168.1.148:3000/getData";
+  //const url = "http://192.168.1.148:3000/getData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/getData";
 
@@ -348,6 +348,10 @@ function obterCurvaNum(curva) {
   ).value;
   //adicionarLinha();
 }
+//Adicionar Camera ou Post no field Curva/Post
+function adicionarCameraOrPost(opcao){
+  document.getElementById("curvaInput").value += document.getElementById(`opcao${opcao}`).value;
+}
 
 // Adicionar a função para parar a contagem de hora
 function pararContagemHora(elementoCurva) {
@@ -370,9 +374,9 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/dropData";
+  const url = "http://localhost:3000/dropData";
   //IP config WFR
-  const url = "http://192.168.1.148:3000/dropData";
+  //const url = "http://192.168.1.148:3000/dropData";
   //IP CORRIDAS
   //const url = "http://192.168.1.XYZ:3000/dropData";
 
