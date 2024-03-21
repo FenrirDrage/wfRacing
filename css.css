@@ -8,7 +8,7 @@ body {
 }
 
 #logo {
-  position: sticky;
+  position: fixed;
   top: 10px;
   left: 10px;
   width: 250px;
@@ -134,7 +134,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 #numpad{
   width:25%;
-  position: absolute;
+  position: fixed;
   top: 60vh;
   transform: translateY(-50%);
   right: 0; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
@@ -142,6 +142,7 @@ line-height: 20px; /* Alinhamento vertical */
   text-align: center;
 }
 #numpad-table{
+  width: 20vw;
   margin-top: 0px;
   border-collapse: separate;
   border-spacing: 0px;
@@ -170,14 +171,14 @@ line-height: 20px; /* Alinhamento vertical */
 
 }
 .numpad-Button{
-  width: 4vw;
+  width: 8vw;
   margin: 5px;
   padding: 10px;
   cursor: pointer;
   background-color: #E30613;
   color: white;
   border: 2px solid white;
-  border-radius: 50px;
+  border-radius: 10px;
   margin-bottom: 10px;
   font-size: 20px;
 }
@@ -196,7 +197,7 @@ line-height: 20px; /* Alinhamento vertical */
 }
 
 #raceStart,#raceRF,#raceSF{
-  width: 150px;
+  width: 250px;
   height: 60px;
   vertical-align: middle;
 }
@@ -209,7 +210,7 @@ line-height: 20px; /* Alinhamento vertical */
   left: 0vw; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
   text-align: left;
-  margin-left: 5vw;
+  margin-left: 0vw;
 
 }
 
@@ -313,7 +314,7 @@ line-height: 20px; /* Alinhamento vertical */
   background-color: #E30613;
   color: white;
   padding: 30px;
-  border-radius: 50px;
+  border-radius: 10px;
   font-size: 38px;
   text-align: right; /* Alinhamento do texto à direita */
 }
