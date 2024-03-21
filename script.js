@@ -24,10 +24,10 @@ function adicionarLinha() {
   const obs = document.getElementById("obsInput").value;
 
   // Se report for 0, definir nfa como 1
-  let nfa = false;
-  if (!report) {
-    nfa = true;
-  }
+   let nfa = false;
+   if (!report) {
+   nfa = null;
+   }
 
   // Armazenar os dados no localStorage
   const newData = {
