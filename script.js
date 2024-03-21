@@ -466,3 +466,83 @@ setInterval(updateClock, 1000);
 
 // Chamar a função updateClock() para exibir a hora atual quando a página for carregada
 window.addEventListener("load", updateClock);
+
+
+// Gerar Número de curvas no numpad
+
+let generatedNumber=0;
+
+function generateNumpad(){
+  //Se já existir um numpad gerado, não acrescenta mais um
+  if(document.getElementById('numpad-table')==null){
+    const num = document.getElementById("numberCurvas").value;
+    generatedNumber = num;
+    const numpadDiv = document.getElementById('numpad');
+    const numpadTable = document.createElement('table');
+    numpadTable.id='numpad-table';
+    let numpadRow = document.createElement('tr');
+    numpadRow.classList.add('numpad-row');
+    numpadTable.appendChild(numpadRow);
+    numpadDiv.appendChild(numpadTable)
+    // De acordo com o numero recebido gera 2 buttoes por linha
+    for(let i = 1; i <= num; i++){
+      const numpadCell = document.createElement('td');
+      numpadCell.classList.add('numpad-cell');
+      const numpadButton = document.createElement('button');
+      numpadButton.classList.add('numpad-Button');
+      numpadButton.textContent = i;
+      numpadButton.id =`curva${i}`
+      numpadButton.onclick = function(){
+        abrirPopupNumpad();
+        abrirPopup();
+        obterHoraAtual();
+        obterCurvaNum(i);
+      };
+      numpadButton.value = i;
+      numpadCell.appendChild(numpadButton);
+      numpadRow.appendChild(numpadCell);
+      //A cada 2 celulas, fecha e abro uma linha nova
+      if(i % 2 == 0 && i != num){
+        numpadRow = document.createElement('tr');
+        numpadRow.classList.add('numpad-row');
+        numpadTable.appendChild(numpadRow);
+      }
+    }
+    //Numpad gerado guardado temporariamente
+    //localStorage.setItem("novaLinhaData", numpadDiv);
+  }else{ //Caso já exista uma, remover e adicionar novo input
+    const num = document.getElementById("numberCurvas").value;
+    generatedNumber = num;
+    const numpadTable = document.getElementById('numpad-table');
+    numpadTable.innerHTML="";
+    let numpadRow = document.createElement('tr');
+    numpadRow.classList.add('numpad-row');
+    numpadTable.appendChild(numpadRow);
+    // De acordo com o numero recebido gera 2 buttoes por linha
+    for(let i = 1; i <= num; i++){
+      const numpadCell = document.createElement('td');
+      numpadCell.classList.add('numpad-cell');
+      const numpadButton = document.createElement('button');
+      numpadButton.classList.add('numpad-Button');
+      numpadButton.textContent = i;
+      numpadButton.id =`curva${i}`
+      numpadButton.onclick = function(){
+        abrirPopupNumpad();
+        abrirPopup();
+        obterHoraAtual();
+        obterCurvaNum(i);
+      };
+      numpadButton.value = i;
+      numpadCell.appendChild(numpadButton);
+      numpadRow.appendChild(numpadCell);
+      //A cada 2 celulas, fecha e abro uma linha nova
+      if(i % 2 == 0 && i != num){
+        numpadRow = document.createElement('tr');
+        numpadRow.classList.add('numpad-row');
+        numpadTable.appendChild(numpadRow);
+      }
+    }
+
+  }
+  
+}

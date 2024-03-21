@@ -135,9 +135,9 @@ line-height: 20px; /* Alinhamento vertical */
 #numpad{
   width:25%;
   position: absolute;
-  top: 45%;
+  top: 60vh;
   transform: translateY(-50%);
-  right: 50px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
+  right: 0; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
   text-align: center;
 }
@@ -145,10 +145,9 @@ line-height: 20px; /* Alinhamento vertical */
   margin-top: 0px;
   border-collapse: separate;
   border-spacing: 0px;
-  border: 10px double;
-  border-color: white;
   border-radius: 20px;
   background-color: #E30613;
+  margin-right: 2vw;
 
 }
 .numpad-header{
@@ -171,7 +170,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 }
 .numpad-Button{
-  width: 80px;
+  width: 4vw;
   margin: 5px;
   padding: 10px;
   cursor: pointer;
@@ -191,8 +190,8 @@ line-height: 20px; /* Alinhamento vertical */
   border:none; /*tirar as borders de vestígio*/
 }
 .primary-numpad-Button{
-  width: 90px;
-  height: 60px;
+  width: 5vw;
+  height: 5vh;
   vertical-align: middle;
 }
 
@@ -200,17 +199,18 @@ line-height: 20px; /* Alinhamento vertical */
   width: 150px;
   height: 60px;
   vertical-align: middle;
-  border: 10px double;
 }
 
 #extraButtons{
   width:25%;
-  position: absolute;
-  top: 25%;
+  position: fixed;
+  top: 30vh;
   transform: translateY(-50%);
-  left: 50px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
+  left: 0vw; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
-  text-align: center;
+  text-align: left;
+  margin-left: 5vw;
+
 }
 
 /**/
