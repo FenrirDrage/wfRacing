@@ -151,6 +151,8 @@ line-height: 20px; /* Alinhamento vertical */
   border-radius: 1vw;
   background-color: #E30613;
   margin-right: 20px;
+  width: 20vw;
+  right:0;
 
 }
 .numpad-header{
