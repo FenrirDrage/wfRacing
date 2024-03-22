@@ -311,6 +311,10 @@ line-height: 20px; /* Alinhamento vertical */
   z-index: 999; /* Ensures the header stays above other content */
 }
 
+#tabela{
+  margin-top:105.2px;
+}
+
 #menu {
   position: fixed;
   top: 70%; /* Ajuste a altura conforme necessário */
