@@ -103,6 +103,46 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const horaInput = document.getElementById("horainput2");
+
+  // Adiciona um evento de alteração ao campo de entrada de hora
+  horaInput.addEventListener("change", function () {
+    let inputValue = this.value;
+
+    // Verifica se o valor de entrada tem exatamente 6 caracteres
+    if (inputValue.length === 6) {
+      // Extrai as partes da hora (horas, minutos e segundos) do valor de entrada
+      const hours = inputValue.substring(0, 2);
+      let minutes = inputValue.substring(2, 4);
+      let seconds = inputValue.substring(4, 6);
+
+      // Converte para números inteiros
+      minutes = parseInt(minutes);
+      seconds = parseInt(seconds);
+
+      // Verifica e ajusta os minutos se excederem 60
+      if (minutes > 59) {
+        minutes = 59;
+      }
+
+      // Verifica e ajusta os segundos se excederem 60
+      if (seconds > 59) {
+        seconds = 59;
+      }
+
+      // Formata o valor de entrada para o formato xx:xx:xx
+      inputValue =
+        hours +
+        ":" +
+        minutes.toString().padStart(2, "0") +
+        ":" +
+        seconds.toString().padStart(2, "0");
+      this.value = inputValue; // Define o valor formatado de volta ao campo de entrada
+    }
+  });
+});
+
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
   const curva = document.getElementById("curvaInput2").value;
