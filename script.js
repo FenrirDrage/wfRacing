@@ -495,6 +495,16 @@ function updateClock() {
   if (clockElement) {
     clockElement.textContent = timeString;
   }
+
+  // Obter a data atual e formatá-la
+  var options = {day:'numeric', month: 'short', year: 'numeric' };
+  var dateString = now.toLocaleDateString('en-US', options);
+
+  // Exibir a data abaixo do relógio
+  var dateElement = document.getElementById("date");
+  if (dateElement) {
+    dateElement.textContent = dateString;
+  }
 }
 
 // Atualizar o relógio a cada segundo
