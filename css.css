@@ -139,7 +139,6 @@ line-height: 20px; /* Alinhamento vertical */
   top: 60vh;
   transform: translateY(-50%);
   right: 0; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
-  width: 25%;
   text-align: center;
 }
 #numpad-table{
@@ -191,6 +190,11 @@ line-height: 20px; /* Alinhamento vertical */
   z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
 }
 
+#numpad-password.popup{
+  z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
+  right:40%;
+}
+
 #popupNumpadTable,#popupNumpadTable td{
   background: transparent;
   border:none; /*tirar as borders de vestígio*/
@@ -229,6 +233,36 @@ line-height: 20px; /* Alinhamento vertical */
   width: 25%;
   text-align: left;
   margin-left: 0vw;
+
+}
+
+.hidden{
+  display:none;
+}
+
+/*Numpad 2*/
+
+#numpad2{
+
+  width:25%;
+  position: fixed;
+  top: 60vh;
+  transform: translateY(-50%);
+  right: 0; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
+  text-align: center;
+}
+
+#numpad-table2{
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  margin-top: 0px;
+  border-collapse: separate;
+  border-spacing: 0px;
+  border-radius: 1vw;
+  background-color: #E30613;
+  margin-right: 20px;
+  width: 20vw;
+  right:0;
 
 }
 
