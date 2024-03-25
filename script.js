@@ -41,7 +41,7 @@ function adicionarLinha() {
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
-  location.reload;
+  //location.reload;
 }
 
 //envio dados para servidor
@@ -79,6 +79,29 @@ function enviarJson() {
     console.log("Nenhum dado encontrado no localStorage.");
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const reportCheckbox = document.getElementById("reportCheck2");
+  const nfaCheckbox = document.getElementById("nfacheck2");
+
+  reportCheckbox.addEventListener("click", function () {
+    if (this.checked && nfaCheckbox.checked) {
+      alert(
+        "Erro: Não é possível selecionar 'Report' e 'NFA' simultaneamente."
+      );
+      nfaCheckbox.checked = false; // Desmarca o checkbox "NFA"
+    }
+  });
+
+  nfaCheckbox.addEventListener("click", function () {
+    if (this.checked && reportCheckbox.checked) {
+      alert(
+        "Erro: Não é possível selecionar 'NFA' e 'Report' simultaneamente."
+      );
+      reportCheckbox.checked = false; // Desmarca o checkbox "Report"
+    }
+  });
+});
 
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
@@ -194,7 +217,7 @@ function abrirPopupNumpadPassword() {
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
   popupAberto = false;
-  location.reload();
+  //location.reload();
 }
 
 //fecha o pupup2
@@ -202,7 +225,7 @@ function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
 
   popup2Aberto = false;
-  location.reload();
+  //location.reload();
 }
 // Fecha o popup Numpad
 function fecharPopupNumpad() {
@@ -407,7 +430,7 @@ function limparTabela() {
   // Mensagem de confirmação
   if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
     return; // Se o usuário cancelar, sair da função
-    location.reload;
+    //location.reload;
   }
 
   // Definir o IP/URL para onde enviar os dados
@@ -426,7 +449,7 @@ function limparTabela() {
   })
     .then((response) => response.json())
     .then((data) => {
-      location.reload;
+      //location.reload;
       console.log(data.message); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
@@ -462,7 +485,7 @@ let popupNumpadPasswordAberto = false;
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
     // Lógica para atualizar a página
-    location.reload();
+    //location.reload();
   }
 }
 
@@ -758,3 +781,26 @@ document.addEventListener("keydown", function (e) {
     fecharPopupNumpadPassword();
   }
 });
+
+// Função para determinar qual ação executar com base no popup aberto
+function handleEnterKey(e) {
+  if (e.key === "Enter") {
+    // Verifica se o popup regular está aberto
+    if (popupAberto) {
+      adicionarLinha();
+      fecharPopup();
+    }
+    // Verifica se o popup2 está aberto
+    else if (popup2Aberto) {
+      updateLinha();
+      fecharPopup2();
+    }
+    // Adicione mais verificações para outros popups, se necessário
+    else {
+      console.error("Erro: Nenhum popup aberto.");
+    }
+  }
+}
+
+// Adicione um ouvinte de evento de teclado ao documento
+document.addEventListener("keydown", handleEnterKey);

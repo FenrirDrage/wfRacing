@@ -398,11 +398,12 @@ line-height: 20px; /* Alinhamento vertical */
 }
 
 /* Estilos para linhas com report true */
-.report-true {
-  background-color: red; /* Cor de fundo vermelha */
+tr.report-true td {
+  background-color: #E30613; /* Cor de fundo vermelha */
+  color: white; /* Cor do texto branco */
 }
 
 /* Estilos para linhas com nfa true */
-.nfa-true {
-  background-color: yellow; /* Cor de fundo amarela */
+tr.nfa-true td {
+  background-color: #d2e003; /* Cor de fundo amarela */
 }
