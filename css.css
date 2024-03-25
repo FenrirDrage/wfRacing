@@ -58,7 +58,7 @@ button {
   background-color: #E30613;
   color: white;
   border: 2px solid white;
-  border-radius: 10px;
+  border-radius: 0px;
   margin-bottom: 50px;
 }
 
@@ -72,7 +72,7 @@ cursor: pointer;
 background-color: #E30613;
 color: white;
 border: 2px solid white;
-border-radius: 50px;
+border-radius: 0px;
 margin-bottom: 50px;
 }
 
@@ -138,7 +138,8 @@ line-height: 20px; /* Alinhamento vertical */
   position: fixed;
   top: 60vh;
   transform: translateY(-50%);
-  right: 0; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
+  right: 0px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
+  width: 25%;
   text-align: center;
 }
 #numpad-table{
@@ -147,9 +148,9 @@ line-height: 20px; /* Alinhamento vertical */
   margin-top: 0px;
   border-collapse: separate;
   border-spacing: 0px;
-  border-radius: 1vw;
+  border-radius: 0px;
   background-color: #E30613;
-  margin-right: 20px;
+  margin-right: 0px;
   width: 20vw;
   right:0;
 
@@ -181,18 +182,13 @@ line-height: 20px; /* Alinhamento vertical */
   background-color: #E30613;
   color: white;
   border: 2px solid white;
-  border-radius: 10px;
+  border-radius: 0px;
   margin-bottom: 10px;
   font-size: 20px;
 }
 
 #popupNumpad.popup{
   z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
-}
-
-#numpad-password.popup{
-  z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
-  right:40%;
 }
 
 #popupNumpadTable,#popupNumpadTable td{
@@ -273,13 +269,13 @@ line-height: 20px; /* Alinhamento vertical */
   justify-content: center;
   align-items: center;
   position: fixed;
-  left: auto;
-  top: auto;
+  left: 40vw;
+  top: 15vw;
   width: auto;
   height: auto;
   overflow: auto;
   /*background-color: rgba(0,0,0,0.4);*/
-  z-index: 9999;
+  z-index: 10;
 }
 
 .popup-content {
@@ -365,12 +361,22 @@ line-height: 20px; /* Alinhamento vertical */
 
 #clock {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 0px;
+  right: 0px; /* Ajuste conforme necessário */
   background-color: #E30613;
   color: white;
-  padding: 30px;
-  border-radius: 10px;
-  font-size: 38px;
-  text-align: right; /* Alinhamento do texto à direita */
+  padding: 32px; /* Ajuste conforme necessário */
+  border-radius: 0px;
+  font-size: 40px;
+  text-align: center;
+  width: 200px; /* Ajuste conforme necessário */
+} 
+
+/* Media query para ajustar o tamanho do relógio em telas menores */
+@media screen and (max-width: 600px) {
+  #clock {
+    width: 80px;
+    font-size: 30px;
+    padding: 12px;
+  }
 }
