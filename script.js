@@ -81,34 +81,17 @@ function enviarJson() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const reportCheckbox = document.getElementById("reportCheck2");
-  const nfaCheckbox = document.getElementById("nfacheck2");
-
-  reportCheckbox.addEventListener("click", function () {
-    if (this.checked && nfaCheckbox.checked) {
-      alert(
-        "Erro: Não é possível selecionar 'Report' e 'NFA' simultaneamente."
-      );
-      nfaCheckbox.checked = false; // Desmarca o checkbox "NFA"
-    }
-  });
-
-  nfaCheckbox.addEventListener("click", function () {
-    if (this.checked && reportCheckbox.checked) {
-      alert(
-        "Erro: Não é possível selecionar 'NFA' e 'Report' simultaneamente."
-      );
-      reportCheckbox.checked = false; // Desmarca o checkbox "Report"
-    }
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
   const horaInput = document.getElementById("horainput2");
 
   // Adiciona um evento de alteração ao campo de entrada de hora
   horaInput.addEventListener("change", function () {
     let inputValue = this.value;
+
+    // Substitui o ponto por 0
+    inputValue = inputValue.replace(/\./g, "0");
+
+    // Remove quaisquer caracteres não numéricos do valor de entrada
+    inputValue = inputValue.replace(/\D/g, "");
 
     // Verifica se o valor de entrada tem exatamente 6 caracteres
     if (inputValue.length === 6) {
@@ -121,25 +104,32 @@ document.addEventListener("DOMContentLoaded", function () {
       minutes = parseInt(minutes);
       seconds = parseInt(seconds);
 
-      // Verifica e ajusta os minutos se excederem 60
-      if (minutes > 59) {
-        minutes = 59;
-      }
+      // Ajusta os minutos e segundos para manterem-se dentro do intervalo de 0 a 59
+      minutes = Math.min(minutes, 59);
+      seconds = Math.min(seconds, 59);
 
-      // Verifica e ajusta os segundos se excederem 60
-      if (seconds > 59) {
-        seconds = 59;
-      }
+      // Formata os minutos e segundos para terem dois dígitos
+      minutes = minutes.toString().padStart(2, "0");
+      seconds = seconds.toString().padStart(2, "0");
 
       // Formata o valor de entrada para o formato xx:xx:xx
-      inputValue =
-        hours +
-        ":" +
-        minutes.toString().padStart(2, "0") +
-        ":" +
-        seconds.toString().padStart(2, "0");
-      this.value = inputValue; // Define o valor formatado de volta ao campo de entrada
+      inputValue = hours + ":" + minutes + ":" + seconds;
+    } else if (inputValue.length === 5) {
+      // Se o valor de entrada tem 5 caracteres, assumimos que está no formato "HHMM"
+      const hours = inputValue.substring(0, 2);
+      let minutes = inputValue.substring(2, 3);
+      let seconds = inputValue.substring(3, 5);
+
+      // Ajusta os minutos e segundos para terem dois dígitos
+      minutes = minutes.padStart(2, "0");
+      seconds = seconds.padStart(2, "0");
+
+      // Formata o valor de entrada para o formato xx:xx:xx
+      inputValue = hours + ":" + minutes + ":" + seconds;
     }
+
+    // Define o valor formatado de volta ao campo de entrada
+    this.value = inputValue;
   });
 });
 
