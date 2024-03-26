@@ -41,7 +41,7 @@ function adicionarLinha() {
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
-  location.reload;
+  //location.reload;
 }
 
 //envio dados para servidor
@@ -79,6 +79,59 @@ function enviarJson() {
     console.log("Nenhum dado encontrado no localStorage.");
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const horaInput = document.getElementById("horainput2");
+
+  // Adiciona um evento de alteração ao campo de entrada de hora
+  horaInput.addEventListener("change", function () {
+    let inputValue = this.value;
+
+    // Substitui o ponto por 0
+    inputValue = inputValue.replace(/\./g, "0");
+
+    // Remove quaisquer caracteres não numéricos do valor de entrada
+    inputValue = inputValue.replace(/\D/g, "");
+
+    // Verifica se o valor de entrada tem exatamente 6 caracteres
+    if (inputValue.length === 6) {
+      // Extrai as partes da hora (horas, minutos e segundos) do valor de entrada
+      const hours = inputValue.substring(0, 2);
+      let minutes = inputValue.substring(2, 4);
+      let seconds = inputValue.substring(4, 6);
+
+      // Converte para números inteiros
+      minutes = parseInt(minutes);
+      seconds = parseInt(seconds);
+
+      // Ajusta os minutos e segundos para manterem-se dentro do intervalo de 0 a 59
+      minutes = Math.min(minutes, 59);
+      seconds = Math.min(seconds, 59);
+
+      // Formata os minutos e segundos para terem dois dígitos
+      minutes = minutes.toString().padStart(2, "0");
+      seconds = seconds.toString().padStart(2, "0");
+
+      // Formata o valor de entrada para o formato xx:xx:xx
+      inputValue = hours + ":" + minutes + ":" + seconds;
+    } else if (inputValue.length === 5) {
+      // Se o valor de entrada tem 5 caracteres, assumimos que está no formato "HHMM"
+      const hours = inputValue.substring(0, 2);
+      let minutes = inputValue.substring(2, 3);
+      let seconds = inputValue.substring(3, 5);
+
+      // Ajusta os minutos e segundos para terem dois dígitos
+      minutes = minutes.padStart(2, "0");
+      seconds = seconds.padStart(2, "0");
+
+      // Formata o valor de entrada para o formato xx:xx:xx
+      inputValue = hours + ":" + minutes + ":" + seconds;
+    }
+
+    // Define o valor formatado de volta ao campo de entrada
+    this.value = inputValue;
+  });
+});
 
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
@@ -194,7 +247,7 @@ function abrirPopupNumpadPassword() {
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
   popupAberto = false;
-  location.reload();
+  //location.reload();
 }
 
 //fecha o pupup2
@@ -202,7 +255,7 @@ function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
 
   popup2Aberto = false;
-  location.reload();
+  //location.reload();
 }
 // Fecha o popup Numpad
 function fecharPopupNumpad() {
@@ -407,7 +460,7 @@ function limparTabela() {
   // Mensagem de confirmação
   if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
     return; // Se o usuário cancelar, sair da função
-    location.reload;
+    //location.reload;
   }
 
   // Definir o IP/URL para onde enviar os dados
@@ -426,7 +479,7 @@ function limparTabela() {
   })
     .then((response) => response.json())
     .then((data) => {
-      location.reload;
+      //location.reload;
       console.log(data.message); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
@@ -462,7 +515,7 @@ let popupNumpadPasswordAberto = false;
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
     // Lógica para atualizar a página
-    location.reload();
+    //location.reload();
   }
 }
 
@@ -758,3 +811,26 @@ document.addEventListener("keydown", function (e) {
     fecharPopupNumpadPassword();
   }
 });
+
+// Função para determinar qual ação executar com base no popup aberto
+function handleEnterKey(e) {
+  if (e.key === "Enter") {
+    // Verifica se o popup regular está aberto
+    if (popupAberto) {
+      adicionarLinha();
+      fecharPopup();
+    }
+    // Verifica se o popup2 está aberto
+    else if (popup2Aberto) {
+      updateLinha();
+      fecharPopup2();
+    }
+    // Adicione mais verificações para outros popups, se necessário
+    else {
+      console.error("Erro: Nenhum popup aberto.");
+    }
+  }
+}
+
+// Adicione um ouvinte de evento de teclado ao documento
+document.addEventListener("keydown", handleEnterKey);
