@@ -41,7 +41,7 @@ function adicionarLinha() {
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
-  location.reload();
+  //location.reload;
 }
 
 //envio dados para servidor
@@ -329,9 +329,6 @@ function atualizarTabela(data) {
         item.nfa ? "checked" : ""
       } disabled></td>
       <td contenteditable="true">${item.obs}</td>
-      <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
-        item._id
-      }')"></td>
       `;
 
     // Adiciona classes CSS com base nos valores de report e nfa
@@ -562,7 +559,7 @@ let popupRodaDentada = false;
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
     // Lógica para atualizar a página
-    location.reload();
+    //location.reload();
   }
 }
 
