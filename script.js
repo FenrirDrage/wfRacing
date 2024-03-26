@@ -563,7 +563,7 @@ function updateClock() {
 
   // Obter a data atual e formatá-la
   var options = { day: "numeric", month: "short", year: "numeric" };
-  var dateString = now.toLocaleDateString("en-US", options);
+  var dateString = now.toLocaleDateString("en-UK", options);
 
   // Exibir a data abaixo do relógio
   var dateElement = document.getElementById("date");

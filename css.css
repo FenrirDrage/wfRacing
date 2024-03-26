@@ -377,7 +377,7 @@ line-height: 20px; /* Alinhamento vertical */
   position: fixed; /* Posição fixa em relação à janela do navegador */
   top: 80px; /* Ajuste conforme necessário para posicionar a data na página */
   left: 90%; /* Posiciona a data no meio da largura da página */
-  transform: translateX(-50%); /* Centraliza a data horizontalmente */
+  transform: translateX(-25%); /* Centraliza a data horizontalmente */
   font-size: 15px; /* Tamanho da fonte da data */
   color: white; /* Cor da fonte da data */
   text-align: right;
