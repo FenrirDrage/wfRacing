@@ -363,7 +363,7 @@ line-height: 20px; /* Alinhamento vertical */
 #clock {
   position: fixed;
   top: 0px;
-  right: 0px; /* Ajuste conforme necessário */
+  right: 0px;
   background-color: #E30613;
   color: white;
   padding: 32px; /* Ajuste conforme necessário */
@@ -371,38 +371,25 @@ line-height: 20px; /* Alinhamento vertical */
   font-size: 40px;
   text-align: center;
   width: 200px; /* Ajuste conforme necessário */
-} 
-
-
-/* Media query para ajustar o tamanho do relógio em telas menores */
-@media screen and (max-width: 600px) {
-  #clock {
-    width: 80px;
-    font-size: 30px;
-    padding: 12px;
-  }
-
-  #clock:after {
-    font-size: 15px; /* Ajuste do tamanho da fonte da data em telas menores */
-  }
 }
 
-#clock:after {
-  content: attr(data-date); /* Exibir a data definida como um atributo de dados */
-  font-size: 20px; /* Tamanho da fonte da data */
+#date {
+  position: fixed; /* Posição fixa em relação à janela do navegador */
+  top: 80px; /* Ajuste conforme necessário para posicionar a data na página */
+  left: 90%; /* Posiciona a data no meio da largura da página */
+  transform: translateX(-50%); /* Centraliza a data horizontalmente */
+  font-size: 15px; /* Tamanho da fonte da data */
   color: white; /* Cor da fonte da data */
-  display: block; /* Exibe a data em uma nova linha */
-  margin-top: 0px; /* Margem superior para separar a data das horas */
-  right: 0px;
   text-align: right;
 }
 
-/* Estilos para linhas com report true */
-.report-true {
-  background-color: red; /* Cor de fundo vermelha */
+ /* Estilos para linhas com report true */
+tr.report-true td {
+  background-color: #E30613; /* Cor de fundo vermelha */
+  color: white; /* Cor do texto branco */
 }
 
 /* Estilos para linhas com nfa true */
-.nfa-true {
-  background-color: yellow; /* Cor de fundo amarela */
+tr.nfa-true td {
+  background-color: #d2e003; /* Cor de fundo amarela */
 }
