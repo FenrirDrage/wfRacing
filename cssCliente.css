@@ -136,9 +136,9 @@ line-height: 20px; /* Alinhamento vertical */
 
   width:25%;
   position: fixed;
-  top: 60vh;
+  top:22vh;
   transform: translateY(-50%);
-  right: 0px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
+  left: 14.9vw; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
   text-align: center;
 }
@@ -344,6 +344,8 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela{
   margin-top:80.8px;
+  margin-right:18.3vw;
+  width:20%;
 }
 
 #menu {
@@ -463,4 +465,20 @@ tr.nfa-true td {
 tr.post-start td {
   background-color: #287cb4; /* Cor de fundo vermelha */
   color: white; /* Cor do texto branco */
+/*   animation: blinks 0.5s linear infinite;
+  transition-duration: 0.5s infinite; */
+  
+}
+
+/* Prioridade */
+
+@keyframes blinks {
+  0% {
+    background-color:#f0f0f0; /* Define o ponto inicial da rotação */
+    color: gray;
+  }
+  100% {
+    background-color:#49be97; /* Define o ponto final da rotação */
+    color:white;
+  }
 }

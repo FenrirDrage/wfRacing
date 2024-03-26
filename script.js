@@ -905,3 +905,20 @@ function pesquisarTabela() {
     }
   }
 }
+
+function makeSortable(table) {
+  var th = table.tHead, i;
+  th && (th = th.rows[0]) && (th = th.cells);
+  if (th) i = th.length;
+  else return; // if no `<thead>` then do nothing
+  while (--i >= 0) (function (i) {
+      var dir = 1;
+      th[i].addEventListener('click', function () {sortTable(table, i, (dir = 1 - dir))});
+  }(i));
+}
+
+function makeAllSortable(parent) {
+  parent = parent || document.body;
+  var t = parent.getElementsByTagName('table'), i = t.length;
+  while (--i >= 0) makeSortable(t[i]);
+}
