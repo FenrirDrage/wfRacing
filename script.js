@@ -265,6 +265,11 @@ function abrirPopupNumpadPassword() {
   document.getElementById("numpad-password").style.display = "block";
   popupNumpadPasswordAberto = true;
 }
+// Fechar popup rodaDentada
+function abrirPopupRodaDentada() {
+  document.getElementById("popupRodadentada").style.display = "block";
+  popupRodaDentada= true;
+}
 
 //fecha o popup
 function fecharPopup() {
@@ -290,6 +295,12 @@ function fecharPopupNumpad() {
 function fecharPopupNumpadPassword() {
   document.getElementById("numpad-password").style.display = "none";
   popupNumpadPasswordAberto = false;
+}
+
+// Fechar popup rodaDentada
+function fecharPopupRodaDentada() {
+  document.getElementById("popupRodadentada").style.display = "none";
+  popupRodaDentada= false;
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -329,6 +340,15 @@ function atualizarTabela(data) {
     }
     if (item.nfa) {
       novaLinha.classList.add("nfa-true");
+    }
+    if (item.curva=='Start') {
+      novaLinha.classList.add("post-start");
+    }
+    if (item.curva=='Curva') {
+      novaLinha.classList.add("post-curva");
+    }
+    if (item.curva=='Camera') {
+      novaLinha.classList.add("post-camera");
     }
 
     tabela.appendChild(novaLinha);
@@ -537,6 +557,7 @@ let popupAberto = false;
 let popup2Aberto = false;
 let popupNumpadAbero = false;
 let popupNumpadPasswordAberto = false;
+let popupRodaDentada = false;
 
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
@@ -646,7 +667,7 @@ function generateNumpad() {
       }
     }
     //Esconder o botão e textbox.
-    editarNumpad();
+    /* editarNumpad(); */
     //Guardar ultimo numero de curvas guardado
     localStorage.setItem("numCurves", num);
   } else {
@@ -683,7 +704,7 @@ function generateNumpad() {
       }
     }
     localStorage.setItem("numCurves", num);
-    editarNumpad();
+    /* editarNumpad(); */
   }
 }
 
@@ -735,8 +756,8 @@ function generateNumpad2() {
       }
     }
     //Esconder o botão e textbox.
-    editarNumpad();
-    editarNumpad2();
+   /*  editarNumpad();
+    editarNumpad2(); */
     //Guardar ultimo numero de curvas guardado
     localStorage.setItem("numCurves", num);
   } else {
@@ -773,8 +794,8 @@ function generateNumpad2() {
       }
     }
     localStorage.setItem("numCurves", num);
-    editarNumpad();
-    editarNumpad2();
+    /* editarNumpad();
+    editarNumpad2(); */
   }
 }
 
@@ -860,3 +881,27 @@ function handleEnterKey(e) {
 
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
+
+
+/* Adiciona função filtragem*/
+function pesquisarTabela() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisa");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
