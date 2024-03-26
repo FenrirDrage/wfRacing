@@ -337,13 +337,13 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 160px; /* Adjust this value according to your header's height */
+  top: 130px; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }
 
 #tabela{
-  margin-top:155.2px;
+  margin-top:125.2px;
 }
 
 #menu {
@@ -437,9 +437,27 @@ tr.nfa-true td {
   font-size: 20px;
 }
 
+
+/* Campo de pesquisa*/
+
 #pesquisa{
   vertical-align: middle;
-  font-size: 20px;
+  font-size: 2vh;
+}
+
+#pesquisaTable{
+  width:65%;
+  margin-left:0.5vw;
+  background-color: #575656;
+  text-align: center;
+}
+
+#pesquisaTable td{
+  color:white;
+  font-size: large;
+  margin-left:0.5vw;
+  background-color: #12596b;
+  text-align: center;
 }
 
 tr.post-start td {

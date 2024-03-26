@@ -17,7 +17,6 @@
     <!--<button id="addButton" onclick="inputRace()">Insert Race Name</button> -->
     <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
     <button id="addButton" onclick="exportarTabela()">Salvar Informações</button> </br>
-    <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabela()" placeholder="Insira a pesquisa.." />
     <div id ="rodaDentadaDiv" >
       <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
     </div>
@@ -146,12 +145,24 @@
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag</button></br>
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('SF')" id="raceSF" value="Slow Flag">Slow </button></br>
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual(); obterStartOrRF('Start')" id="raceStart" value="Start">Start</button></br>
-
+  <table id="pesquisaTable">
+    <tr>
+      <td>
+        <p>Pesquisa:</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabela()" placeholder="Insira a pesquisa.." />
+      </td>
+    </tr>
+  </table>
+  
 </div>
 
 <!--Protótipo numpad em comentário (Com pop up)-->
 <div id ="numpad">
-  <button id="botao-numpad-voltar" onclick ="window.open('/numpad.html')">Alt Numpad</button>
+  <button id="botao-numpad-voltar" onclick ="window.open('/cliente.html')">Alt Numpad</button>
 </div>
 
 
