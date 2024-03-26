@@ -81,6 +81,29 @@ function enviarJson() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  const reportCheckbox = document.getElementById("reportCheck2");
+  const nfaCheckbox = document.getElementById("nfacheck2");
+
+  reportCheckbox.addEventListener("click", function () {
+    if (this.checked && nfaCheckbox.checked) {
+      /*alert(
+        "Erro: Não é possível selecionar 'Report' e 'NFA' simultaneamente."
+      );*/
+      nfaCheckbox.checked = false; // Desmarca o checkbox "NFA"
+    }
+  });
+
+  nfaCheckbox.addEventListener("click", function () {
+    if (this.checked && reportCheckbox.checked) {
+      /*alert(
+        "Erro: Não é possível selecionar 'NFA' e 'Report' simultaneamente."
+      );*/
+      reportCheckbox.checked = false; // Desmarca o checkbox "Report"
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
   const horaInput = document.getElementById("horainput2");
 
   // Adiciona um evento de alteração ao campo de entrada de hora
@@ -333,9 +356,10 @@ function getDataFromLocalStorage() {
 function preencherPopupComDetalhes(detalhes) {
   // Armazena os detalhes no localStorage
   localStorage.setItem("detalhesPopup", JSON.stringify(detalhes));
-
+  
   // Verifica se os detalhes são válidos
   if (detalhes) {
+    console.log(detalhes);
     // Obtém os elementos do popup
     const curvaInput = document.getElementById("curvaInput2");
     const horainput = document.getElementById("horainput2");
@@ -424,12 +448,14 @@ function obterCurvaNum(curva) {
   ).value;
   //adicionarLinha();
 }
+
 //Adicionar Camera ou Post no field Curva/Post
 function adicionarCameraOrPost(opcao) {
   document.getElementById("curvaInput").value += document.getElementById(
     `opcao${opcao}`
   ).value;
 }
+
 //Verificar password dar input de curvas
 function checkPassword() {
   numpadPassword = "WFR2012";
