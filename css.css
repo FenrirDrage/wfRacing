@@ -134,13 +134,15 @@ line-height: 20px; /* Alinhamento vertical */
 
 #numpad{
 
-  width:25%;
   position: fixed;
   top: 60vh;
   transform: translateY(-50%);
   right: 0px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
   text-align: center;
+}
+#botao-numpad-voltar{
+  margin-bottom: 0px;
 }
 #numpad-table{
   padding-top: 1vh;
@@ -223,7 +225,7 @@ line-height: 20px; /* Alinhamento vertical */
 #extraButtons{
   width:25%;
   position: fixed;
-  top: 30vh;
+  top: 42vh;
   transform: translateY(-50%);
   left: 0vw; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 25%;
@@ -366,32 +368,18 @@ line-height: 20px; /* Alinhamento vertical */
   right: 0;
   background-color: #E30613;
   color: white;
-  padding: 2.2vw; /* Ajuste conforme necessário */
+  padding: 2vw; /* Ajuste conforme necessário */
   border-radius: 0;
-  font-size: 2.2vw; /* Ajuste conforme necessário */
+  font-size: 2.6vw; /* Ajuste conforme necessário */
   text-align: center;
-  width: 13%; /* Ajuste conforme necessário */
+  width: 13vw; /* Ajuste conforme necessário */
+  min-width: 200px; /* Tamanho mínimo do relógio */
 }
-
-/* Media query para ajustar o tamanho do relógio em telas menores */
-@media screen and (max-width: 600px) {
-  #clock {
-    width: 80px;
-    font-size: 30px;
-    padding: 12px;
-  }
-
-  #clock:after {
-    font-size: 15px; /* Ajuste do tamanho da fonte da data em telas menores */
-  }
-}
-
-
 
 #date {
   position: fixed;
   top: 10%; /* Ajuste conforme necessário */
-  right: 5.5%; /* Ajuste conforme necessário */
+  right: calc(3.5% + 2vw); /* Ajuste conforme necessário */
   font-size: 1vw; /* Ajuste conforme necessário */
   color: white;
 }
