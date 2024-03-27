@@ -466,7 +466,7 @@ tr.priority-set td{
 @keyframes blinks {
   0% {
     
-    background-color:#49be97; /* Define o ponto final da cor */
+    background-color:#ffa600; /* Define o ponto final da cor */
     color:white;
   }
   
