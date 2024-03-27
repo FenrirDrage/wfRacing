@@ -884,7 +884,43 @@ document.addEventListener("keydown", handleEnterKey);
 
 
 /* Adiciona função filtragem*/
-function pesquisarTabela() {
+function pesquisarTabelaObs() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisa");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[5]; //Escolha de qual a coluna onde a pesquisa vai incidir 5->Observações
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+/*  Escolher o tipo de pesquisa */
+/* function pesquisaEscolhaPost(){
+  const choice = getElementById('pesquisaObs');
+  choice.classList.add('hidden');
+  const actualChoice = getElementById('pesquisaPost');
+  actualChoice.classList.remove('hidden')
+}
+
+function pesquisaEscolhaPostObs(){
+  const choice = getElementById('pesquisaPost');
+  choice.classList.add('hidden');
+  const actualChoice = getElementById('pesquisaObs');
+  actualChoice.classList.remove('hidden')
+}
+
+function pesquisarTabelaPost() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("pesquisa");
@@ -904,21 +940,5 @@ function pesquisarTabela() {
       }
     }
   }
-}
+} */
 
-function makeSortable(table) {
-  var th = table.tHead, i;
-  th && (th = th.rows[0]) && (th = th.cells);
-  if (th) i = th.length;
-  else return; // if no `<thead>` then do nothing
-  while (--i >= 0) (function (i) {
-      var dir = 1;
-      th[i].addEventListener('click', function () {sortTable(table, i, (dir = 1 - dir))});
-  }(i));
-}
-
-function makeAllSortable(parent) {
-  parent = parent || document.body;
-  var t = parent.getElementsByTagName('table'), i = t.length;
-  while (--i >= 0) makeSortable(t[i]);
-}
