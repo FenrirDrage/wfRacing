@@ -866,8 +866,7 @@ document.addEventListener("keydown", function (e) {
     popupAberto == false &&
     popup2Aberto == false &&
     popupNumpadAbero == false &&
-    popupNumpadPasswordAberto == false &&
-    botaoEditar.classList.contains("hidden") == false
+    popupNumpadPasswordAberto == false 
   ) {
     for (let i = 1; i <= numpadNumbers; i++) {
       if (e.key === `${i}`) {
@@ -970,3 +969,5 @@ function pesquisarTabelaPost() {
   }
 } */
 
+
+document.getElementById('videoTransicao').defaultPlayRate=2.0;

@@ -21,6 +21,7 @@ function adicionarLinha() {
   const hora = document.getElementById("horainput").value;
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
+  const priority = document.getElementById("priorityCheck").checked;
   const obs = document.getElementById("obsInput").value;
 
   // Se report for 0, definir nfa como 1
@@ -36,6 +37,7 @@ function adicionarLinha() {
     video: video,
     report: report,
     nfa: nfa,
+    priority: priority,
     obs: obs,
   };
   // Convertendo para JSON e armazenando no localStorage
@@ -163,6 +165,7 @@ function updateLinha() {
   const video = document.getElementById("videoCheck2").checked;
   const report = document.getElementById("reportCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
+  const priority = document.getElementById("priorityCheck2").checked;
   const obs = document.getElementById("obsInput2").value;
 
   // Cria um objeto com os dados atualizados
@@ -172,6 +175,7 @@ function updateLinha() {
     video: video,
     report: report,
     nfa: nfa,
+    priority: priority,
     obs: obs,
   };
 
@@ -337,6 +341,9 @@ function atualizarTabela(data) {
     }
     if (item.nfa) {
       novaLinha.classList.add("nfa-true");
+    }
+    if (item.priority) {
+      novaLinha.classList.add("priority-set");
     }
     if (item.curva=='Start') {
       novaLinha.classList.add("post-start");
