@@ -21,6 +21,7 @@ function adicionarLinha() {
   const hora = document.getElementById("horainput").value;
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
+  const priority = document.getElementById("priorityCheck").checked;
   const obs = document.getElementById("obsInput").value;
 
   // Se report for 0, definir nfa como 1
@@ -36,6 +37,7 @@ function adicionarLinha() {
     video: video,
     report: report,
     nfa: nfa,
+    priority: priority,
     obs: obs,
   };
   // Convertendo para JSON e armazenando no localStorage
@@ -162,6 +164,7 @@ function updateLinha() {
   const hora = document.getElementById("horainput2").value;
   const video = document.getElementById("videoCheck2").checked;
   const report = document.getElementById("reportCheck2").checked;
+  const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
   const obs = document.getElementById("obsInput2").value;
 
@@ -172,6 +175,7 @@ function updateLinha() {
     video: video,
     report: report,
     nfa: nfa,
+    priority: priority,
     obs: obs,
   };
 
@@ -271,6 +275,12 @@ function abrirPopupRodaDentada() {
   popupRodaDentada= true;
 }
 
+// Fechar popup rodaDentada
+function abrirPopupConfiguracoes() {
+  document.getElementById("popupConfiguracoes").style.display = "block";
+  popupConfiguracoes= true;
+}
+
 //fecha o popup
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
@@ -300,6 +310,12 @@ function fecharPopupNumpadPassword() {
 // Fechar popup rodaDentada
 function fecharPopupRodaDentada() {
   document.getElementById("popupRodadentada").style.display = "none";
+  popupRodaDentada= false;
+}
+
+// Fechar popup Configuracoes
+function fecharPopupConfiguracoes() {
+  document.getElementById("popupConfiguracoes").style.display = "none";
   popupRodaDentada= false;
 }
 
@@ -340,6 +356,9 @@ function atualizarTabela(data) {
     }
     if (item.nfa) {
       novaLinha.classList.add("nfa-true");
+    }
+    if (item.priority) {
+      novaLinha.classList.add("priority-set");
     }
     if (item.curva=='Start') {
       novaLinha.classList.add("post-start");
@@ -558,6 +577,7 @@ let popup2Aberto = false;
 let popupNumpadAbero = false;
 let popupNumpadPasswordAberto = false;
 let popupRodaDentada = false;
+let popupConfiguracoes = false;
 
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {

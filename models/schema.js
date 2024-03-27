@@ -17,6 +17,9 @@ const dadoSchema = new mongoose.Schema({
   nfa: {
     type: Boolean,
   },
+  priority: {
+    type: Boolean,
+  },
   obs: {
     type: String,
   },

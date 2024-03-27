@@ -197,7 +197,7 @@
           <button onclick="abrirPopupNumpadPassword();editarNumpad()">Gerar</button>
         </td>
         <td>
-          <button onclick="">Configurações</button>
+          <button onclick="abrirPopupConfiguracoes()">Configurações</button>
         </td>
       </tr>
       <tr>
@@ -247,6 +247,7 @@
       <input type="text" id="horainput" value="" placeholder="hora"><br>
       <input type="checkbox" id="videoCheck">Vídeo<br>
       <input type="checkbox" id="reportCheck">Report<br>
+      <input type="checkbox" id="priorityCheck"> Priority<br>
       <textarea id="obsInput" placeholder="obs"></textarea><br>
       <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
     </div>
@@ -260,9 +261,37 @@
       <input type="checkbox" id="videoCheck2"> Vídeo<br>
       <input type="checkbox" id="reportCheck2"> Report<br>
       <input type="checkbox" id="nfacheck2"> N.F.A.<br>
+      <input type="checkbox" id="priorityCheck2"> Priority<br>
       <textarea id="obsInput2" placeholder="obs"></textarea><br>
       <button onclick="fecharPopup2(); updateLinha()">Update</button>
     </div>
+</div>
+
+<div id="popupConfiguracoes" class="popup">
+  <div class="popup-content">
+    <table>
+      <tr>
+        <td colspan="2">
+          <span class="close" onclick="fecharPopupConfiguracoes()">&times;</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="">Lista de Utilizadores</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="">Lista de Corridas</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button>Logout</button>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
 
                

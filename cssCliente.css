@@ -45,6 +45,7 @@ padding: 10px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 z-index: 998;
 text-align: center; /* Centraliza os elementos dentro de #content-top */
+margin-left: 0;
 }
 
 #content-top button {
@@ -135,11 +136,10 @@ line-height: 20px; /* Alinhamento vertical */
 
 #numpad{
 
-  position: fixed;
-  top:52vh;
-  transform: translateY(-50%);
+  position: absolute;
+  top: 12vh;
   left: 0px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
-  width: 25%;
+  width: 35vw;
   text-align: center;
 }
 #numpad-table{
@@ -152,7 +152,7 @@ line-height: 20px; /* Alinhamento vertical */
   background-color: #f8f8f8;
   border: 4px solid #E30613 ;
   margin-right: 0px;
-  width: 30vw;
+  width: 35vw;
   right:0;
 }
 .numpad-header{
@@ -344,9 +344,9 @@ line-height: 20px; /* Alinhamento vertical */
 }
 
 #tabela{
-  margin-top:80.8px;
-  margin-right:18.3vw;
-  width:41%;
+  margin-top:14.5vh;
+  margin-right:0vw;
+  width: 62.5vw;
 }
 
 #menu {
@@ -369,7 +369,7 @@ line-height: 20px; /* Alinhamento vertical */
   right: 0;
   background-color: #E30613;
   color: white;
-  padding: 2vw; /* Ajuste conforme necessário */
+  padding: 1vw; /* Ajuste conforme necessário */
   border-radius: 0;
   font-size: 2.6vw; /* Ajuste conforme necessário */
   text-align: center;
@@ -379,7 +379,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 #date {
   position: fixed;
-  top: 10%; /* Ajuste conforme necessário */
+  top: 8%; /* Ajuste conforme necessário */
   right: calc(3.5% + 2vw); /* Ajuste conforme necessário */
   font-size: 1vw; /* Ajuste conforme necessário */
   color: white;
@@ -431,11 +431,12 @@ tr.nfa-true td {
 #pesquisa{
   vertical-align: middle;
   font-size: 2vh;
+  
 }
 
 #pesquisaTable{
-  width:65%;
-  margin-left:0.5vw;
+  width: 35vw;
+  margin-left: 0;
   background-color: #575656;
   text-align: center;
 }
@@ -443,16 +444,15 @@ tr.nfa-true td {
 #pesquisaTable td{
   color:white;
   font-size: large;
-  margin-left:0.5vw;
   background-color: #12596b;
   text-align: center;
 }
 
-tr.post-start td {
-  background-color: #287cb4; /* Cor de fundo vermelha */
+tr.priority-set td{
+  background-color: #e29032; /* Cor de fundo vermelha */
   color: white; /* Cor do texto branco */
-/*   animation: blinks 0.5s linear infinite;
-  transition-duration: 0.5s infinite; */
+  animation: blinks 0.5s  infinite;
+  transition-duration: 0.5s infinite; 
   
 }
 
@@ -460,11 +460,28 @@ tr.post-start td {
 
 @keyframes blinks {
   0% {
-    background-color:#f0f0f0; /* Define o ponto inicial da rotação */
-    color: gray;
-  }
-  100% {
-    background-color:#49be97; /* Define o ponto final da rotação */
+    
+    background-color:#49be97; /* Define o ponto final da cor */
     color:white;
   }
+  
+  100% {
+    background-color:#f0f0f0; /* Define o ponto inicial da cor */
+    color: gray;
+  }
+}
+
+#popupConfiguracoes {
+  width: 30%;
+}
+#popupConfiguracoes  table{
+  width: 100%;
+}
+#popupConfiguracoes  td{
+  border:none;
+  text-align: left;;
+}
+#popupConfiguracoes  button{
+  font-size: 20px;
+  margin-bottom: 20px;
 }

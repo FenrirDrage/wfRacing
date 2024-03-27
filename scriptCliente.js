@@ -880,8 +880,9 @@ function handleEnterKey(e) {
 document.addEventListener("keydown", handleEnterKey);
 
 
-/* Adiciona função filtragem*/
-function pesquisarTabela() {
+
+
+function pesquisarTabelaObs() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("pesquisa");
@@ -891,7 +892,7 @@ function pesquisarTabela() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
+    td = tr[i].getElementsByTagName("td")[5]; //Escolha de qual a coluna onde a pesquisa vai incidir 5->Observações
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {

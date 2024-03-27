@@ -453,3 +453,40 @@ tr.post-start td {
   color: white; /* Cor do texto branco */
 }
 
+tr.priority-set td{
+  background-color: #e29032; /* Cor de fundo vermelha */
+  color: white; /* Cor do texto branco */
+  animation: blinks 0.5s  infinite;
+  transition-duration: 0.5s infinite; 
+  
+}
+
+/* Prioridade */
+
+@keyframes blinks {
+  0% {
+    
+    background-color:#49be97; /* Define o ponto final da cor */
+    color:white;
+  }
+  
+  100% {
+    background-color:#f0f0f0; /* Define o ponto inicial da cor */
+    color: gray;
+  }
+}
+
+#popupConfiguracoes {
+  width: 30%;
+}
+#popupConfiguracoes  table{
+  width: 100%;
+}
+#popupConfiguracoes  td{
+  border:none;
+  text-align: left;;
+}
+#popupConfiguracoes  button{
+  font-size: 20px;
+  margin-bottom: 20px;
+}

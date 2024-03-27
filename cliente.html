@@ -72,9 +72,19 @@
 
 <!--Protótipo numpad em comentário (Com pop up)-->
 <div id ="numpad">
-  <button id="botao-numpad-voltar" onclick ="window.open('/index.html')">Mainpage</button>
+  <table id="pesquisaTable">
+    <tr>
+      <td>
+        <p>Pesquisa:</p>
+      </td>
+    </tr>
+    <tr>
+      <td id="pesquisaObs">
+        <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaObs()" placeholder="Insira a pesquisa.." />
+      </td>
+    </tr>
+  </table>
 </div>
-
 
 <div id="popupRodadentada" class="popup">
   <div class="popup-content">

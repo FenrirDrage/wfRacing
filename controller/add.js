@@ -2,7 +2,7 @@ const Dados = require("../models/schema");
 
 exports.addData = async (req, res) => {
   try {
-    const { curva, hora, video, report, nfa, obs } = req.body;
+    const { curva, hora, video, report, nfa, priority, obs } = req.body;
 
     // Criar um novo objeto de dados com os dados recebidos
     const novoDado = new Dados({
@@ -11,6 +11,7 @@ exports.addData = async (req, res) => {
       video,
       report,
       nfa,
+      priority,
       obs,
     });
     console.log(novoDado);
