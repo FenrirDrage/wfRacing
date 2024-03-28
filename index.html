@@ -15,8 +15,6 @@
     <!-- Adicionadar o cabeçalho da corrida -->
     <h1 id="header">FFSA Championnat de France- La Hague 23-24 March</h1>
     <!--<button id="addButton" onclick="inputRace()">Insert Race Name</button> -->
-    <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
-    <button id="addButton" onclick="exportarTabela()">Salvar Informações</button> </br>
     <div id ="rodaDentadaDiv" >
       <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
     </div>
@@ -190,6 +188,10 @@
           <select name="raceSelect">
             <option value="1" name="raceOne">RaceOne</option>
           </select>
+        </td>
+        <td>    
+          <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
+          <button id="addButton" onclick="exportarTabela()">Salvar Informações</button> </br>
         </td>
       </tr>
       <tr>

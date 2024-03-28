@@ -272,8 +272,8 @@ line-height: 20px; /* Alinhamento vertical */
   justify-content: center;
   align-items: center;
   position: fixed;
-  left: 40vw;
-  top: 15vw;
+  left: 30vw;
+  top: 5vw;
   width: auto;
   height: auto;
   overflow: auto;
@@ -408,24 +408,50 @@ tr.nfa-true td {
 }
 
 #popupRodadentada {
-  width: 30%;
+  width: 37%;
+  position: fixed;
 }
-#popupRodadentada table{
+
+#popupRodadentada table {
   width: 100%;
-}
-#popupRodadentada td{
-  border:none;
-  text-align: left;;
-}
-#popupRodadentada button{
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-#popupRodadentada select{
-  font-size: 20px;
+  }
+
+#popupRodadentada td {
+  border: none;
+  text-align: left;
 }
 
+#popupRodadentada button {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
 
+#popupRodadentada select {
+  font-size: 25px;
+}
+
+#popupRodadentada .buttons-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 100%;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#popupRodadentada .buttons-container button {
+  margin: 5px;
+  height: 50px;
+}
+
+#popupRodadentada .buttons-container .button-column {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+}
 /* Campo de pesquisa*/
 
 #pesquisa{
