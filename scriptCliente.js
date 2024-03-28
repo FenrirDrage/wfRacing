@@ -843,7 +843,7 @@ document.addEventListener("keydown", function (e) {
     popup2Aberto == false &&
     popupNumpadAbero == false &&
     popupNumpadPasswordAberto == false &&
-    botaoEditar.classList.contains("hidden") == false
+    campoPesquisa ==false
   ) {
     for (let i = 1; i <= numpadNumbers; i++) {
       if (e.key === `${i}`) {
@@ -910,3 +910,98 @@ function pesquisarTabelaObs() {
     }
   }
 }
+
+
+function pesquisarTabelaHour() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisa");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function pesquisarTabelaPost() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisa");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0]; //Escolha de qual a coluna onde a pesquisa vai incidir 0->Post
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+
+function mudaPesquisa(){
+  const pesquisaChoice = document.getElementById('pesquisaOptions');
+  const pesquisa = document.getElementById('pesquisa');
+  console.log(pesquisaChoice.value);
+  if(!pesquisaChoice){
+    console.log('Não há select')
+  } else {
+    pesquisaChoice.addEventListener('change',function(){
+      if(pesquisaChoice.value==1){
+        pesquisa.onkeyup=function(){
+          pesquisarTabelaPost()
+        }
+      }else if(pesquisaChoice.value==2){
+        console.log('Help!');
+        pesquisa.onkeyup=function(){
+          pesquisarTabelaHour()
+        }
+      }else if(pesquisaChoice.value==3){
+        pesquisa.onkeyup=function(){
+          pesquisarTabelaObs()
+        }
+      }
+    })
+  }
+
+};
+
+//Verificar se o campo de pesquisa esta ativo
+let campoPesquisa = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const pesquisaField = document.getElementById('pesquisa');
+  if(!pesquisaField){
+    console.log(pesquisaField)
+    console.log("Campo não encontrado");
+  } else {
+    pesquisaField.addEventListener('focus', function() {
+      console.log('focused on it');
+      campoPesquisa = true;
+      
+    });
+    pesquisaField.addEventListener('focusout', function() {
+      console.log('unfocused on it');
+      campoPesquisa = false;
+      
+    });
+  }
+});

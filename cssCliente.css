@@ -136,7 +136,7 @@ line-height: 20px; /* Alinhamento vertical */
 
 #numpad{
 
-  position: absolute;
+  position: fixed;
   top: 12vh;
   left: 0px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
   width: 35vw;
@@ -461,7 +461,7 @@ tr.priority-set td{
 @keyframes blinks {
   0% {
     
-    background-color:#49be97; /* Define o ponto final da cor */
+    background-color:#ffa600; /* Define o ponto final da cor */
     color:white;
   }
   

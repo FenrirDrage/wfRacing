@@ -56,7 +56,7 @@ function enviarJson() {
   //IP config casa
   //const url = "http://localhost:3000/addData";
   //IP config casa Luís 
-  const url ="http:// 192.168.1.201:3000/addData";
+  const url ="http:// localhost:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
   //const url = "http://192.168.1.53:3000/addData";
@@ -218,7 +218,7 @@ function envUpJson() {
     //Ip casa
     //const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís 
-    const url = `http://192.168.1.201/updateData/${id}`;
+    const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.53:3000/updateData/${id}`;
@@ -436,7 +436,7 @@ function carregarDados() {
   //IP config casa
   //const url = "http://localhost:3000/getData";
   //IP casa Luís 
-  const url = "http://192.168.1.201:3000/getData";
+  const url = "http://localhost:3000/getData";
   //IP config WFR
   //const url = "http://192.168.1.53:3000/getData";
   //IP CORRIDAS
@@ -538,7 +538,7 @@ function limparTabela() {
   //IP config casa
   //const url = "http://localhost:3000/dropData";
   //IP casa Luís 
-  const url = "http://192.168.1.201/dropData";
+  const url = "http://localhost/dropData";
   //IP config WFR
   //const url = "http://192.168.1.53:3000/dropData";
   //IP CORRIDAS
@@ -600,7 +600,6 @@ function carregarNumpad() {
   document.getElementById("numberCurvas").value =
     localStorage.getItem("numCurves");
   generateNumpad();
-  generateNumpad2();
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
@@ -855,18 +854,76 @@ function carregarNumpad2() {
   generateNumpad2();
 }
 
+
+// Alterar a coluna de pesquisa no campo de pesquisa
+
+function mudaPesquisa(){
+    const pesquisaChoice = document.getElementById('pesquisaOptions');
+    const pesquisa = document.getElementById('pesquisa');
+    console.log(pesquisaChoice.value);
+    if(!pesquisaChoice){
+      console.log('Não há select')
+    } else {
+      pesquisaChoice.addEventListener('change',function(){
+        if(pesquisaChoice.value==1){
+          pesquisa.onkeyup=function(){
+            pesquisarTabelaPost()
+          }
+        }else if(pesquisaChoice.value==2){
+          console.log('Help!');
+          pesquisa.onkeyup=function(){
+            pesquisarTabelaHour()
+          }
+        }else if(pesquisaChoice.value==3){
+          pesquisa.onkeyup=function(){
+            pesquisarTabelaObs()
+          }
+        }
+      })
+    }
+
+};
+
+
+
+//Verificar se o campo de pesquisa esta ativo
+let campoPesquisa = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const pesquisaField = document.getElementById('pesquisa');
+  if(!pesquisaField){
+    console.log(pesquisaField)
+    console.log("Campo não encontrado");
+  } else {
+    pesquisaField.addEventListener('focus', function() {
+      console.log('focused on it');
+      campoPesquisa = true;
+      
+    });
+    pesquisaField.addEventListener('focusout', function() {
+      console.log('unfocused on it');
+      campoPesquisa = false;
+      
+    });
+  }
+});
+
+
 //Atalhos para o numpad (no numpad físico) até 9
 document.addEventListener("keydown", function (e) {
   //Vai buscar o numero currente de curvas definido
   numpadNumbers = localStorage.getItem("numCurves");
   botaoEditar = document.getElementById("botao-numpad-editar");
 
+  
+
   // Caso nenhum dos popus estejam abertos
   if (
     popupAberto == false &&
     popup2Aberto == false &&
     popupNumpadAbero == false &&
-    popupNumpadPasswordAberto == false 
+    popupNumpadPasswordAberto == false &&
+    campoPesquisa ==false
   ) {
     for (let i = 1; i <= numpadNumbers; i++) {
       if (e.key === `${i}`) {
@@ -932,8 +989,52 @@ function pesquisarTabelaObs() {
     }
   }
 }
+
+function pesquisarTabelaHour() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisa");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function pesquisarTabelaPost() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisa");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0]; //Escolha de qual a coluna onde a pesquisa vai incidir 0->Post
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
 /*  Escolher o tipo de pesquisa */
-/* function pesquisaEscolhaPost(){
+function pesquisaEscolhaPost(){
   const choice = getElementById('pesquisaObs');
   choice.classList.add('hidden');
   const actualChoice = getElementById('pesquisaPost');
@@ -967,7 +1068,6 @@ function pesquisarTabelaPost() {
       }
     }
   }
-} */
+}
 
 
-document.getElementById('videoTransicao').defaultPlayRate=2.0;

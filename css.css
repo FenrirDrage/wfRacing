@@ -339,13 +339,13 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 130px; /* Adjust this value according to your header's height */
+  top: 180px; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }
 
 #tabela{
-  margin-top:125.2px;
+  margin-top: 190.2px;
 }
 
 #menu {
@@ -394,6 +394,10 @@ filter:invert();
 #rodaDentada:hover{
   cursor: pointer;
   animation: spin 2s linear infinite;
+}
+
+#tableRodaDentada{
+  margin-top: 0;
 }
 
  /* Estilos para linhas com report true */
@@ -461,8 +465,9 @@ tr.nfa-true td {
 
 #pesquisaTable{
   width:65%;
-  margin-left:0.5vw;
-  background-color: #575656;
+  display: flex;
+  justify-content: center;
+  background-color:transparent;
   text-align: center;
 }
 
@@ -470,8 +475,9 @@ tr.nfa-true td {
   color:white;
   font-size: large;
   margin-left:0.5vw;
-  background-color: #575656;
+  background-color: none;
   text-align: center;
+  border: none;
 }
 
 tr.post-start td {

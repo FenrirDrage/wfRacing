@@ -16,11 +16,11 @@ body{
     -o-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
     min-width: 100%;
     min-height: 100%;
-    width: 150%;
-    height: 150%;
+    width: 140%;
+    height: 140%;
     z-index: -100;
   }
