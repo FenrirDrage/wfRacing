@@ -272,8 +272,8 @@ line-height: 20px; /* Alinhamento vertical */
   justify-content: center;
   align-items: center;
   position: fixed;
-  left: 30vw;
-  top: 5vw;
+  left: 40vw;
+  top: 15vw;
   width: auto;
   height: auto;
   overflow: auto;
@@ -366,22 +366,23 @@ line-height: 20px; /* Alinhamento vertical */
   position: fixed;
   top: 0;
   right: 0;
+  width: 100%;
+  max-width: 150px;
   background-color: #E30613;
+  padding: 70px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centraliza os elementos dentro de #content-top */
+  font-size: 2.1vw;
   color: white;
-  padding: 2vw; /* Ajuste conforme necessário */
-  border-radius: 0;
-  font-size: 2.6vw; /* Ajuste conforme necessário */
-  text-align: center;
-  width: 13vw; /* Ajuste conforme necessário */
-  min-width: 200px; /* Tamanho mínimo do relógio */
 }
 
 #date {
   position: fixed;
-  top: 10%; /* Ajuste conforme necessário */
-  right: calc(3.5% + 2vw); /* Ajuste conforme necessário */
-  font-size: 1vw; /* Ajuste conforme necessário */
-  color: white;
+  top: 16%; /* Ajuste conforme necessário */
+  right: calc(3% + 2.1vw); /* Ajuste conforme necessário */
+  font-size: 1.1vw; /* Ajuste conforme necessário */
+  color: whitesmoke;
+  text-align: center;
 }
 
 /* Icon roda dentada*/
@@ -412,7 +413,7 @@ tr.nfa-true td {
 }
 
 #popupRodadentada {
-  width: 37%;
+  width: 30%;
   position: fixed;
 }
 
@@ -440,7 +441,7 @@ tr.nfa-true td {
   margin-bottom: 10px;
   width: 100%;
   position: fixed;
-  bottom: 10px;
+  bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
 }

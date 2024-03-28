@@ -56,12 +56,12 @@ function enviarJson() {
   //IP config casa
   //const url = "http://localhost:3000/addData";
   //IP config casa Luís 
-  const url ="http:// localhost:3000/addData";
+  //const url ="http:// localhost:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://192.168.1.53:3000/addData";
+  const url = "http://192.168.1.136:3000/addData";
   //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/addData";
+  //const url = "http://192.168.1.53:3000/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -218,12 +218,12 @@ function envUpJson() {
     //Ip casa
     //const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís 
-    const url = `http://localhost/updateData/${id}`;
+    //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://192.168.1.53:3000/updateData/${id}`;
+    const url = `http://192.168.1.136:3000/updateData/${id}`;
     //IP CORRIDAS
-    //const url = "http://192.168.1.XYZ:3000/updateData/";
+    //const url = "http://192.168.1.53:3000/updateData/";
     console.log(url);
     // Envia os dados atualizados para o servidor
     fetch(url, {
@@ -436,11 +436,11 @@ function carregarDados() {
   //IP config casa
   //const url = "http://localhost:3000/getData";
   //IP casa Luís 
-  const url = "http://localhost:3000/getData";
+  //const url = "http://localhost:3000/getData";
   //IP config WFR
-  //const url = "http://192.168.1.53:3000/getData";
+  const url = "http://192.168.1.136:3000/getData";
   //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/getData";
+  //const url = "http://192.168.1.53:3000/getData";
 
   fetch(url)
     .then((response) => response.json())
@@ -538,11 +538,11 @@ function limparTabela() {
   //IP config casa
   //const url = "http://localhost:3000/dropData";
   //IP casa Luís 
-  const url = "http://localhost/dropData";
+  //const url = "http://localhost/dropData";
   //IP config WFR
-  //const url = "http://192.168.1.53:3000/dropData";
+  const url = "http://192.168.1.136:3000/dropData";
   //IP CORRIDAS
-  //const url = "http://192.168.1.XYZ:3000/dropData";
+  //const url = "http://192.168.1.53:3000/dropData";
 
   fetch(url, {
     method: "POST",
