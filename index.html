@@ -26,13 +26,7 @@
       <tr>
         <td id="pesquisaObs">
           <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaHour()" placeholder="Insira a pesquisa.." />
-        </td>
-        <td>
-          <select id="pesquisaOptions" onchange="mudaPesquisa()">
-            <option value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
-            <option value="2" id="pesquisa2" name="Hour">Hour</option>
-            <option value="3" id="pesquisa3" name="Obs">Obs</option>
-          </select>
+          <img src="images/pesquisa.png" id="filtroImg" onclick="abrirPopupFiltros()"/>
         </td>
       </tr>
     </table>
@@ -109,6 +103,7 @@
           <select name="raceSelect">
             <option value="1" name="raceOne">RaceOne</option>
           </select>
+        </td>
       </tr>
       <tr>
         <td>
@@ -119,17 +114,18 @@
         </td>
       </tr>
       <tr>
-        <tr>
-          <td colspan="2">
-            <button>Logout</button>
-          </td>
         <td>
           <button onclick="limparTabela()">Limpar Tabela</button>
-    
         </td>
         <td>
           <button onclick="exportarTabela()">Salvar Informações</button>
         </td>
+        <tr>
+          <td colspan="2">
+            <button>Logout</button>
+          </td>
+        </tr>
+        
       </tr>
     </table>
   </div>
@@ -220,6 +216,30 @@
   </div>
 </div>
 
+<div id="popupFiltros" class="popup">
+  <div class="popup-content">
+    <table id="pesquisaTable">
+      <tr>
+        <td colspan="2">
+          <p>Escolha de filtro:</p>
+        </td>
+        <td>
+          <span class="close" onclick="fecharPopupFiltros()">&times;</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="pesquisaOptions" onchange="mudaPesquisa()">
+            <option value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
+            <option value="2" id="pesquisa2" name="Hour">Hour</option>
+            <option value="3" id="pesquisa3" name="Obs">Obs</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <button onclick="fecharPopupFiltros()">Confirmar</button>
+  </div>
+</div>
                
 </div>
 </body>

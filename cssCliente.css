@@ -137,9 +137,9 @@ line-height: 20px; /* Alinhamento vertical */
 #numpad{
 
   position: fixed;
-  top: 12vh;
-  left: 0px; /* Ajuste o valor conforme necessário para definir a distância do lado esquerdo */
-  width: 35vw;
+  margin-top:29vh;
+  margin-left:5vw;
+  width: 60vw;
   text-align: center;
 }
 #numpad-table{
@@ -313,18 +313,20 @@ line-height: 20px; /* Alinhamento vertical */
   padding: 8px;
   text-align: left;
   min-width: 30%;
+  width: 10%;
 }
 
 #editlg{
+  content:url(images/lapis_1.png);
   display: block;
   margin-left: auto;
-  margin-right: auto;
+  margin-right:auto;
   width: 60%;
   justify-content: center;
 }
 
 #editlg:hover {
-  animation: spin 2s linear infinite; /* Adiciona a animação ao passar o mouse */
+  content:url(images/lapis.png); /* Adiciona a animação ao passar o mouse */
 }
 
 @keyframes spin {
@@ -338,15 +340,15 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 81px; /* Adjust this value according to your header's height */
+  top: 30.5vh; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }
 
 #tabela{
-  margin-top:14.5vh;
-  margin-right:0vw;
-  width: 62.5vw;
+  margin-top:30vh;
+  margin-right:18.2vw;
+  width: 60vw;
 }
 
 #menu {
@@ -431,21 +433,23 @@ tr.nfa-true td {
 #pesquisa{
   vertical-align: middle;
   font-size: 2vh;
-  
 }
 
 #pesquisaTable{
-  width: 35vw;
-  margin-left: 0;
-  background-color: #575656;
+  width:65%;
+  display: flex;
+  justify-content: center;
+  background-color:transparent;
   text-align: center;
 }
 
 #pesquisaTable td{
   color:white;
   font-size: large;
-  background-color: #575656;
+  margin-left:0.5vw;
+  background-color: none;
   text-align: center;
+  border: none;
 }
 
 tr.priority-set td{
@@ -484,4 +488,43 @@ tr.priority-set td{
 #popupConfiguracoes  button{
   font-size: 20px;
   margin-bottom: 20px;
+}
+
+
+/*Imagens no header*/
+#filtroImg{
+  width:5%;
+  cursor: pointer;
+  vertical-align:bottom;
+}
+
+#filtroImgtd{
+  width: 10%;
+}
+
+#iconNumpad{
+  width: 5%;
+  cursor: pointer;
+}
+
+#iconNumpad:hover{
+  filter:invert();
+}
+
+#iconTabela{
+  width: 5%;
+  cursor: pointer;
+}
+
+#iconTabela:hover{
+  filter:invert();
+}
+
+#popupFiltros{
+  text-align: left;
+  z-index: 10000;
+}
+
+#popupFiltros button{
+  margin-left: 25px;
 }

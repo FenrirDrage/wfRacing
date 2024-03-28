@@ -3,7 +3,7 @@
 <link rel="shortcut icon" href="images/wfrLogo.jpg" type="image/x-icon">
 <link rel="stylesheet" href="cssCliente.css">
 
-<script src="scriptCliente.js"></script>
+<script src="script.js"></script>
 <script src="server.js"></script>
 <script src="expexcell.js"></script>
 
@@ -12,12 +12,33 @@
 <img id="logo" src="images/unnamed.png" alt="Logo">
 
 <div id="content-top">
-    <!-- Adicionadar o cabeçalho da corrida -->
-    <h1 id="header">FFSA Championnat de France- La Hague 23-24 March</h1>
-    <!--<button id="addButton" onclick="inputRace()">Insert Race Name</button> -->
-    <div id ="rodaDentadaDiv" >
-      <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
-    </div>
+  <!-- Adicionadar o cabeçalho da corrida -->
+  <h1 id="header">FFSA Championnat de France- La Hague 23-24 March</h1>
+  <!--<button id="addButton" onclick="inputRace()">Insert Race Name</button> -->
+  <!-- <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
+  <button id="addButton" onclick="exportarTabela()">Salvar Informações</button> </br> -->
+  <table id="pesquisaTable">
+    <tr>
+      <td colspan="2">
+        <p>Pesquisa:</p>
+      </td>
+    </tr>
+    <tr>
+      <td id="pesquisaObs">
+        <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaHour()" placeholder="Insira a pesquisa.." />
+        <img src="images/pesquisa.png" id="filtroImg" onclick="abrirPopupFiltros()"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img id="iconNumpad" src="images/numpad.png" onclick="trocarParaNumpad()">
+        <img id="iconTabela"src="images/tabela.png" onclick="trocarParaTabela()">
+      </td>
+    </tr>
+  </table>
+  <div id ="rodaDentadaDiv" >
+    <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
+  </div>
 </div>
 
 <!-- <div id="menu">
@@ -42,12 +63,13 @@
             <th id="thcolor">Report</th>
             <th id="thcolor">N.F.A.</th>
             <th id="thcolor">Obs</th>
+            <th id="tdlg">Edit</th>
         </tr>
     </thead>
     <tbody>
         
     </tbody>
-</table> 
+</table>
 
 
 
@@ -71,27 +93,8 @@
 </div> -->
 
 <!--Protótipo numpad em comentário (Com pop up)-->
-<div id ="numpad">
-  <table id="pesquisaTable">
-    <tr>
-      <td colspan="2">
-        <p>Pesquisa:</p>
-      </td>
-    </tr>
-    <tr>
-      <td id="pesquisaObs">
-        <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaHour()" placeholder="Insira a pesquisa.." />
-      </td>
-      <td>
-        <select id="pesquisaOptions" onchange="mudaPesquisa()">
-          <option value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
-          <option value="2" id="pesquisa2" name="Hour">Hour</option>
-          <option value="3" id="pesquisa3" name="Obs">Obs</option>
-        </select>
-      </td>
-    </tr>
-  </table>
-</div>
+<div id ="numpad" class="hidden">
+</div> 
 
 <div id="popupRodadentada" class="popup">
   <div class="popup-content">
@@ -161,7 +164,30 @@
     </table>
   </div>
 </div>
-
+<div id="popupFiltros" class="popup">
+  <div class="popup-content">
+    <table id="pesquisaTable">
+      <tr>
+        <td colspan="2">
+          <p>Escolha de filtro:</p>
+        </td>
+        <td>
+          <span class="close" onclick="fecharPopupFiltros()">&times;</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="pesquisaOptions" onchange="mudaPesquisa()">
+            <option value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
+            <option value="2" id="pesquisa2" name="Hour">Hour</option>
+            <option value="3" id="pesquisa3" name="Obs">Obs</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <button onclick="fecharPopupFiltros()">Confirmar</button>
+  </div>
+</div>
 
 <!-- PopUp para adicionar dados -->
 <div id="popup" class="popup"  onload="limparLS()">

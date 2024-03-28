@@ -54,12 +54,12 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/addData";
+  const url = "http://localhost:3000/addData";
   //IP config casa Luís 
   //const url ="http:// localhost:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
-  const url = "http://192.168.1.136:3000/addData";
+  //const url = "http://192.168.1.136:3000/addData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/addData";
 
@@ -216,12 +216,12 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    //const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís 
     //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //const url = `http://192.168.1.136:3000/updateData/${id}`;
     //IP CORRIDAS
     //const url = "http://192.168.1.53:3000/updateData/";
     console.log(url);
@@ -285,6 +285,12 @@ function abrirPopupConfiguracoes() {
   popupConfiguracoes= true;
 }
 
+// Fechar popup filtros
+function abrirPopupFiltros() {
+  document.getElementById("popupFiltros").style.display = "block";
+  popupFiltros= true;
+}
+
 //fecha o popup
 function fecharPopup() {
   document.getElementById("popup").style.display = "none";
@@ -321,6 +327,12 @@ function fecharPopupRodaDentada() {
 function fecharPopupConfiguracoes() {
   document.getElementById("popupConfiguracoes").style.display = "none";
   popupRodaDentada= false;
+}
+
+// Fechar popup Filtros
+function fecharPopupFiltros() {
+  document.getElementById("popupFiltros").style.display = "none";
+  popupFiltros= false;
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -434,11 +446,11 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/getData";
+  const url = "http://localhost:3000/getData";
   //IP casa Luís 
   //const url = "http://localhost:3000/getData";
   //IP config WFR
-  const url = "http://192.168.1.136:3000/getData";
+  //const url = "http://192.168.1.136:3000/getData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/getData";
 
@@ -536,11 +548,11 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  //const url = "http://localhost:3000/dropData";
+  const url = "http://localhost:3000/dropData";
   //IP casa Luís 
   //const url = "http://localhost/dropData";
   //IP config WFR
-  const url = "http://192.168.1.136:3000/dropData";
+  //const url = "http://192.168.1.136:3000/dropData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/dropData";
 
@@ -586,6 +598,7 @@ let popupNumpadAbero = false;
 let popupNumpadPasswordAberto = false;
 let popupRodaDentada = false;
 let popupConfiguracoes = false;
+let popupFiltros = false;
 
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
@@ -923,6 +936,8 @@ document.addEventListener("keydown", function (e) {
     popup2Aberto == false &&
     popupNumpadAbero == false &&
     popupNumpadPasswordAberto == false &&
+    popupRodaDentada == false &&
+    popupConfiguracoes == false &&
     campoPesquisa ==false
   ) {
     for (let i = 1; i <= numpadNumbers; i++) {
@@ -1068,6 +1083,28 @@ function pesquisarTabelaPost() {
       }
     }
   }
+}
+
+
+
+/* Esconder/Mostrar Tabela/Numpad */
+
+
+function trocarParaNumpad(){
+  const tabela = document.getElementById('tabela');
+  const numpad = document.getElementById('numpad');
+
+  tabela.classList.add('hidden');
+  numpad.classList.remove('hidden');
+}
+
+
+function trocarParaTabela(){
+  const tabela = document.getElementById('tabela');
+  const numpad = document.getElementById('numpad');
+
+  tabela.classList.remove('hidden');
+  numpad.classList.add('hidden');
 }
 
 

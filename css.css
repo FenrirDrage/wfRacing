@@ -272,8 +272,8 @@ line-height: 20px; /* Alinhamento vertical */
   justify-content: center;
   align-items: center;
   position: fixed;
-  left: 40vw;
-  top: 15vw;
+  left: 30vw;
+  top: 7vw;
   width: auto;
   height: auto;
   overflow: auto;
@@ -314,28 +314,30 @@ line-height: 20px; /* Alinhamento vertical */
   padding: 8px;
   text-align: left;
   min-width: 30%;
+  width: 10%;
 }
 
 #editlg{
+  content:url(images/lapis_1.png);
   display: block;
   margin-left: auto;
-  margin-right: auto;
+  margin-right:auto;
   width: 60%;
   justify-content: center;
 }
 
 #editlg:hover {
-  animation: spin 2s linear infinite; /* Adiciona a animação ao passar o mouse */
+  content:url(images/lapis.png); /* Adiciona a animação ao passar o mouse */
 }
 
-@keyframes spin {
+/* @keyframes spin {
   0% {
-    transform: rotate(0deg); /* Define o ponto inicial da rotação */
+    transform: rotate(0deg); 
   }
   100% {
-    transform: rotate(360deg); /* Define o ponto final da rotação */
+    transform: rotate(360deg); 
   }
-}
+}; */
 
 #tabela thead {
   position: sticky;
@@ -413,8 +415,10 @@ tr.nfa-true td {
 }
 
 #popupRodadentada {
-  width: 30%;
+  margin-top: 0;
+  width: 37%;
   position: fixed;
+  z-index: 10000;
 }
 
 #popupRodadentada table {
@@ -522,4 +526,18 @@ tr.priority-set td{
 #popupConfiguracoes  button{
   font-size: 20px;
   margin-bottom: 20px;
+}
+
+#filtroImg{
+  width:5%;
+  cursor: pointer;
+  vertical-align:bottom;
+}
+
+#filtroImgtd{
+  width: 10%;
+}
+
+#popupFiltros{
+  z-index: 10000;
 }
