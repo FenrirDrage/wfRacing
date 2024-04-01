@@ -203,6 +203,13 @@ line-height: 20px; /* Alinhamento vertical */
   vertical-align: middle;
 }
 
+#numpad-password{
+  margin-top: 0;
+  width: 15%;
+  position: fixed;
+  z-index: 10001;
+}
+
 #raceStart{
   width: 250px;
   height: 60px;

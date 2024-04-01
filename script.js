@@ -609,7 +609,6 @@ function atualizarPagina() {
 
 // Função para carregar o mesmo número introduzido no numpad(quando é feito reload)
 function carregarNumpad() {
-  console.log(localStorage.getItem("numCurves"));
   document.getElementById("numberCurvas").value =
     localStorage.getItem("numCurves");
   generateNumpad();
@@ -867,7 +866,8 @@ function carregarNumpad2() {
   generateNumpad2();
 }
 
-
+document.getElementById('pesquisaOptions').value=1;
+console.log(document.getElementById('pesquisaOptions').value)
 // Alterar a coluna de pesquisa no campo de pesquisa
 
 function mudaPesquisa(){
@@ -883,11 +883,12 @@ function mudaPesquisa(){
             pesquisarTabelaPost()
           }
         }else if(pesquisaChoice.value==2){
-          console.log('Help!');
+          console.log('Selected2!')
           pesquisa.onkeyup=function(){
             pesquisarTabelaHour()
           }
         }else if(pesquisaChoice.value==3){
+          console.log('Selected3!')
           pesquisa.onkeyup=function(){
             pesquisarTabelaObs()
           }
@@ -1092,19 +1093,31 @@ function pesquisarTabelaPost() {
 
 function trocarParaNumpad(){
   const tabela = document.getElementById('tabela');
+  const tabelaIcon = document.getElementById('iconTabela')
   const numpad = document.getElementById('numpad');
+  const numpadIcon = document.getElementById('iconNumpad')
+  const headerText = document.getElementById('currentOptionHeader')
 
+  headerText.textContent='Tabela:';
   tabela.classList.add('hidden');
+  tabelaIcon.classList.remove('hidden');
   numpad.classList.remove('hidden');
+  numpadIcon.classList.add('hidden');
 }
 
 
 function trocarParaTabela(){
   const tabela = document.getElementById('tabela');
+  const tabelaIcon = document.getElementById('iconTabela')
   const numpad = document.getElementById('numpad');
+  const numpadIcon = document.getElementById('iconNumpad')
+  const headerText = document.getElementById('currentOptionHeader')
 
+  headerText.textContent='Numpad:';
   tabela.classList.remove('hidden');
+  tabelaIcon.classList.add('hidden');
   numpad.classList.add('hidden');
+  numpadIcon.classList.remove('hidden');
 }
 
 

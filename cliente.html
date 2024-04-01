@@ -25,14 +25,15 @@
     </tr>
     <tr>
       <td id="pesquisaObs">
-        <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaHour()" placeholder="Insira a pesquisa.." />
-        <img src="images/pesquisa.png" id="filtroImg" onclick="abrirPopupFiltros()"/>
+        <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Insira a pesquisa.." />
+        <img src="images/pesquisa.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa()"/>
       </td>
     </tr>
     <tr>
       <td>
+        <p id="currentOptionHeader">Numpad:</p>
         <img id="iconNumpad" src="images/numpad.png" onclick="trocarParaNumpad()">
-        <img id="iconTabela"src="images/tabela.png" onclick="trocarParaTabela()">
+        <img id="iconTabela"src="images/tabela.png" onclick="trocarParaTabela()" class="hidden">
       </td>
     </tr>
   </table>
@@ -178,7 +179,7 @@
       <tr>
         <td>
           <select id="pesquisaOptions" onchange="mudaPesquisa()">
-            <option value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
+            <option selected value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
             <option value="2" id="pesquisa2" name="Hour">Hour</option>
             <option value="3" id="pesquisa3" name="Obs">Obs</option>
           </select>

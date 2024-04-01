@@ -136,8 +136,8 @@ line-height: 20px; /* Alinhamento vertical */
 
 #numpad{
 
-  position: fixed;
-  margin-top:29vh;
+  position: absolute;
+  margin-top:35vh;
   margin-left:5vw;
   width: 60vw;
   text-align: center;
@@ -340,13 +340,13 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 30.5vh; /* Adjust this value according to your header's height */
+  top: 34.5vh; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }
 
 #tabela{
-  margin-top:30vh;
+  margin-top:36vh;
   margin-right:18.2vw;
   width: 60vw;
 }
@@ -392,6 +392,7 @@ display:flex;
 justify-content: flex-end;
 filter:invert();
 }
+
 
 #rodaDentada:hover{
   cursor: pointer;
