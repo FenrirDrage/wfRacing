@@ -7,7 +7,7 @@ function login() {
   };
 
   // Enviar solicitação HTTP para validar o login
-  fetch("http://localhost:3000/auth/login", {
+  fetch("http://192.168.1.148:3000/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -45,31 +45,63 @@ function playVideoAndRedirect(data) {
   video.src = "images/wfrpausa.mp4";
   video.autoplay = true;
   video.preload = "metadata"; // Carrega apenas metadados do vídeo para obter dimensões
-  video.onended = () => {
-    // Verificar o tipo de usuário após o término do vídeo
-    if (data && data.usertype === "admin") {
-      // Redireciona para a página 1 se o usuário for admin
-      window.location.href = "admin.html";
-      console.log("adm");
-    } else {
-      // Redireciona para a página 2 se o usuário não for admin
-      window.location.href = "cliente.html";
-      console.log("user");
-    }
-  };
+
+  // Exibindo o contêiner do vídeo e adicionando o vídeo ao DOM
   videoContainer.style.display = "block";
   videoContainer.appendChild(video);
-  setTimeout(() => {
-    video.pause();
-  }, 5000);
+
+  // Definindo o evento 'ended' para lidar com o término do vídeo
+  video.addEventListener("ended", function() {
+      console.log("Vídeo terminado!");
+      checkUserTypeAndRedirect();
+  });
+
+  // Função para verificar o tipo de usuário e redirecionar
+  function checkUserTypeAndRedirect() {
+      const responseData = JSON.parse(localStorage.getItem("responseData"));
+      if (responseData && responseData.usertype === "admin") {
+          // Redireciona para a página de administração se o usuário for admin
+          window.location.href = "/admin.html";
+      } else {
+          // Redireciona para a página de cliente se o usuário não for admin
+          window.location.href = "/cliente.html";
+      }
+  }
+
+  // Definir temporizador para verificar responseData após 5 segundos
+  setTimeout(checkUserTypeAndRedirect, 5000);
+
+  // Executar o vídeo
+  video.play();
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  const videoContainer = document.getElementById("videoContainer");
+
+  // Mostrar o contêiner do vídeo por 3 segundos
+  videoContainer.style.display = "block";
+
+  // Carregar o vídeo
+    const video = document.createElement("video");
+    video.src = "images/wfrtrans.mp4";
+    video.autoplay = true;
+    video.preload = "metadata"; // Carregar apenas os metadados do vídeo
+
+    // Adicionar o vídeo ao contêiner
+    videoContainer.appendChild(video);
+
+  // Definir temporizador para ocultar o contêiner após 3 segundos
+  setTimeout(function() {
+      videoContainer.style.display = "none";
+  }, 2500); // Tempo em milissegundos (3 segundos)
+});
 
 document.addEventListener("DOMContentLoaded", function() {
   const logoutButton = document.getElementById("logoutButton");
 
   logoutButton.addEventListener("click", function() {
       // Fazer solicitação para logout
-      fetch("http://localhost:3000/auth/logout", {
+      fetch("http://192.168.1.148:3000/auth/logout", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
