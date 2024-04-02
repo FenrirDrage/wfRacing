@@ -91,7 +91,7 @@ const loginUser = async (req, res) => {
     // Se as credenciais estiverem corretas, gera um token de autenticação
     generateToken({ user }, (token) => {
       console.log("Login válido");
-      res.status(200).json({ message: "User logged successfully",usertype: user.usertype, token });
+      res.status(200).json({ message: "User logged successfully",username: user.username, usertype: user.usertype, token });
     });
   } catch (error) {
     console.error(error);

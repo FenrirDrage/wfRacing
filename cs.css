@@ -10,47 +10,58 @@ body {
 }
 .container {
     text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
 }
+
 #logo {
-    max-width: 200px;
-    margin-bottom: 20px;
+    max-width: 150%;
+    margin-bottom: auto;
 }
+
 form {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 200%;
+    max-width: 420px;
 }
+
 input[type="text"],
-input[type="password"],
-input[type="submit"] {
+input[type="password"]{
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: px;
     box-sizing: border-box;
+    font-size: 24px;
+    font-family: 'Times New Roman', Times, serif;
+    justify-content: center;
 }
 input[type="submit"] {
-    background-color: #E30613;
+    background-color: #575656;
     color: #fff;
     cursor: pointer;
 }
 input[type="submit"]:hover {
-    background-color: #575656;
+    background-color: #E30613;
 }
 
 #butone{
     width: 90px;
     height: 30px;
-    background-color: #E30613;
+    background-color: #575656;
     border-color: #575656;
     color: #f0f0f0;
     border-radius: 0px;
+    font-size: 20px;
 }
 
 #butone:hover {
-    background-color: #575656;
+    background-color: #E30613;
 }
 
 .container {
@@ -62,31 +73,16 @@ input[type="submit"]:hover {
 }
 
 #videoContainer {
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -ms-transform: translateX(-50%) translateY(-50%);
-    -o-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: 140%;
-    height: 140%;
+    display: none;
+    position: fixed; /* Alterado para relative para garantir que o vídeo seja posicionado corretamente */
+    width: 100%; /* Ajustado para ocupar toda a largura do contêiner */
+    height: 0 auto; /* Altura inicialmente definida como 0 */
+    padding-bottom: 56.25%; /* Proporção 16:9, 9/16 * 100 = 56.25 */
+    overflow: hidden; /* Garante que o vídeo não ultrapasse o contêiner */
 }
 
 #videoContainer video {
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -ms-transform: translateX(-50%) translateY(-50%);
-    -o-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
     position: absolute;
-    top: 30%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: 140%;
-    height: 140%;
+    width: 100%;
+    height: auto;
 }

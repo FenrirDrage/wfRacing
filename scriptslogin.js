@@ -25,6 +25,9 @@ function login() {
       // Log da resposta recebida para a console
       console.log("Response:", responseData);
 
+      // Salvar responseData no localStorage
+      localStorage.setItem('responseData', JSON.stringify(responseData));
+
       // Reproduzir o vídeo e redirecionar após o término do vídeo
       playVideoAndRedirect(responseData);
     })
@@ -37,9 +40,11 @@ function login() {
 
 function playVideoAndRedirect(data) {
   // Se o login for bem-sucedido, reproduza o vídeo e redirecione para outra página após 4 segundos
+  const videoContainer = document.getElementById("videoContainer");
   const video = document.createElement("video");
   video.src = "images/wfrpausa.mp4";
   video.autoplay = true;
+  video.preload = "metadata"; // Carrega apenas metadados do vídeo para obter dimensões
   video.onended = () => {
     // Verificar o tipo de usuário após o término do vídeo
     if (data && data.usertype === "admin") {
@@ -52,7 +57,8 @@ function playVideoAndRedirect(data) {
       console.log("user");
     }
   };
-  document.body.appendChild(video);
+  videoContainer.style.display = "block";
+  videoContainer.appendChild(video);
   setTimeout(() => {
     video.pause();
   }, 5000);
