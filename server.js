@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+//login
+const authRoutes = require("../wfRacing/routes/authRoutes");
+
 const routes = require("./routes/routing");
 const {
   addController,
@@ -33,6 +36,9 @@ app.use(bodyParser.json());
 app.post("/addData", addController.addData);
 app.get("/getData", getController.getData);
 app.put("/updateData/:id", putController.putData);
+
+//login
+app.use("/auth", authRoutes);
 
 //use routing
 app.use(express.json());
