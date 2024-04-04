@@ -59,6 +59,8 @@
 <table id="tabela">
     <thead>
         <tr>
+            <th id="thcolor" class="hidden">Indice</th>
+            <th id="thcolor">Post</th>
             <th id="thcolor">Turn/Post</th>
             <th id="thcolor" class="hora-editavel" onclick="editarHora()">Hour</th>
             <th id="thcolor">Vídeo</th>
@@ -66,6 +68,7 @@
             <th id="thcolor">N.F.A.</th>
             <th id="thcolor">Obs</th>
             <th id="tdlg">Edit</th>
+            <th id="tbuttons" class="hidden">↑↓</th>
         </tr>
     </thead>
     <tbody>
@@ -160,12 +163,13 @@
           <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Post');fecharPopupNumpad()" id="opcaoPost" value="P">Post</button>
         </td>
         <td>
-          <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Curva');fecharPopupNumpad()" id="opcaoCurva" value="Curv">Curva</button>
+          <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Curva');fecharPopupNumpad()" id="opcaoCurva" value="Curve">Curva</button>
         </td>
       </tr>
     </table>
   </div>
 </div>
+
 <div id="popupFiltros" class="popup">
   <div class="popup-content">
     <table id="pesquisaTable">
@@ -193,30 +197,33 @@
 
 <!-- PopUp para adicionar dados -->
 <div id="popup" class="popup"  onload="limparLS()">
-    <div class="popup-content">
-      <span class="close" onclick="fecharPopup()">&times;</span>
-      <input type="text" id="curvaInput" placeholder="Curva/Posto">
-      <input type="text" id="horainput" value="" placeholder="hora"><br>
-      <input type="checkbox" id="videoCheck">Vídeo<br>
-      <input type="checkbox" id="reportCheck">Report<br>
-      <input type="checkbox" id="priorityCheck"> Priority<br>
-      <textarea id="obsInput" placeholder="obs"></textarea><br>
-      <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
-    </div>
+  <div class="popup-content">
+    <span class="close" onclick="fecharPopup()">&times;</span>
+    <input type="text" id="curvaInput" placeholder="Curva/Posto">
+    <input type="text" id="horainput" value="" placeholder="hora"><br>
+    <input type="checkbox" id="videoCheck">Vídeo<br>
+    <input type="checkbox" id="reportCheck">Report<br>
+    <input type="checkbox" id="priorityCheck"> Priority<br>
+    <input type="text" class="hidden" id="cameraNumber">Post Type<br>
+    <textarea id="obsInput" placeholder="obs"></textarea><br>
+    <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
   </div>
+</div>
 
 <div id="popup2" class="popup">
-    <div class="popup-content">
-      <span class="close" onclick="fecharPopup2()">&times;</span>
-      <input type="text" id="curvaInput2" placeholder="Curva/Posto">
-      <input type="text" id="horainput2" value="" placeholder="hora"><br>
-      <input type="checkbox" id="videoCheck2"> Vídeo<br>
-      <input type="checkbox" id="reportCheck2"> Report<br>
-      <input type="checkbox" id="nfacheck2"> N.F.A.<br>
-      <input type="checkbox" id="priorityCheck2"> Priority<br>
-      <textarea id="obsInput2" placeholder="obs"></textarea><br>
-      <button onclick="fecharPopup2(); updateLinha()">Update</button>
-    </div>
+  <div class="popup-content" id="popupEdit" > <!-- Sem id="popupEdit" para o utilizador não mexer nas posições-->
+  <span class="close" onclick="fecharPopup2()">&times;</span>
+    <input type="text" id="curvaInput2" placeholder="Curva/Posto">
+    <input type="text" id="horainput2" value="" placeholder="hora"><br>
+    <input type="checkbox" id="videoCheck2"> Vídeo<br>
+    <input type="checkbox" id="reportCheck2"> Report<br>
+    <input type="checkbox" id="nfacheck2"> N.F.A.<br>
+    <input type="checkbox" id="priorityCheck2"> Priority<br>
+    <input type="text" id="cameraNumber2" placeholder="Camera"><br><br>
+    <textarea id="obsInput2" placeholder="obs"></textarea><br>
+    <button onclick="fecharPopup2(); updateLinha()">Update</button>
+    <button onclick="fecharPopup2(); deleteLinha()">Delete</button>
+  </div>
 </div>
 
                

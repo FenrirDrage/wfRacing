@@ -190,7 +190,7 @@ line-height: 20px; /* Alinhamento vertical */
 }
 
 #popupNumpad.popup{
-  z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
+  z-index: 10002; /*Puxar 1 para a frente do pop up de informações gerais*/
 }
 
 #popupNumpadTable,#popupNumpadTable td{
@@ -322,6 +322,10 @@ z-index: 10001;
 
 #thcolor {
   color: #575656;
+}
+
+#tbuttons{
+  color:#575656;
 }
 
 #tdlg{
@@ -530,6 +534,7 @@ tr.priority-set td{
 
 #popupConfiguracoes {
   width: 30%;
+  z-index: 10001;
 }
 #popupConfiguracoes  table{
   width: 100%;
@@ -555,4 +560,14 @@ tr.priority-set td{
 
 #popupFiltros{
   z-index: 10000;
+}
+
+#popupFiltros button{
+  margin-left: 25px;
+}
+
+
+.buttaoUpDown{
+  margin-bottom: 0;
+  height: 5vh;
 }

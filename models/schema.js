@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 // Definir modelo Mongoose para os dados
 const dadoSchema = new mongoose.Schema({
+  camera:{
+    type: String,
+  },
+  indice:{
+    type: Number,
+  },
   curva: {
     type: String,
   },

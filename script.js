@@ -11,18 +11,45 @@ function limparLS() {
   console.log("localStorage foi limpo.");
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  // é necessário um pequeno delay para a local storage atualizar devidamente
+  setTimeout(() => {
+  const dadosExistentes = localStorage.getItem('dadosTabela')
+  const data = JSON.parse(dadosExistentes)
+  console.log(data);
+  let indiceMaximo = 1;
+  if(data!=null){
+    data.forEach((item) =>{
+      console.log(item.indice)
+      indiceMaximo++;
+    })
+  }
+  console.log(indiceMaximo);
+    localStorage.setItem('indiceCorrente',indiceMaximo);
+  }, 1000); // 1 second delay
+  
+})
+
+
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
 
   // Capturar os valores dos campos do pop-up
+  const camera = document.getElementById("cameraNumber").value;
   const curva = document.getElementById("curvaInput").value;
   const hora = document.getElementById("horainput").value;
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
   const priority = document.getElementById("priorityCheck").checked;
   const obs = document.getElementById("obsInput").value;
+  let indice = localStorage.getItem('indiceCorrente')
+  if(indice==null){
+    indice=1;
+  }
 
   // Se report for 0, definir nfa como 1
   let nfa = false;
@@ -32,6 +59,8 @@ function adicionarLinha() {
 
   // Armazenar os dados no localStorage
   const newData = {
+    camera: camera,
+    indice: indice,
     curva: curva,
     hora: hora,
     video: video,
@@ -40,11 +69,16 @@ function adicionarLinha() {
     priority: priority,
     obs: obs,
   };
+console.log(newData)
+  //Adicionar +1 ao indice máximo
+  indice ++;
+  localStorage.setItem('indiceCorrente',indice)
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
   location.reload();
 }
+
 
 //envio dados para servidor
 function enviarJson() {
@@ -162,6 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
+  const camera = document.getElementById("cameraNumber2").value;
   const curva = document.getElementById("curvaInput2").value;
   const hora = document.getElementById("horainput2").value;
   const video = document.getElementById("videoCheck2").checked;
@@ -172,6 +207,7 @@ function updateLinha() {
 
   // Cria um objeto com os dados atualizados
   const updatedData = {
+    camera: camera,
     curva: curva,
     hora: hora,
     video: video,
@@ -254,11 +290,12 @@ function envUpJson() {
 function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
-
+  console.log(detalhes._id)
+  indiceReorganizar(detalhes);
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://localhost:3000/deleteData/${detalhes._id}`, {
+    fetch(`http://localhost:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -329,6 +366,11 @@ function fecharPopup() {
 //fecha o pupup2
 function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
+  const popupEdit = document.getElementById("popupEdit")
+  const botaoUp = document.getElementById("buttonUp")
+  const botaoDown = document.getElementById("buttonDown")
+  popupEdit.removeChild(botaoUp)
+  popupEdit.removeChild(botaoDown)
 
   popup2Aberto = false;
   //location.reload();
@@ -375,8 +417,9 @@ function atualizarTabela(data) {
   // Adiciona linhas à tabela com os dados recebidos
   data.forEach((item) => {
     const novaLinha = document.createElement("tr");
-
     novaLinha.innerHTML = `
+      <td class="hidden">${item.indice}</td>
+      <td contenteditable="true">${item.camera}</td>
       <td contenteditable="true">${item.curva}</td>
       <td contenteditable="true">${item.hora}</td>
       <td contenteditable="true"><input type="checkbox" ${
@@ -392,6 +435,7 @@ function atualizarTabela(data) {
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
         item._id
       }')"></td>
+      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${item.indice}" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${item.indice}" onclick="moveDown(this)">↓</button>
       `;
 
     // Adiciona classes CSS com base nos valores de report e nfa
@@ -416,6 +460,39 @@ function atualizarTabela(data) {
 
     tabela.appendChild(novaLinha);
   });
+
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("tabela");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (Number(x.innerHTML) > Number(y.innerHTML)) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -425,11 +502,13 @@ function abrirDetalhes(id) {
   if (detalhes) {
     // Se encontrarmos os detalhes, preenchemos o pop-up e o exibimos
     preencherPopupComDetalhes(detalhes);
+    generatePositionButtons(detalhes);
     abrirPopup2();
   } else {
     console.error("Detalhes não encontrados para o ID:", id);
   }
 }
+
 
 function getDataFromLocalStorage() {
   const localStorageData = localStorage.getItem("novaLinhaData");
@@ -468,6 +547,31 @@ function preencherPopupComDetalhes(detalhes) {
   }
 }
 
+// Função para criar os botões de troca de posição da linha selecionada
+function generatePositionButtons(detalhes){
+  const popupEdit = document.getElementById('popupEdit');
+  const originalUp = document.getElementById(`buttonUp${detalhes.indice}`)
+  const originalDown = document.getElementById(`buttonDown${detalhes.indice}`)
+  const buttonUp = document.createElement("button");
+  buttonUp.classList.add("buttaoUpDown");
+  buttonUp.textContent = "↑";
+  buttonUp.id = `buttonUp`;
+  buttonUp.addEventListener('click',()=> {
+    originalUp.click();
+  })
+
+  const buttonDown = document.createElement("button")
+  buttonDown.classList.add("buttaoUpDown");
+  buttonDown.textContent = "↓";
+  buttonDown.id = `buttonDown`;
+  buttonDown.addEventListener('click',()=> {
+    originalDown.click();
+  })
+
+  popupEdit.appendChild(buttonUp)
+  popupEdit.appendChild(buttonDown)
+}
+
 // Define a função para carregar os dados quando a página é carregada
 function carregarDados() {
   // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
@@ -492,6 +596,10 @@ function carregarDados() {
     })
     .catch((error) => console.error("Erro ao obter dados:", error));
 }
+
+//Quando a página acaba de carregar verifica o indice máximo corrente
+
+
 
 // Adicionadar o evento de editar a hora
 function editarHora() {
@@ -536,9 +644,18 @@ function obterCurvaNum(curva) {
 
 //Adicionar Camera ou Post no field Curva/Post
 function adicionarCameraOrPost(opcao) {
-  document.getElementById("curvaInput").value += document.getElementById(
-    `opcao${opcao}`
-  ).value;
+  if(opcao!='Camera'){
+    document.getElementById("cameraNumber").value = ""
+    document.getElementById("curvaInput").value += document.getElementById(
+      `opcao${opcao}`
+    ).value;
+  }else{
+    document.getElementById("cameraNumber").value = document.getElementById("curvaInput").value;
+    document.getElementById("curvaInput").value = ""
+
+  }
+ 
+
 }
 
 //Verificar password dar input de curvas
@@ -1013,7 +1130,7 @@ function pesquisarTabelaObs() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[5]; //Escolha de qual a coluna onde a pesquisa vai incidir 5->Observações
+    td = tr[i].getElementsByTagName("td")[7]; //Escolha de qual a coluna onde a pesquisa vai incidir 5->Observações
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -1035,7 +1152,7 @@ function pesquisarTabelaHour() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
+    td = tr[i].getElementsByTagName("td")[3]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -1057,7 +1174,7 @@ function pesquisarTabelaPost() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0]; //Escolha de qual a coluna onde a pesquisa vai incidir 0->Post
+    td = tr[i].getElementsByTagName("td")[2]; //Escolha de qual a coluna onde a pesquisa vai incidir 0->Post
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -1083,27 +1200,6 @@ function pesquisaEscolhaPostObs() {
   actualChoice.classList.remove("hidden");
 }
 
-function pesquisarTabelaPost() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("pesquisa");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("tabela");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}
 
 /* Esconder/Mostrar Tabela/Numpad */
 
@@ -1128,9 +1224,241 @@ function trocarParaTabela() {
   const numpadIcon = document.getElementById("iconNumpad");
   const headerText = document.getElementById("currentOptionHeader");
 
-  headerText.textContent = "Numpad:";
-  tabela.classList.remove("hidden");
-  tabelaIcon.classList.add("hidden");
-  numpad.classList.add("hidden");
-  numpadIcon.classList.remove("hidden");
+  headerText.textContent='Numpad:';
+  tabela.classList.remove('hidden');
+  tabelaIcon.classList.add('hidden');
+  numpad.classList.add('hidden');
+  numpadIcon.classList.remove('hidden');
+}
+
+// Mover a linha para cima
+
+function moveUp(button) {
+  var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
+
+
+  const dadosExistentes = localStorage.getItem('dadosTabela')
+  const data = JSON.parse(dadosExistentes)
+  var table = row.parentNode;
+  var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
+
+  if (rowIndex > 1) {
+    if(data!=null){
+
+      data.forEach((item) =>{ //Por cada item já armazenado na tabela
+        console.log(row.rowIndex)
+        console.log('Help')
+        
+        if(item.indice==row.rowIndex-1){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
+          item.indice+=1;
+          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+        }
+        else if(item.indice==row.rowIndex){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          item.indice-=1;
+          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+        }
+      })
+      updateIndice();
+    }
+  } else {
+    console.log("No row before the current row");
+  }
+
+
+}
+
+// Mover a linha para baixo
+
+function moveDown(button) { //Vai buscar a celula do botão, e depois a linha dessa célula
+  var row = button.parentNode.parentNode; //Vai buscar o celulad do botão, e depois a linha dessa célula
+
+
+  const dadosExistentes = localStorage.getItem('dadosTabela')
+  const data = JSON.parse(dadosExistentes)
+  var table = row.parentNode;
+  var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
+
+  if (rowIndex < table.rows.length-1) {
+    if(data!=null){
+
+      data.forEach((item) =>{ //Por cada item já armazenado na tabela
+        console.log(row.rowIndex)
+        console.log('Help')
+        
+        if(item.indice==row.rowIndex){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
+          item.indice+=1;
+          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+        }
+        else if(item.indice==row.rowIndex+1){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          item.indice-=1;
+          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+        }
+      })
+      updateIndice();
+    }
+  } else {
+    console.log("No row after the current row");
+  }
+
+
+}
+
+
+/* Fazer update dos indices quando as linhas trocarem de lugar*/
+function updateIndice() {
+  // Obtém os dados da linha atualizados do localStorage
+  const updatedDataString1 = localStorage.getItem("LinhaIndice1");
+  console.log(updatedDataString1);
+  const updatedDataString2 = localStorage.getItem("LinhaIndice2");
+  console.log(updatedDataString2);
+  // Verifica se há dados no localStorage
+  if (updatedDataString1 && updatedDataString2) {
+    const updatedData1 = JSON.parse(updatedDataString1);
+    console.log(updatedData1);
+
+    // Define o ID do documento a ser atualizado (obtido do localStorage)
+    const id = updatedData1._id;
+    console.log(id);
+    // Definir o IP/URL para onde enviar os dados
+    //Ip casa
+    const url = `http://localhost:3000/updateData/${id}`;
+    //IP casa Luís 
+    //const url = `http://localhost/updateData/${id}`;
+    //IP config WFR
+    //const url = `http://192.168.1.148:3000/updateData/${id}`;
+    //const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //IP CORRIDAS
+    //const url = "http://192.168.1.53:3000/updateData/";
+    console.log(url);
+    // Envia os dados atualizados para o servidor
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData1),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dados atualizados com sucesso:", data);
+
+        // Limpa os dados do localStorage após a atualização
+        localStorage.removeItem("LinhaIndice1");
+      })
+      .catch((error) => {
+        console.error(
+          "Erro ao enviar dados atualizados para o servidor:",
+          error
+        );
+      });
+
+      //Processo da outra linha
+      const updatedData2 = JSON.parse(updatedDataString2);
+      console.log(updatedData2);
+
+      // Define o ID do documento a ser atualizado (obtido do localStorage)
+    const id2 = updatedData2._id;
+    console.log(id2);
+    // Definir o IP/URL para onde enviar os dados
+    //Ip casa
+    const url2 = `http://localhost:3000/updateData/${id2}`;
+    //IP casa Luís 
+    //const url = `http://localhost/updateData/${id}`;
+    //IP config WFR
+    //const url = `http://192.168.1.148:3000/updateData/${id}`;
+    //const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //IP CORRIDAS
+    //const url = "http://192.168.1.53:3000/updateData/";
+    console.log(url2);
+    // Envia os dados atualizados para o servidor
+    fetch(url2, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData2),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dados atualizados com sucesso:", data);
+
+        // Limpa os dados do localStorage após a atualização
+        localStorage.removeItem("LinhaIndice2");
+      })
+      .catch((error) => {
+        console.error(
+          "Erro ao enviar dados atualizados para o servidor:",
+          error
+        );
+      });
+      location.reload();
+      
+  } else {
+    console.error("Nenhum dos dados encontrados no localStorage para enviar.");
+  }
+  
+}
+
+
+function indiceReorganizar(linha){
+  const dadosExistentes = localStorage.getItem('dadosTabela')
+  const data = JSON.parse(dadosExistentes)
+  data.forEach((item) =>{
+    if(item.indice>linha.indice){
+      item.indice-=1; // Remove 1 valor aos indices de todos os valores na tabela
+      localStorage.setItem('LinhaReorganizada',JSON.stringify(item)); //Guardar a linha no localstorage para ser apagada
+      indiceReorganizadoUpdate(); //Atualiza as linhas subsquentemente na tabela
+    }
+  })
+
+}
+
+
+//Quando apagar uma linha reorganizar os indices para manter consistência
+
+function indiceReorganizadoUpdate(){
+  // Obtém os dados da linha atualizados do localStorage
+  const updatedDataString = localStorage.getItem("LinhaReorganizada");
+  console.log(updatedDataString);
+  // Verifica se há dados no localStorage
+  if (updatedDataString) {
+    const updatedData = JSON.parse(updatedDataString);
+    console.log(updatedData);
+
+    // Define o ID do documento a ser atualizado (obtido do localStorage)
+    const id = updatedData._id;
+    console.log(id);
+    // Definir o IP/URL para onde enviar os dados
+    //Ip casa
+    const url = `http://localhost:3000/updateData/${id}`;
+    //IP casa Luís 
+    //const url = `http://localhost/updateData/${id}`;
+    //IP config WFR
+    //const url = `http://192.168.1.148:3000/updateData/${id}`;
+    //const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //IP CORRIDAS
+    //const url = "http://192.168.1.53:3000/updateData/";
+    console.log(url);
+    // Envia os dados atualizados para o servidor
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dados atualizados com sucesso:", data);
+
+        // Limpa os dados do localStorage após a atualização
+        localStorage.removeItem("LinhaReorganizada");
+      })
+      .catch((error) => {
+        console.error(
+          "Erro ao enviar dados atualizados para o servidor:",
+          error
+        );
+      });
+  }
 }

@@ -189,7 +189,7 @@ line-height: 20px; /* Alinhamento vertical */
   margin-bottom: auto;
 }
 #popupNumpad.popup{
-  z-index: 10000; /*Puxar 1 para a frente do pop up de informações gerais*/
+  z-index: 10001; /*Puxar 1 para a frente do pop up de informações gerais*/
 }
 
 #popupNumpadTable,#popupNumpadTable td{
@@ -277,7 +277,7 @@ line-height: 20px; /* Alinhamento vertical */
   height: auto;
   overflow: auto;
   /*background-color: rgba(0,0,0,0.4);*/
-  z-index: 10;
+  z-index: 10000;
 }
 
 .popup-content {
@@ -327,15 +327,6 @@ line-height: 20px; /* Alinhamento vertical */
 
 #editlg:hover {
   content:url(images/lapis.png); /* Adiciona a animação ao passar o mouse */
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg); /* Define o ponto inicial da rotação */
-  }
-  100% {
-    transform: rotate(360deg); /* Define o ponto final da rotação */
-  }
 }
 
 #tabela thead {
@@ -528,4 +519,12 @@ tr.priority-set td{
 
 #popupFiltros button{
   margin-left: 25px;
+}
+
+#positionButton{
+  display: none;
+}
+
+.buttaoUpDown{
+  display:none;
 }
