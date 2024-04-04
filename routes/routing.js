@@ -17,8 +17,10 @@ router.get("/getData", getController.getData);
 // Rota para apagar todos os dados do banco de dados
 router.post("/dropData", dropController.dropData);
 
+// Rota para apagar um único documento
+router.delete("/dropData/:id", dropController.dropOneData);
+
 // Rota para atualizar todos os dados do banco de dados
 router.post("/updateData/:id", putController.putData);
-
 
 module.exports = router;
