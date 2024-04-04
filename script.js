@@ -55,7 +55,7 @@ function enviarJson() {
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
   const url = "http://localhost:3000/addData";
-  //IP config casa Luís 
+  //IP config casa Luís
   //const url ="http:// localhost:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
@@ -217,7 +217,7 @@ function envUpJson() {
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
     const url = `http://localhost:3000/updateData/${id}`;
-    //IP casa Luís 
+    //IP casa Luís
     //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
@@ -251,6 +251,34 @@ function envUpJson() {
   }
 }
 
+function deleteLinha() {
+  // Recupera o ID dos detalhes armazenados no localStorage
+  const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
+
+  // Verifica se o ID está disponível nos detalhes
+  if (detalhes && detalhes._id) {
+    // Faz uma solicitação DELETE para excluir a linha com o ID especificado
+    fetch(`http://localhost:3000/deleteData/${detalhes._id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Linha excluída com sucesso.");
+          // Se a linha foi excluída com sucesso, você pode tomar alguma ação adicional aqui, como recarregar a página ou atualizar a tabela
+        } else {
+          console.error("Erro ao excluir linha:", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao excluir linha:", error);
+      });
+  } else {
+    console.error(
+      "Erro: ID não encontrado nos detalhes armazenados no localStorage."
+    );
+  }
+}
+
 //abre o popup
 function abrirPopup() {
   document.getElementById("popup").style.display = "block";
@@ -276,19 +304,19 @@ function abrirPopupNumpadPassword() {
 // Fechar popup rodaDentada
 function abrirPopupRodaDentada() {
   document.getElementById("popupRodadentada").style.display = "block";
-  popupRodaDentada= true;
+  popupRodaDentada = true;
 }
 
 // Fechar popup rodaDentada
 function abrirPopupConfiguracoes() {
   document.getElementById("popupConfiguracoes").style.display = "block";
-  popupConfiguracoes= true;
+  popupConfiguracoes = true;
 }
 
 // Fechar popup filtros
 function abrirPopupFiltros() {
   document.getElementById("popupFiltros").style.display = "block";
-  popupFiltros= true;
+  popupFiltros = true;
 }
 
 //fecha o popup
@@ -320,19 +348,19 @@ function fecharPopupNumpadPassword() {
 // Fechar popup rodaDentada
 function fecharPopupRodaDentada() {
   document.getElementById("popupRodadentada").style.display = "none";
-  popupRodaDentada= false;
+  popupRodaDentada = false;
 }
 
 // Fechar popup Configuracoes
 function fecharPopupConfiguracoes() {
   document.getElementById("popupConfiguracoes").style.display = "none";
-  popupRodaDentada= false;
+  popupRodaDentada = false;
 }
 
 // Fechar popup Filtros
 function fecharPopupFiltros() {
   document.getElementById("popupFiltros").style.display = "none";
-  popupFiltros= false;
+  popupFiltros = false;
 }
 
 // Atualiza a tabela com os dados recebidos
@@ -376,13 +404,13 @@ function atualizarTabela(data) {
     if (item.priority) {
       novaLinha.classList.add("priority-set");
     }
-    if (item.curva=='Start') {
+    if (item.curva == "Start") {
       novaLinha.classList.add("post-start");
     }
-    if (item.curva=='Curva') {
+    if (item.curva == "Curva") {
       novaLinha.classList.add("post-curva");
     }
-    if (item.curva=='Camera') {
+    if (item.curva == "Camera") {
       novaLinha.classList.add("post-camera");
     }
 
@@ -411,7 +439,7 @@ function getDataFromLocalStorage() {
 function preencherPopupComDetalhes(detalhes) {
   // Armazena os detalhes no localStorage
   localStorage.setItem("detalhesPopup", JSON.stringify(detalhes));
-  
+
   // Verifica se os detalhes são válidos
   if (detalhes) {
     console.log(detalhes);
@@ -447,7 +475,7 @@ function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
   const url = "http://localhost:3000/getData";
-  //IP casa Luís 
+  //IP casa Luís
   //const url = "http://localhost:3000/getData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/getData";
@@ -549,7 +577,7 @@ function limparTabela() {
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
   const url = "http://localhost:3000/dropData";
-  //IP casa Luís 
+  //IP casa Luís
   //const url = "http://localhost/dropData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/dropData";
@@ -795,7 +823,7 @@ function generateNumpad2() {
       }
     }
     //Esconder o botão e textbox.
-   /*  editarNumpad();
+    /*  editarNumpad();
     editarNumpad2(); */
     //Guardar ultimo numero de curvas guardado
     localStorage.setItem("numCurves", num);
@@ -866,70 +894,62 @@ function carregarNumpad2() {
   generateNumpad2();
 }
 
-document.getElementById('pesquisaOptions').value=1;
-console.log(document.getElementById('pesquisaOptions').value)
+document.getElementById("pesquisaOptions").value = 1;
+console.log(document.getElementById("pesquisaOptions").value);
 // Alterar a coluna de pesquisa no campo de pesquisa
 
-function mudaPesquisa(){
-    const pesquisaChoice = document.getElementById('pesquisaOptions');
-    const pesquisa = document.getElementById('pesquisa');
-    console.log(pesquisaChoice.value);
-    if(!pesquisaChoice){
-      console.log('Não há select')
-    } else {
-      pesquisaChoice.addEventListener('change',function(){
-        if(pesquisaChoice.value==1){
-          pesquisa.onkeyup=function(){
-            pesquisarTabelaPost()
-          }
-        }else if(pesquisaChoice.value==2){
-          console.log('Selected2!')
-          pesquisa.onkeyup=function(){
-            pesquisarTabelaHour()
-          }
-        }else if(pesquisaChoice.value==3){
-          console.log('Selected3!')
-          pesquisa.onkeyup=function(){
-            pesquisarTabelaObs()
-          }
-        }
-      })
-    }
-
-};
-
-
+function mudaPesquisa() {
+  const pesquisaChoice = document.getElementById("pesquisaOptions");
+  const pesquisa = document.getElementById("pesquisa");
+  console.log(pesquisaChoice.value);
+  if (!pesquisaChoice) {
+    console.log("Não há select");
+  } else {
+    pesquisaChoice.addEventListener("change", function () {
+      if (pesquisaChoice.value == 1) {
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaPost();
+        };
+      } else if (pesquisaChoice.value == 2) {
+        console.log("Selected2!");
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaHour();
+        };
+      } else if (pesquisaChoice.value == 3) {
+        console.log("Selected3!");
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaObs();
+        };
+      }
+    });
+  }
+}
 
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
 
-document.addEventListener('DOMContentLoaded', function() {
-  const pesquisaField = document.getElementById('pesquisa');
-  if(!pesquisaField){
-    console.log(pesquisaField)
+document.addEventListener("DOMContentLoaded", function () {
+  const pesquisaField = document.getElementById("pesquisa");
+  if (!pesquisaField) {
+    console.log(pesquisaField);
     console.log("Campo não encontrado");
   } else {
-    pesquisaField.addEventListener('focus', function() {
-      console.log('focused on it');
+    pesquisaField.addEventListener("focus", function () {
+      console.log("focused on it");
       campoPesquisa = true;
-      
     });
-    pesquisaField.addEventListener('focusout', function() {
-      console.log('unfocused on it');
+    pesquisaField.addEventListener("focusout", function () {
+      console.log("unfocused on it");
       campoPesquisa = false;
-      
     });
   }
 });
-
 
 //Atalhos para o numpad (no numpad físico) até 9
 document.addEventListener("keydown", function (e) {
   //Vai buscar o numero currente de curvas definido
   numpadNumbers = localStorage.getItem("numCurves");
   botaoEditar = document.getElementById("botao-numpad-editar");
-
-  
 
   // Caso nenhum dos popus estejam abertos
   if (
@@ -939,7 +959,7 @@ document.addEventListener("keydown", function (e) {
     popupNumpadPasswordAberto == false &&
     popupRodaDentada == false &&
     popupConfiguracoes == false &&
-    campoPesquisa ==false
+    campoPesquisa == false
   ) {
     for (let i = 1; i <= numpadNumbers; i++) {
       if (e.key === `${i}`) {
@@ -981,7 +1001,6 @@ function handleEnterKey(e) {
 
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
-
 
 /* Adiciona função filtragem*/
 function pesquisarTabelaObs() {
@@ -1050,18 +1069,18 @@ function pesquisarTabelaPost() {
   }
 }
 /*  Escolher o tipo de pesquisa */
-function pesquisaEscolhaPost(){
-  const choice = getElementById('pesquisaObs');
-  choice.classList.add('hidden');
-  const actualChoice = getElementById('pesquisaPost');
-  actualChoice.classList.remove('hidden')
+function pesquisaEscolhaPost() {
+  const choice = getElementById("pesquisaObs");
+  choice.classList.add("hidden");
+  const actualChoice = getElementById("pesquisaPost");
+  actualChoice.classList.remove("hidden");
 }
 
-function pesquisaEscolhaPostObs(){
-  const choice = getElementById('pesquisaPost');
-  choice.classList.add('hidden');
-  const actualChoice = getElementById('pesquisaObs');
-  actualChoice.classList.remove('hidden')
+function pesquisaEscolhaPostObs() {
+  const choice = getElementById("pesquisaPost");
+  choice.classList.add("hidden");
+  const actualChoice = getElementById("pesquisaObs");
+  actualChoice.classList.remove("hidden");
 }
 
 function pesquisarTabelaPost() {
@@ -1086,38 +1105,32 @@ function pesquisarTabelaPost() {
   }
 }
 
-
-
 /* Esconder/Mostrar Tabela/Numpad */
 
+function trocarParaNumpad() {
+  const tabela = document.getElementById("tabela");
+  const tabelaIcon = document.getElementById("iconTabela");
+  const numpad = document.getElementById("numpad");
+  const numpadIcon = document.getElementById("iconNumpad");
+  const headerText = document.getElementById("currentOptionHeader");
 
-function trocarParaNumpad(){
-  const tabela = document.getElementById('tabela');
-  const tabelaIcon = document.getElementById('iconTabela')
-  const numpad = document.getElementById('numpad');
-  const numpadIcon = document.getElementById('iconNumpad')
-  const headerText = document.getElementById('currentOptionHeader')
-
-  headerText.textContent='Tabela:';
-  tabela.classList.add('hidden');
-  tabelaIcon.classList.remove('hidden');
-  numpad.classList.remove('hidden');
-  numpadIcon.classList.add('hidden');
+  headerText.textContent = "Tabela:";
+  tabela.classList.add("hidden");
+  tabelaIcon.classList.remove("hidden");
+  numpad.classList.remove("hidden");
+  numpadIcon.classList.add("hidden");
 }
 
+function trocarParaTabela() {
+  const tabela = document.getElementById("tabela");
+  const tabelaIcon = document.getElementById("iconTabela");
+  const numpad = document.getElementById("numpad");
+  const numpadIcon = document.getElementById("iconNumpad");
+  const headerText = document.getElementById("currentOptionHeader");
 
-function trocarParaTabela(){
-  const tabela = document.getElementById('tabela');
-  const tabelaIcon = document.getElementById('iconTabela')
-  const numpad = document.getElementById('numpad');
-  const numpadIcon = document.getElementById('iconNumpad')
-  const headerText = document.getElementById('currentOptionHeader')
-
-  headerText.textContent='Numpad:';
-  tabela.classList.remove('hidden');
-  tabelaIcon.classList.add('hidden');
-  numpad.classList.add('hidden');
-  numpadIcon.classList.remove('hidden');
+  headerText.textContent = "Numpad:";
+  tabela.classList.remove("hidden");
+  tabelaIcon.classList.add("hidden");
+  numpad.classList.add("hidden");
+  numpadIcon.classList.remove("hidden");
 }
-
-
