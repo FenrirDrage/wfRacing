@@ -418,7 +418,7 @@ function atualizarTabela(data) {
   data.forEach((item) => {
     const novaLinha = document.createElement("tr");
     novaLinha.innerHTML = `
-      <td class="hidden">${item.indice}</td>
+      <td class="hidden">${item._id}</td>
       <td contenteditable="true">${item.camera}</td>
       <td contenteditable="true">${item.curva}</td>
       <td contenteditable="true">${item.hora}</td>
@@ -460,39 +460,6 @@ function atualizarTabela(data) {
 
     tabela.appendChild(novaLinha);
   });
-
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("tabela");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[0];
-      y = rows[i + 1].getElementsByTagName("TD")[0];
-      //check if the two rows should switch place:
-      if (Number(x.innerHTML) > Number(y.innerHTML)) {
-        //if so, mark as a switch and break the loop:
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -521,7 +488,6 @@ function preencherPopupComDetalhes(detalhes) {
 
   // Verifica se os detalhes são válidos
   if (detalhes) {
-    console.log(detalhes);
     // Obtém os elementos do popup
     const curvaInput = document.getElementById("curvaInput2");
     const horainput = document.getElementById("horainput2");
@@ -1233,75 +1199,159 @@ function trocarParaTabela() {
 
 // Mover a linha para cima
 
-function moveUp(button) {
+function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dessa célula
   var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
-
+  const idLinha = row.cells[0].textContent
+  var table = row.parentNode;
 
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
-  var table = row.parentNode;
+  var LinhaDados1;
+  var LinhaDados2;
   var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
-
+  var tablePosition; // Variável para saber a posição no loop (e ir buscar o anterior na tabela mais tarde)
+  var numCiclo=1;
+  var allowNext = false // Variavel para executar o segundo if (entrada seguinte)
   if (rowIndex > 1) {
     if(data!=null){
 
       data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        console.log(row.rowIndex)
-        console.log('Help')
-        
-        if(item.indice==row.rowIndex-1){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
-          item.indice+=1;
-          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+        if(item._id==idLinha){ //Vai buscar o id da linha onde foi primido o botao
+          
+          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
+
+          tablePosition = numCiclo; //Guarda a posição da linha onde foi primido o botao
+          allowNext = true // Para adquirir os dados do que vem a seguir
+          //localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+
         }
-        else if(item.indice==row.rowIndex){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
-          item.indice-=1;
+        numCiclo++;
+      })
+
+      const linhaAnterior = table.rows[tablePosition-1]; // Ir buscar a linha da tabela anterior
+      const idLinhaAnterior = linhaAnterior.cells[0].textContent; // Ir buscar o Id da linha anterior
+
+      data.forEach((item)=>{ // Ciclo para encontrar os dados da linha anterior
+        if(item._id==idLinhaAnterior){
+          LinhaDados2 = {...item}; // Ir buscar dados da linha anterior
+        }
+
+      })
+
+      data.forEach((item) =>{ // Ciclo para fazer a troca
+      
+        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados2.camera;
+          item.indice = LinhaDados2.indice;
+          item.curva = LinhaDados2.curva;
+          item.video = LinhaDados2.video;
+          item.report = LinhaDados2.report;
+          item.nfa = LinhaDados2.nfa;
+          item.priority = LinhaDados2.priority;
+          item.obs = LinhaDados2.obs;
+          item.__v= LinhaDados2.__v;
+          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+  
+        }
+        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados1.camera;
+          item.indice = LinhaDados1.indice;
+          item.curva = LinhaDados1.curva;
+          item.video = LinhaDados1.video;
+          item.report = LinhaDados1.report;
+          item.nfa = LinhaDados1.nfa;
+          item.priority = LinhaDados1.priority;
+          item.obs = LinhaDados1.obs;
+          item.__v= LinhaDados1.__v;
           localStorage.setItem('LinhaIndice2',JSON.stringify(item))
         }
       })
+
       updateIndice();
     }
   } else {
     console.log("No row before the current row");
   }
-
-
+  
 }
+
 
 // Mover a linha para baixo
 
-function moveDown(button) { //Vai buscar a celula do botão, e depois a linha dessa célula
-  var row = button.parentNode.parentNode; //Vai buscar o celulad do botão, e depois a linha dessa célula
-
+function moveDown(button) {
+  var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
+  const idLinha = row.cells[0].textContent
+  var table = row.parentNode;
 
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
-  var table = row.parentNode;
+  var LinhaDados1;
+  var LinhaDados2;
   var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
-
+  var allowNext = false // Variavel para executar o segundo if (entrada seguinte)
   if (rowIndex < table.rows.length-1) {
     if(data!=null){
 
       data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        console.log(row.rowIndex)
-        console.log('Help')
         
-        if(item.indice==row.rowIndex){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
-          item.indice+=1;
-          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+        if(item._id==idLinha){ //Vai buscar o id da linha anterior
+          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
+          allowNext = true // Para adquirir os dados do que vem a seguir
+          //localStorage.setItem('LinhaIndice1',JSON.stringify(item))
         }
-        else if(item.indice==row.rowIndex+1){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
-          item.indice-=1;
-          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+        else if(allowNext == true){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          LinhaDados2 = {...item};
+          allowNext = false;
+          //item.indice-=1;
+          //localStorage.setItem('LinhaIndice2',JSON.stringify(item))
         }
       })
-      updateIndice();
+
+
+      data.forEach((item) =>{ //Ciclo para substituir
+      
+        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados2.camera;
+          item.indice = LinhaDados2.indice;
+          item.curva = LinhaDados2.curva;
+          item.video = LinhaDados2.video;
+          item.report = LinhaDados2.report;
+          item.nfa = LinhaDados2.nfa;
+          item.priority = LinhaDados2.priority;
+          item.obs = LinhaDados2.obs;
+          item.__v= LinhaDados2.__v;
+          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+  
+        }
+        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados1.camera;
+          item.indice = LinhaDados1.indice;
+          item.curva = LinhaDados1.curva;
+          item.video = LinhaDados1.video;
+          item.report = LinhaDados1.report;
+          item.nfa = LinhaDados1.nfa;
+          item.priority = LinhaDados1.priority;
+          item.obs = LinhaDados1.obs;
+          item.__v= LinhaDados1.__v;
+          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+  
+        }
+        updateIndice();
+      })
+      //
     }
   } else {
     console.log("No row after the current row");
   }
-
-
 }
+
+
+
+
 
 
 /* Fazer update dos indices quando as linhas trocarem de lugar*/
@@ -1400,7 +1450,7 @@ function updateIndice() {
 }
 
 
-function indiceReorganizar(linha){
+/* function indiceReorganizar(linha){
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
   data.forEach((item) =>{
@@ -1412,11 +1462,11 @@ function indiceReorganizar(linha){
   })
 
 }
-
+ */
 
 //Quando apagar uma linha reorganizar os indices para manter consistência
 
-function indiceReorganizadoUpdate(){
+/* function indiceReorganizadoUpdate(){
   // Obtém os dados da linha atualizados do localStorage
   const updatedDataString = localStorage.getItem("LinhaReorganizada");
   console.log(updatedDataString);
@@ -1461,4 +1511,4 @@ function indiceReorganizadoUpdate(){
         );
       });
   }
-}
+} */

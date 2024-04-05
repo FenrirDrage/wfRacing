@@ -7,7 +7,7 @@ function login() {
   };
 
   // Enviar solicitação HTTP para validar o login
-  fetch("http://192.168.1.148:3000/auth/login", {
+  fetch("http://localhost:3000/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   logoutButton.addEventListener("click", function() {
       // Fazer solicitação para logout
-      fetch("http://192.168.1.148:3000/auth/logout", {
+      fetch("http://localhost:3000/auth/logout", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
