@@ -952,56 +952,6 @@ function editarNumpad2() {
   numpadGenerateButton.classList.toggle("hidden");
 }
 
-function checkPassword2() {
-  numpadPassword = "WFR2012";
-  console.log(document.getElementById("numpadUnlock2").value);
-  if (document.getElementById("numpadUnlock2").value == numpadPassword) {
-    generateNumpad2();
-    fecharPopupNumpadPassword();
-  } else {
-    window.alert("Código introduzido errado!");
-    fecharPopupNumpadPassword();
-  }
-}
-
-function carregarNumpad2() {
-  console.log(localStorage.getItem("numCurves"));
-  document.getElementById("numberCurvas").value =
-    localStorage.getItem("numCurves");
-  generateNumpad2();
-}
-
-document.getElementById("pesquisaOptions").value = 1;
-console.log(document.getElementById("pesquisaOptions").value);
-// Alterar a coluna de pesquisa no campo de pesquisa
-
-function mudaPesquisa() {
-  const pesquisaChoice = document.getElementById("pesquisaOptions");
-  const pesquisa = document.getElementById("pesquisa");
-  console.log(pesquisaChoice.value);
-  if (!pesquisaChoice) {
-    console.log("Não há select");
-  } else {
-    pesquisaChoice.addEventListener("change", function () {
-      if (pesquisaChoice.value == 1) {
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaPost();
-        };
-      } else if (pesquisaChoice.value == 2) {
-        console.log("Selected2!");
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaHour();
-        };
-      } else if (pesquisaChoice.value == 3) {
-        console.log("Selected3!");
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaObs();
-        };
-      }
-    });
-  }
-}
-
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
 
@@ -1027,6 +977,7 @@ document.addEventListener("keydown", function (e) {
   //Vai buscar o numero currente de curvas definido
   numpadNumbers = localStorage.getItem("numCurves");
   botaoEditar = document.getElementById("botao-numpad-editar");
+  console.log('eh')
 
   // Caso nenhum dos popus estejam abertos
   if (
@@ -1078,6 +1029,58 @@ function handleEnterKey(e) {
 
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
+
+function checkPassword2() {
+  numpadPassword = "WFR2012";
+  console.log(document.getElementById("numpadUnlock2").value);
+  if (document.getElementById("numpadUnlock2").value == numpadPassword) {
+    generateNumpad2();
+    fecharPopupNumpadPassword();
+  } else {
+    window.alert("Código introduzido errado!");
+    fecharPopupNumpadPassword();
+  }
+}
+
+function carregarNumpad2() {
+  console.log(localStorage.getItem("numCurves"));
+  document.getElementById("numberCurvas").value =
+    localStorage.getItem("numCurves");
+  generateNumpad2();
+}
+
+document.getElementById("pesquisaOptions").value = 1;
+console.log(document.getElementById("pesquisaOptions").value);
+// Alterar a coluna de pesquisa no campo de pesquisa
+
+function mudaPesquisa() {
+  const pesquisaChoice = document.getElementById("pesquisaOptions");
+  const pesquisa = document.getElementById("pesquisa");
+  console.log(pesquisaChoice.value);
+  if (!pesquisaChoice) {
+    console.log("Não há select");
+  } else {
+    pesquisaChoice.addEventListener("change", function () {
+      if (pesquisaChoice.value == 1) {
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaPost();
+        };
+      } else if (pesquisaChoice.value == 2) {
+        console.log("Selected2!");
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaHour();
+        };
+      } else if (pesquisaChoice.value == 3) {
+        console.log("Selected3!");
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaObs();
+        };
+      }
+    });
+  }
+}
+
+
 
 /* Adiciona função filtragem*/
 function pesquisarTabelaObs() {
