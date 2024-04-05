@@ -1246,16 +1246,54 @@ function moveUp(button) {
     if(data!=null){
 
       data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        console.log(row.rowIndex)
-        console.log('Help')
-        
-        if(item.indice==row.rowIndex-1){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
-          item.indice+=1;
-          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+        if(item._id==idLinha){ //Vai buscar o id da linha onde foi primido o botao
+          
+          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
+
+          tablePosition = numCiclo; //Guarda a posição da linha onde foi primido o botao
+          allowNext = true // Para adquirir os dados do que vem a seguir
+          //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
+
         }
-        else if(item.indice==row.rowIndex){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
-          item.indice-=1;
-          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+        numCiclo++;
+      })
+
+      const linhaAnterior = table.rows[tablePosition-1]; // Ir buscar a linha da tabela anterior
+      const idLinhaAnterior = linhaAnterior.cells[0].textContent; // Ir buscar o Id da linha anterior
+
+      data.forEach((item)=>{ // Ciclo para encontrar os dados da linha anterior
+        if(item._id==idLinhaAnterior){
+          LinhaDados2 = {...item}; // Ir buscar dados da linha anterior
+        }
+
+      })
+
+      data.forEach((item) =>{ // Ciclo para fazer a troca
+      
+        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados2.camera;
+          item.curva = LinhaDados2.curva;
+          item.video = LinhaDados2.video;
+          item.report = LinhaDados2.report;
+          item.nfa = LinhaDados2.nfa;
+          item.priority = LinhaDados2.priority;
+          item.obs = LinhaDados2.obs;
+          item.__v= LinhaDados2.__v;
+          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
+  
+        }
+        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados1.camera;
+          item.curva = LinhaDados1.curva;
+          item.video = LinhaDados1.video;
+          item.report = LinhaDados1.report;
+          item.nfa = LinhaDados1.nfa;
+          item.priority = LinhaDados1.priority;
+          item.obs = LinhaDados1.obs;
+          item.__v= LinhaDados1.__v;
+          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
         }
       })
       updateIndice();
@@ -1282,16 +1320,50 @@ function moveDown(button) { //Vai buscar a celula do botão, e depois a linha de
     if(data!=null){
 
       data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        console.log(row.rowIndex)
-        console.log('Help')
         
-        if(item.indice==row.rowIndex){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
-          item.indice+=1;
-          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+        if(item._id==idLinha){ //Vai buscar o id da linha anterior
+          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
+          allowNext = true // Para adquirir os dados do que vem a seguir
+          //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
         }
-        else if(item.indice==row.rowIndex+1){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
-          item.indice-=1;
-          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+        else if(allowNext == true){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          LinhaDados2 = {...item};
+          allowNext = false;
+          //item.indice-=1;
+          //localStorage.setItem('LinhaPosition2',JSON.stringify(item))
+        }
+      })
+
+
+      data.forEach((item) =>{ //Ciclo para substituir
+      
+        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados2.camera;
+          item.indice = LinhaDados2.indice;
+          item.curva = LinhaDados2.curva;
+          item.video = LinhaDados2.video;
+          item.report = LinhaDados2.report;
+          item.nfa = LinhaDados2.nfa;
+          item.priority = LinhaDados2.priority;
+          item.obs = LinhaDados2.obs;
+          item.__v= LinhaDados2.__v;
+          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
+  
+        }
+        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+  
+          item.camera = LinhaDados1.camera;
+          item.indice = LinhaDados1.indice;
+          item.curva = LinhaDados1.curva;
+          item.video = LinhaDados1.video;
+          item.report = LinhaDados1.report;
+          item.nfa = LinhaDados1.nfa;
+          item.priority = LinhaDados1.priority;
+          item.obs = LinhaDados1.obs;
+          item.__v= LinhaDados1.__v;
+          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
+  
         }
       })
       updateIndice();
