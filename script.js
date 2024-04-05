@@ -1241,6 +1241,7 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
   
           item.camera = LinhaDados2.camera;
           item.curva = LinhaDados2.curva;
+          item.hora = LinhaDados2.hora;
           item.video = LinhaDados2.video;
           item.report = LinhaDados2.report;
           item.nfa = LinhaDados2.nfa;
@@ -1254,6 +1255,7 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
   
           item.camera = LinhaDados1.camera;
           item.curva = LinhaDados1.curva;
+          item.hora = LinhaDados1.hora;
           item.video = LinhaDados1.video;
           item.report = LinhaDados1.report;
           item.nfa = LinhaDados1.nfa;
@@ -1312,6 +1314,7 @@ function moveDown(button) {
           item.camera = LinhaDados2.camera;
           item.indice = LinhaDados2.indice;
           item.curva = LinhaDados2.curva;
+          item.hora = LinhaDados2.hora;
           item.video = LinhaDados2.video;
           item.report = LinhaDados2.report;
           item.nfa = LinhaDados2.nfa;
@@ -1326,6 +1329,7 @@ function moveDown(button) {
           item.camera = LinhaDados1.camera;
           item.indice = LinhaDados1.indice;
           item.curva = LinhaDados1.curva;
+          item.hora = LinhaDados1.hora;
           item.video = LinhaDados1.video;
           item.report = LinhaDados1.report;
           item.nfa = LinhaDados1.nfa;
