@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let indiceMaximo = 1;
   if(data!=null){
     data.forEach((item) =>{
+      console.log(item.indice)
       indiceMaximo++;
     })
   }
@@ -45,6 +46,10 @@ function adicionarLinha() {
   const report = document.getElementById("reportCheck").checked;
   const priority = document.getElementById("priorityCheck").checked;
   const obs = document.getElementById("obsInput").value;
+  let indice = localStorage.getItem('indiceCorrente')
+  if(indice==null){
+    indice=1;
+  }
 
   // Se report for 0, definir nfa como 1
   let nfa = false;
@@ -55,6 +60,7 @@ function adicionarLinha() {
   // Armazenar os dados no localStorage
   const newData = {
     camera: camera,
+    indice: indice,
     curva: curva,
     hora: hora,
     video: video,
@@ -64,11 +70,13 @@ function adicionarLinha() {
     obs: obs,
   };
 console.log(newData)
-
+  //Adicionar +1 ao indice máximo
+  indice ++;
+  localStorage.setItem('indiceCorrente',indice)
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
-  location.reload();
+  //location.reload();
 }
 
 
@@ -80,9 +88,9 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://localhost:3000/addData";
+  const url = "http://192.168.50.53:3000/addData";
   //IP config casa Luís
-  //const url ="http:// localhost:3000/addData";
+  //const url ="http:// 192.168.50.53:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
   //const url = "http://192.168.1.136:3000/addData";
@@ -244,9 +252,9 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://192.168.50.53:3000/updateData/${id}`;
     //IP casa Luís
-    //const url = `http://localhost/updateData/${id}`;
+    //const url = `http://192.168.50.53/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;
@@ -283,10 +291,11 @@ function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
   console.log(detalhes._id)
+  indiceReorganizar(detalhes);
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://localhost:3000/dropData/${detalhes._id}`, {
+    fetch(`http://192.168.50.53:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -406,11 +415,10 @@ function atualizarTabela(data) {
   }
 
   // Adiciona linhas à tabela com os dados recebidos
-  var counter=1;
   data.forEach((item) => {
     const novaLinha = document.createElement("tr");
     novaLinha.innerHTML = `
-      <td class="hidden">${item._id}</td>
+      <td class="hidden">${item.indice}</td>
       <td contenteditable="true">${item.camera}</td>
       <td contenteditable="true">${item.curva}</td>
       <td contenteditable="true">${item.hora}</td>
@@ -427,7 +435,7 @@ function atualizarTabela(data) {
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
         item._id
       }')"></td>
-      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${item._id}" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${item._id}" onclick="moveDown(this)">↓</button>
+      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${item.indice}" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${item.indice}" onclick="moveDown(this)">↓</button>
       `;
 
     // Adiciona classes CSS com base nos valores de report e nfa
@@ -450,10 +458,41 @@ function atualizarTabela(data) {
       novaLinha.classList.add("post-camera");
     }
 
-    console.log(counter)
-    counter++;
     tabela.appendChild(novaLinha);
   });
+
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("tabela");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (Number(x.innerHTML) > Number(y.innerHTML)) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -482,6 +521,7 @@ function preencherPopupComDetalhes(detalhes) {
 
   // Verifica se os detalhes são válidos
   if (detalhes) {
+    console.log(detalhes);
     // Obtém os elementos do popup
     const curvaInput = document.getElementById("curvaInput2");
     const horainput = document.getElementById("horainput2");
@@ -510,8 +550,8 @@ function preencherPopupComDetalhes(detalhes) {
 // Função para criar os botões de troca de posição da linha selecionada
 function generatePositionButtons(detalhes){
   const popupEdit = document.getElementById('popupEdit');
-  const originalUp = document.getElementById(`buttonUp${detalhes._id}`)
-  const originalDown = document.getElementById(`buttonDown${detalhes._id}`)
+  const originalUp = document.getElementById(`buttonUp${detalhes.indice}`)
+  const originalDown = document.getElementById(`buttonDown${detalhes.indice}`)
   const buttonUp = document.createElement("button");
   buttonUp.classList.add("buttaoUpDown");
   buttonUp.textContent = "↑";
@@ -538,9 +578,9 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://localhost:3000/getData";
+  const url = "http://192.168.50.53:3000/getData";
   //IP casa Luís
-  //const url = "http://localhost:3000/getData";
+  //const url = "http://192.168.50.53:3000/getData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/getData";
   //IP CORRIDAS
@@ -653,9 +693,9 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://localhost:3000/dropData";
+  const url = "http://192.168.50.53:3000/dropData";
   //IP casa Luís
-  //const url = "http://localhost/dropData";
+  //const url = "http://192.168.50.53/dropData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/dropData";
   //IP CORRIDAS
@@ -708,7 +748,7 @@ let popupFiltros = false;
 function atualizarPagina() {
   if (!popupAberto && !popup2Aberto) {
     // Lógica para atualizar a página
-    location.reload();
+    //location.reload();
   }
 }
 
@@ -720,7 +760,7 @@ function carregarNumpad() {
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
-//setInterval(atualizarPagina, 10000);
+setInterval(atualizarPagina, 10000);
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
 function scrollToBottomWithDelay() {
@@ -952,6 +992,56 @@ function editarNumpad2() {
   numpadGenerateButton.classList.toggle("hidden");
 }
 
+function checkPassword2() {
+  numpadPassword = "WFR2012";
+  console.log(document.getElementById("numpadUnlock2").value);
+  if (document.getElementById("numpadUnlock2").value == numpadPassword) {
+    generateNumpad2();
+    fecharPopupNumpadPassword();
+  } else {
+    window.alert("Código introduzido errado!");
+    fecharPopupNumpadPassword();
+  }
+}
+
+function carregarNumpad2() {
+  console.log(localStorage.getItem("numCurves"));
+  document.getElementById("numberCurvas").value =
+    localStorage.getItem("numCurves");
+  generateNumpad2();
+}
+
+document.getElementById("pesquisaOptions").value = 1;
+console.log(document.getElementById("pesquisaOptions").value);
+// Alterar a coluna de pesquisa no campo de pesquisa
+
+function mudaPesquisa() {
+  const pesquisaChoice = document.getElementById("pesquisaOptions");
+  const pesquisa = document.getElementById("pesquisa");
+  console.log(pesquisaChoice.value);
+  if (!pesquisaChoice) {
+    console.log("Não há select");
+  } else {
+    pesquisaChoice.addEventListener("change", function () {
+      if (pesquisaChoice.value == 1) {
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaPost();
+        };
+      } else if (pesquisaChoice.value == 2) {
+        console.log("Selected2!");
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaHour();
+        };
+      } else if (pesquisaChoice.value == 3) {
+        console.log("Selected3!");
+        pesquisa.onkeyup = function () {
+          pesquisarTabelaObs();
+        };
+      }
+    });
+  }
+}
+
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
 
@@ -977,7 +1067,6 @@ document.addEventListener("keydown", function (e) {
   //Vai buscar o numero currente de curvas definido
   numpadNumbers = localStorage.getItem("numCurves");
   botaoEditar = document.getElementById("botao-numpad-editar");
-  console.log('eh')
 
   // Caso nenhum dos popus estejam abertos
   if (
@@ -1029,58 +1118,6 @@ function handleEnterKey(e) {
 
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
-
-function checkPassword2() {
-  numpadPassword = "WFR2012";
-  console.log(document.getElementById("numpadUnlock2").value);
-  if (document.getElementById("numpadUnlock2").value == numpadPassword) {
-    generateNumpad2();
-    fecharPopupNumpadPassword();
-  } else {
-    window.alert("Código introduzido errado!");
-    fecharPopupNumpadPassword();
-  }
-}
-
-function carregarNumpad2() {
-  console.log(localStorage.getItem("numCurves"));
-  document.getElementById("numberCurvas").value =
-    localStorage.getItem("numCurves");
-  generateNumpad2();
-}
-
-document.getElementById("pesquisaOptions").value = 1;
-console.log(document.getElementById("pesquisaOptions").value);
-// Alterar a coluna de pesquisa no campo de pesquisa
-
-function mudaPesquisa() {
-  const pesquisaChoice = document.getElementById("pesquisaOptions");
-  const pesquisa = document.getElementById("pesquisa");
-  console.log(pesquisaChoice.value);
-  if (!pesquisaChoice) {
-    console.log("Não há select");
-  } else {
-    pesquisaChoice.addEventListener("change", function () {
-      if (pesquisaChoice.value == 1) {
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaPost();
-        };
-      } else if (pesquisaChoice.value == 2) {
-        console.log("Selected2!");
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaHour();
-        };
-      } else if (pesquisaChoice.value == 3) {
-        console.log("Selected3!");
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaObs();
-        };
-      }
-    });
-  }
-}
-
-
 
 /* Adiciona função filtragem*/
 function pesquisarTabelaObs() {
@@ -1196,165 +1233,83 @@ function trocarParaTabela() {
 
 // Mover a linha para cima
 
-function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dessa célula
+function moveUp(button) {
   var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
-  const idLinha = row.cells[0].textContent
-  var table = row.parentNode;
+
 
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
-  var LinhaDados1;
-  var LinhaDados2;
+  var table = row.parentNode;
   var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
-  var tablePosition; // Variável para saber a posição no loop (e ir buscar o anterior na tabela mais tarde)
-  var numCiclo=1;
-  var allowNext = false // Variavel para executar o segundo if (entrada seguinte)
+
   if (rowIndex > 1) {
     if(data!=null){
 
       data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        if(item._id==idLinha){ //Vai buscar o id da linha onde foi primido o botao
-          
-          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
-
-          tablePosition = numCiclo; //Guarda a posição da linha onde foi primido o botao
-          allowNext = true // Para adquirir os dados do que vem a seguir
-          //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-
+        console.log(row.rowIndex)
+        console.log('Help')
+        
+        if(item.indice==row.rowIndex-1){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
+          item.indice+=1;
+          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
         }
-        numCiclo++;
-      })
-
-      const linhaAnterior = table.rows[tablePosition-1]; // Ir buscar a linha da tabela anterior
-      const idLinhaAnterior = linhaAnterior.cells[0].textContent; // Ir buscar o Id da linha anterior
-
-      data.forEach((item)=>{ // Ciclo para encontrar os dados da linha anterior
-        if(item._id==idLinhaAnterior){
-          LinhaDados2 = {...item}; // Ir buscar dados da linha anterior
-        }
-
-      })
-
-      data.forEach((item) =>{ // Ciclo para fazer a troca
-      
-        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
-          item.camera = LinhaDados2.camera;
-          item.curva = LinhaDados2.curva;
-          item.video = LinhaDados2.video;
-          item.report = LinhaDados2.report;
-          item.nfa = LinhaDados2.nfa;
-          item.priority = LinhaDados2.priority;
-          item.obs = LinhaDados2.obs;
-          item.__v= LinhaDados2.__v;
-          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-  
-        }
-        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
-          item.camera = LinhaDados1.camera;
-          item.curva = LinhaDados1.curva;
-          item.video = LinhaDados1.video;
-          item.report = LinhaDados1.report;
-          item.nfa = LinhaDados1.nfa;
-          item.priority = LinhaDados1.priority;
-          item.obs = LinhaDados1.obs;
-          item.__v= LinhaDados1.__v;
-          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
+        else if(item.indice==row.rowIndex){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          item.indice-=1;
+          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
         }
       })
-
-      updatePosition();
+      updateIndice();
     }
   } else {
     console.log("No row before the current row");
   }
-  
-}
 
+
+}
 
 // Mover a linha para baixo
 
-function moveDown(button) {
-  var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
-  const idLinha = row.cells[0].textContent
-  var table = row.parentNode;
+function moveDown(button) { //Vai buscar a celula do botão, e depois a linha dessa célula
+  var row = button.parentNode.parentNode; //Vai buscar o celulad do botão, e depois a linha dessa célula
+
 
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
-  var LinhaDados1;
-  var LinhaDados2;
+  var table = row.parentNode;
   var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
-  var allowNext = false // Variavel para executar o segundo if (entrada seguinte)
+
   if (rowIndex < table.rows.length-1) {
     if(data!=null){
 
       data.forEach((item) =>{ //Por cada item já armazenado na tabela
+        console.log(row.rowIndex)
+        console.log('Help')
         
-        if(item._id==idLinha){ //Vai buscar o id da linha anterior
-          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
-          allowNext = true // Para adquirir os dados do que vem a seguir
-          //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
+        if(item.indice==row.rowIndex){ //Vai buscar o indice da linha anterior e acrescenta uma posição (passa para baixo)
+          item.indice+=1;
+          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
         }
-        else if(allowNext == true){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
-          LinhaDados2 = {...item};
-          allowNext = false;
-          //item.indice-=1;
-          //localStorage.setItem('LinhaPosition2',JSON.stringify(item))
+        else if(item.indice==row.rowIndex+1){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          item.indice-=1;
+          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
         }
       })
-
-
-      data.forEach((item) =>{ //Ciclo para substituir
-      
-        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
-          item.camera = LinhaDados2.camera;
-          item.indice = LinhaDados2.indice;
-          item.curva = LinhaDados2.curva;
-          item.video = LinhaDados2.video;
-          item.report = LinhaDados2.report;
-          item.nfa = LinhaDados2.nfa;
-          item.priority = LinhaDados2.priority;
-          item.obs = LinhaDados2.obs;
-          item.__v= LinhaDados2.__v;
-          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-  
-        }
-        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
-          item.camera = LinhaDados1.camera;
-          item.indice = LinhaDados1.indice;
-          item.curva = LinhaDados1.curva;
-          item.video = LinhaDados1.video;
-          item.report = LinhaDados1.report;
-          item.nfa = LinhaDados1.nfa;
-          item.priority = LinhaDados1.priority;
-          item.obs = LinhaDados1.obs;
-          item.__v= LinhaDados1.__v;
-          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
-  
-        }
-        updatePosition();
-      })
-      //
+      updateIndice();
     }
   } else {
     console.log("No row after the current row");
   }
+
+
 }
 
 
-
-
-
-
 /* Fazer update dos indices quando as linhas trocarem de lugar*/
-function updatePosition() {
+function updateIndice() {
   // Obtém os dados da linha atualizados do localStorage
-  const updatedDataString1 = localStorage.getItem("LinhaPosition1");
+  const updatedDataString1 = localStorage.getItem("LinhaIndice1");
   console.log(updatedDataString1);
-  const updatedDataString2 = localStorage.getItem("LinhaPosition2");
+  const updatedDataString2 = localStorage.getItem("LinhaIndice2");
   console.log(updatedDataString2);
   // Verifica se há dados no localStorage
   if (updatedDataString1 && updatedDataString2) {
@@ -1366,9 +1321,9 @@ function updatePosition() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://192.168.50.53:3000/updateData/${id}`;
     //IP casa Luís 
-    //const url = `http://localhost/updateData/${id}`;
+    //const url = `http://192.168.50.53/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;
@@ -1388,7 +1343,7 @@ function updatePosition() {
         console.log("Dados atualizados com sucesso:", data);
 
         // Limpa os dados do localStorage após a atualização
-        localStorage.removeItem("LinhaPosition1");
+        localStorage.removeItem("LinhaIndice1");
       })
       .catch((error) => {
         console.error(
@@ -1406,9 +1361,9 @@ function updatePosition() {
     console.log(id2);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url2 = `http://localhost:3000/updateData/${id2}`;
+    const url2 = `http://192.168.50.53:3000/updateData/${id2}`;
     //IP casa Luís 
-    //const url = `http://localhost/updateData/${id}`;
+    //const url = `http://192.168.50.53/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;
@@ -1428,7 +1383,7 @@ function updatePosition() {
         console.log("Dados atualizados com sucesso:", data);
 
         // Limpa os dados do localStorage após a atualização
-        localStorage.removeItem("LinhaPosition2");
+        localStorage.removeItem("LinhaIndice2");
       })
       .catch((error) => {
         console.error(
@@ -1436,7 +1391,7 @@ function updatePosition() {
           error
         );
       });
-      location.reload();
+      //location.reload();
       
   } else {
     console.error("Nenhum dos dados encontrados no localStorage para enviar.");
@@ -1445,7 +1400,7 @@ function updatePosition() {
 }
 
 
-/* function indiceReorganizar(linha){
+function indiceReorganizar(linha){
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
   data.forEach((item) =>{
@@ -1457,11 +1412,11 @@ function updatePosition() {
   })
 
 }
- */
+
 
 //Quando apagar uma linha reorganizar os indices para manter consistência
 
-/* function indiceReorganizadoUpdate(){
+function indiceReorganizadoUpdate(){
   // Obtém os dados da linha atualizados do localStorage
   const updatedDataString = localStorage.getItem("LinhaReorganizada");
   console.log(updatedDataString);
@@ -1475,9 +1430,9 @@ function updatePosition() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://192.168.50.53:3000/updateData/${id}`;
     //IP casa Luís 
-    //const url = `http://localhost/updateData/${id}`;
+    //const url = `http://192.168.50.53/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;
@@ -1506,4 +1461,4 @@ function updatePosition() {
         );
       });
   }
-} */
+}

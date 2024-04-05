@@ -54,7 +54,7 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://localhost:3000/addData";
+  const url = "http://192.168.50.53:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
   //const url = "http://192.168.1.53:3000/addData";
@@ -214,7 +214,7 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://192.168.50.53:3000/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.53:3000/updateData/${id}`;
@@ -415,7 +415,7 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://localhost:3000/getData";
+  const url = "http://192.168.50.53:3000/getData";
   //IP config WFR
   //const url = "http://192.168.1.53:3000/getData";
   //IP CORRIDAS
@@ -515,7 +515,7 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://localhost:3000/dropData";
+  const url = "http://192.168.50.53:3000/dropData";
   //IP config WFR
   //const url = "http://192.168.1.53:3000/dropData";
   //IP CORRIDAS

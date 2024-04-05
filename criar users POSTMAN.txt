@@ -1,4 +1,4 @@
-http://localhost:3000/auth/register
+http://192.168.50.53:3000/auth/register
 
 no body -> raw - json
 

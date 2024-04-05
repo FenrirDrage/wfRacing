@@ -9,12 +9,12 @@
 <script src="scriptslogin.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-<body onload="carregarNumpad();makeAllSortable()">
+<body onload="carregarNumpad()">
 <img id="logo" src="images/unnamed.png" alt="Logo">
 
 <div id="content-top">
     <!-- Adicionadar o cabeçalho da corrida -->
-    <h1 id="header">FFSA Championnat de France- La Hague 23-24 March</h1>
+    <h1 id="header">FFSA Championnat de France Junior- Le Mans 5-7 March</h1>
     <!--<button id="addButton" onclick="inputRace()">Insert Race Name</button> -->
     <!-- <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
     <button id="addButton" onclick="exportarTabela()">Salvar Informações</button> </br> -->
@@ -79,7 +79,7 @@
 
 <!--Protótipo numpad em comentário (Com pop up)-->
 <div id ="numpad">
-  <button id="botao-numpad-voltar" onclick ="window.open('/cliente.html')">Cliente</button>
+  <!--<button id="botao-numpad-voltar" onclick ="window.open('/cliente.html')">Cliente</button> -->
 </div>
 
 
@@ -157,7 +157,7 @@
           <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Post');fecharPopupNumpad()" id="opcaoPost" value="P">Post</button>
         </td>
         <td>
-          <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Curva');fecharPopupNumpad()" id="opcaoCurva" value="Curve">Curva</button>
+          <button class="primary-numpad-Button" onclick="adicionarCameraOrPost('Curva');fecharPopupNumpad()" id="opcaoCurva" value="Curva">Curva</button>
         </td>
       </tr>
     </table>
