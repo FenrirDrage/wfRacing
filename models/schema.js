@@ -5,9 +5,6 @@ const dadoSchema = new mongoose.Schema({
   camera:{
     type: String,
   },
-  indice:{
-    type: Number,
-  },
   curva: {
     type: String,
   },

@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let indiceMaximo = 1;
   if(data!=null){
     data.forEach((item) =>{
-      console.log(item.indice)
       indiceMaximo++;
     })
   }
@@ -46,10 +45,6 @@ function adicionarLinha() {
   const report = document.getElementById("reportCheck").checked;
   const priority = document.getElementById("priorityCheck").checked;
   const obs = document.getElementById("obsInput").value;
-  let indice = localStorage.getItem('indiceCorrente')
-  if(indice==null){
-    indice=1;
-  }
 
   // Se report for 0, definir nfa como 1
   let nfa = false;
@@ -60,7 +55,6 @@ function adicionarLinha() {
   // Armazenar os dados no localStorage
   const newData = {
     camera: camera,
-    indice: indice,
     curva: curva,
     hora: hora,
     video: video,
@@ -70,9 +64,7 @@ function adicionarLinha() {
     obs: obs,
   };
 console.log(newData)
-  //Adicionar +1 ao indice máximo
-  indice ++;
-  localStorage.setItem('indiceCorrente',indice)
+
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
   enviarJson();
@@ -291,7 +283,6 @@ function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
   console.log(detalhes._id)
-  indiceReorganizar(detalhes);
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
@@ -415,6 +406,7 @@ function atualizarTabela(data) {
   }
 
   // Adiciona linhas à tabela com os dados recebidos
+  var counter=1;
   data.forEach((item) => {
     const novaLinha = document.createElement("tr");
     novaLinha.innerHTML = `
@@ -435,7 +427,7 @@ function atualizarTabela(data) {
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
         item._id
       }')"></td>
-      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${item.indice}" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${item.indice}" onclick="moveDown(this)">↓</button>
+      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${item._id}" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${item._id}" onclick="moveDown(this)">↓</button>
       `;
 
     // Adiciona classes CSS com base nos valores de report e nfa
@@ -458,6 +450,8 @@ function atualizarTabela(data) {
       novaLinha.classList.add("post-camera");
     }
 
+    console.log(counter)
+    counter++;
     tabela.appendChild(novaLinha);
   });
 }
@@ -516,8 +510,8 @@ function preencherPopupComDetalhes(detalhes) {
 // Função para criar os botões de troca de posição da linha selecionada
 function generatePositionButtons(detalhes){
   const popupEdit = document.getElementById('popupEdit');
-  const originalUp = document.getElementById(`buttonUp${detalhes.indice}`)
-  const originalDown = document.getElementById(`buttonDown${detalhes.indice}`)
+  const originalUp = document.getElementById(`buttonUp${detalhes._id}`)
+  const originalDown = document.getElementById(`buttonDown${detalhes._id}`)
   const buttonUp = document.createElement("button");
   buttonUp.classList.add("buttaoUpDown");
   buttonUp.textContent = "↑";
@@ -1222,7 +1216,7 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
 
           tablePosition = numCiclo; //Guarda a posição da linha onde foi primido o botao
           allowNext = true // Para adquirir os dados do que vem a seguir
-          //localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+          //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
 
         }
         numCiclo++;
@@ -1243,7 +1237,6 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
         if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
   
           item.camera = LinhaDados2.camera;
-          item.indice = LinhaDados2.indice;
           item.curva = LinhaDados2.curva;
           item.video = LinhaDados2.video;
           item.report = LinhaDados2.report;
@@ -1251,13 +1244,12 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
           item.priority = LinhaDados2.priority;
           item.obs = LinhaDados2.obs;
           item.__v= LinhaDados2.__v;
-          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
   
         }
         if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
   
           item.camera = LinhaDados1.camera;
-          item.indice = LinhaDados1.indice;
           item.curva = LinhaDados1.curva;
           item.video = LinhaDados1.video;
           item.report = LinhaDados1.report;
@@ -1265,11 +1257,11 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
           item.priority = LinhaDados1.priority;
           item.obs = LinhaDados1.obs;
           item.__v= LinhaDados1.__v;
-          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
         }
       })
 
-      updateIndice();
+      updatePosition();
     }
   } else {
     console.log("No row before the current row");
@@ -1299,13 +1291,13 @@ function moveDown(button) {
         if(item._id==idLinha){ //Vai buscar o id da linha anterior
           LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
           allowNext = true // Para adquirir os dados do que vem a seguir
-          //localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+          //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
         }
         else if(allowNext == true){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
           LinhaDados2 = {...item};
           allowNext = false;
           //item.indice-=1;
-          //localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+          //localStorage.setItem('LinhaPosition2',JSON.stringify(item))
         }
       })
 
@@ -1323,7 +1315,7 @@ function moveDown(button) {
           item.priority = LinhaDados2.priority;
           item.obs = LinhaDados2.obs;
           item.__v= LinhaDados2.__v;
-          localStorage.setItem('LinhaIndice1',JSON.stringify(item))
+          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
   
         }
         if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
@@ -1337,10 +1329,10 @@ function moveDown(button) {
           item.priority = LinhaDados1.priority;
           item.obs = LinhaDados1.obs;
           item.__v= LinhaDados1.__v;
-          localStorage.setItem('LinhaIndice2',JSON.stringify(item))
+          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
   
         }
-        updateIndice();
+        updatePosition();
       })
       //
     }
@@ -1355,11 +1347,11 @@ function moveDown(button) {
 
 
 /* Fazer update dos indices quando as linhas trocarem de lugar*/
-function updateIndice() {
+function updatePosition() {
   // Obtém os dados da linha atualizados do localStorage
-  const updatedDataString1 = localStorage.getItem("LinhaIndice1");
+  const updatedDataString1 = localStorage.getItem("LinhaPosition1");
   console.log(updatedDataString1);
-  const updatedDataString2 = localStorage.getItem("LinhaIndice2");
+  const updatedDataString2 = localStorage.getItem("LinhaPosition2");
   console.log(updatedDataString2);
   // Verifica se há dados no localStorage
   if (updatedDataString1 && updatedDataString2) {
@@ -1393,7 +1385,7 @@ function updateIndice() {
         console.log("Dados atualizados com sucesso:", data);
 
         // Limpa os dados do localStorage após a atualização
-        localStorage.removeItem("LinhaIndice1");
+        localStorage.removeItem("LinhaPosition1");
       })
       .catch((error) => {
         console.error(
@@ -1433,7 +1425,7 @@ function updateIndice() {
         console.log("Dados atualizados com sucesso:", data);
 
         // Limpa os dados do localStorage após a atualização
-        localStorage.removeItem("LinhaIndice2");
+        localStorage.removeItem("LinhaPosition2");
       })
       .catch((error) => {
         console.error(
