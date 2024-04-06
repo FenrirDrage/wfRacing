@@ -443,6 +443,12 @@ function atualizarTabela(data) {
     if (item.curva == "Start") {
       novaLinha.classList.add("post-start");
     }
+      if (item.curva == "Slow") {
+        novaLinha.classList.add("post-slow");
+    }
+    if (item.curva == "redflag") {
+      novaLinha.classList.add("post-redflag");
+  }
     if (item.curva == "Curva") {
       novaLinha.classList.add("post-curva");
     }
@@ -728,7 +734,7 @@ function carregarNumpad() {
 }
 
 // Chamar a função atualizarPagina a cada 5 segundos
-//setInterval(atualizarPagina, 10000);
+setInterval(atualizarPagina, 10000);
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
 function scrollToBottomWithDelay() {
@@ -741,7 +747,7 @@ function scrollToBottomWithDelay() {
       }
     }
   }, 100); // Ajuste o valor do atraso conforme necessário
-}
+} 
 
 // Chamar a função para rolar até o final da página quando a página for carregada
 window.addEventListener("load", function () {

@@ -14,19 +14,19 @@
 
 <div id="content-top">
     <!-- Adicionadar o cabeçalho da corrida -->
-    <h1 id="header">FFSA Championnat de France Junior- Le Mans 5-7 March</h1>
+    <h1 id="header">FFSA Championnat de France Junior- Le Mans 5-7 April</h1>
     <!--<button id="addButton" onclick="inputRace()">Insert Race Name</button> -->
     <!-- <button id="addButton" onclick="limparTabela()">Limpar Tabela</button>
     <button id="addButton" onclick="exportarTabela()">Salvar Informações</button> </br> -->
     <table id="pesquisaTable">
       <tr>
         <td colspan="2">
-          <p>Pesquisa:</p>
+          <!--<p>Pesquisa:</p> -->
         </td>
       </tr>
       <tr>
         <td id="pesquisaObs">
-          <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Insira a pesquisa.." />
+          <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Insira a Pesquisa" />
           <img src="images/pesquisa.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa()"/>
         </td>
       </tr>
@@ -55,7 +55,7 @@
             <th id="thcolor" class="hidden">Id</th>
             <th id="thcolor">Camera</th>
             <th id="thcolor">Turn/Post</th>
-            <th id="thcolor" class="hora-editavel" onclick="editarHora()">Hour</th>
+            <th id="thcolor" class="hora-editavel" onclick="editarHora()">Time</th>
             <th id="thcolor">Vídeo</th>
             <th id="thcolor">Report</th>
             <th id="thcolor">N.F.A.</th>
@@ -238,7 +238,7 @@
         <td>
           <select id="pesquisaOptions" onchange="mudaPesquisa()">
             <option value="1" id="pesquisa1" name="Turn/Post">Turn/Post</option>
-            <option value="2" id="pesquisa2" name="Hour">Hour</option>
+            <option value="2" id="pesquisa2" name="Time">Time</option>
             <option value="3" id="pesquisa3" name="Obs">Obs</option>
           </select>
         </td>

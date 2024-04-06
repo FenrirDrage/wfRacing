@@ -16,7 +16,7 @@ body {
 }
 
 #logo {
-    max-width: 150%;
+    max-width: 80%;
     margin-bottom: auto;
 }
 
@@ -31,14 +31,14 @@ form {
 
 input[type="text"],
 input[type="password"]{
-    width: 100%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: px;
     box-sizing: border-box;
-    font-size: 24px;
-    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-family: 'Arial Bold', Haettenschweiler, 'Arial Narrow Bold';
     justify-content: center;
 }
 input[type="submit"] {
