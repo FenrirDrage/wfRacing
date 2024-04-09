@@ -5,6 +5,9 @@ const {
   getController,
   dropController,
   putController,
+  addNumpadController,
+  dropNumpadController,
+  getNumpadController
 } = require("../controller/indexcont");
 
 //CRUD
@@ -22,5 +25,14 @@ router.delete("/dropData/:id", dropController.dropOneData);
 
 // Rota para atualizar todos os dados do banco de dados
 router.post("/updateData/:id", putController.putData);
+
+// Rota para dicionar um numero ao numpad
+router.post("/addDataNumpad", addNumpadController.addDataNumpad);
+
+// Rota para remover numero do numpad
+router.post("/dropDataNumpad", dropNumpadController.dropDataNumpad);
+
+// Rota para consultar numero do numpad
+router.get("/getDataNumpad", getNumpadController.getDataNumpad);
 
 module.exports = router;

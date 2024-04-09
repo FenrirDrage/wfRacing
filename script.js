@@ -13,12 +13,13 @@ function limparLS() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-
+  
   // é necessário um pequeno delay para a local storage atualizar devidamente
   setTimeout(() => {
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
   console.log(data);
+  //filtrarPorStart();
   let indiceMaximo = 1;
   if(data!=null){
     data.forEach((item) =>{
@@ -31,6 +32,116 @@ document.addEventListener("DOMContentLoaded", function () {
   
 })
 
+// Ir buscar dados numpad a database
+
+function carregarDadosNumpad(){
+  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://localhost:3000/getDataNumpad";
+  //IP casa Luís
+  //const url = "http://localhost:3000/getData";
+  //IP config WFR
+  //const url = "http://192.168.1.136:3000/getData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/getData";
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      // Atualiza a tabela com os dados recebidos
+      atualizarTabela(data);
+      // Armazena os dados localmente para uso posterior
+      localStorage.setItem("numpadNum", JSON.stringify(data));
+    })
+    .catch((error) => console.error("Erro ao obter dados:", error));
+}
+
+
+
+// Adicionar numero ao numpad
+
+function adicionarNumpadNum(){
+  eliminarNumpadNum()
+  const numpadNumber = localStorage.getItem('numCurves');
+  /* if(numpadNumber==null){
+    numpadNumber = localStorage.getItem('numCurves')
+  } */
+  const newNum={
+    numberButtons:numpadNumber,
+  }
+  console.log('Here')
+  console.log(newNum)
+  localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
+  enviarJsonNumpad();
+}
+
+function enviarJsonNumpad() {
+  // Recuperar os dados do localStorage
+  const localStorageData = localStorage.getItem("novoNumpadNum");
+  console.log(localStorageData);
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://localhost:3000/addDataNumpad";
+  //IP config casa Luís
+  //const url ="http:// localhost:3000/addData";
+  //IP config WFR
+  //const url = "http://192.168.1.148:3000/addData";
+  //const url = "http://192.168.1.136:3000/addData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/addData";
+
+  // Verificar se existem dados no localStorage
+  if (localStorageData) {
+    const parsedData = JSON.parse(localStorageData);
+    // Enviar os dados para o servidor
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error("Erro ao enviar dados para o servidor:", error)
+      );
+  } else {
+    console.log("Nenhum dado encontrado no localStorage.");
+  }
+}
+
+// Dar reset ao numero de numpad
+function eliminarNumpadNum() {
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://localhost:3000/dropDataNumpad";
+  //IP casa Luís
+  //const url = "http://localhost/dropData";
+  //IP config WFR
+  //const url = "http://192.168.1.136:3000/dropData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/dropData";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      //location.reload;
+      console.log(data.message); // Mensagem retornada pelo servidor
+    })
+    .catch((error) => {
+      console.error("Erro ao apagar dados:", error);
+    });
+}
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
@@ -79,7 +190,7 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/addData";
+  const url = "http://localhost:3000/addData";
   //IP config casa Luís
   //const url ="http:// localhost:3000/addData";
   //IP config WFR
@@ -185,16 +296,30 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
+// Detalhe da turn
+
+let detalheCurva="NaN";
+
+
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
   const camera = document.getElementById("cameraNumber2").value;
-  const curva = document.getElementById("curvaInput2").value;
+  let curva = document.getElementById("curvaInput2").value;
   const hora = document.getElementById("horainput2").value;
   const video = document.getElementById("videoCheck2").checked;
   const report = document.getElementById("reportCheck2").checked;
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
   const obs = document.getElementById("obsInput2").value;
+  console.log(curva)
+  console.log(detalheCurva);
+  // Caso tenham sido Post ou Turn anteriormente
+  if(!curva.includes('P') && !curva.includes('Turn')){
+    if(detalheCurva=='P' || detalheCurva=='Turn'){
+      curva += detalheCurva;
+    }
+  }
 
   // Cria um objeto com os dados atualizados
   const updatedData = {
@@ -243,7 +368,7 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://192.168.50.53:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís
     //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
@@ -286,7 +411,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://192.168.50.53:3000/dropData/${detalhes._id}`, {
+    fetch(`http://localhost:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -411,19 +536,19 @@ function atualizarTabela(data) {
     const novaLinha = document.createElement("tr");
     novaLinha.innerHTML = `
       <td class="hidden">${item._id}</td>
-      <td contenteditable="true">${item.camera}</td>
-      <td contenteditable="true">${item.curva}</td>
-      <td contenteditable="true">${item.hora}</td>
-      <td contenteditable="true"><input type="checkbox" ${
+      <td contenteditable="false">${item.camera}</td>
+      <td contenteditable="false">${item.curva}</td>
+      <td contenteditable="false">${item.hora}</td>
+      <td contenteditable="false"><input type="checkbox" ${
         item.video ? "checked" : ""
       } disabled></td>
-      <td contenteditable="true"><input type="checkbox" ${
+      <td contenteditable="false"><input type="checkbox" ${
         item.report ? "checked" : ""
       } disabled></td>
-      <td contenteditable="true"><input type="checkbox" ${
+      <td contenteditable="false"><input type="checkbox" ${
         item.nfa ? "checked" : ""
       } disabled></td>
-      <td contenteditable="true">${item.obs}</td>
+      <td contenteditable="false">${item.obs}</td>
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
         item._id
       }')"></td>
@@ -443,15 +568,17 @@ function atualizarTabela(data) {
     if (item.curva == "Start") {
       novaLinha.classList.add("post-start");
     }
-      if (item.curva == "Slow") {
-        novaLinha.classList.add("post-slow");
+    if (item.curva == "Slow Flag") {
+      novaLinha.classList.add("post-slow");
     }
-    if (item.curva == "redflag") {
+    if (item.curva == "Red Flag") {
       novaLinha.classList.add("post-redflag");
-  }
-    if (item.curva == "Curva") {
+    }
+
+    if (item.curva.includes("Turn")) { 
       novaLinha.classList.add("post-curva");
     }
+
     if (item.curva == "Camera") {
       novaLinha.classList.add("post-camera");
     }
@@ -498,7 +625,6 @@ function preencherPopupComDetalhes(detalhes) {
     const obsInput = document.getElementById("obsInput2");
     const nfaCheck = document.getElementById("nfacheck2");
     
-    
 
     // Verifica se os elementos existem no DOM
     if (curvaInput && horainput && videoCheck && reportCheck && nfaCheck && obsInput && cameraInput && priorityCheck) {
@@ -511,6 +637,14 @@ function preencherPopupComDetalhes(detalhes) {
       reportCheck.checked = detalhes.report || false;
       priorityCheck.checked = detalhes.priority || false;
       obsInput.value = detalhes.obs || "";
+
+      //Guardar o input da curva anterior Turn ou Post
+      if(curvaInput.value.includes("P")){
+        detalheCurva = "P"
+      }else if (curvaInput.value.includes("Turn")){
+        detalheCurva = "Turn"
+      }
+      console.log(detalheCurva);
     } else {
       console.error(
         "Um ou mais elementos do popup não foram encontrados no DOM."
@@ -552,7 +686,7 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/getData";
+  const url = "http://localhost:3000/getData";
   //IP casa Luís
   //const url = "http://localhost:3000/getData";
   //IP config WFR
@@ -604,8 +738,6 @@ function obterStartOrRF(valor) {
   document.getElementById("curvaInput").value = document.getElementById(
     `race${valor}`
   ).value;
-  console.log(numpadLinhas);
-  //adicionarLinha();
 }
 
 // Preencher informação com a curva quando utilizar Numpad
@@ -613,7 +745,6 @@ function obterCurvaNum(curva) {
   document.getElementById("curvaInput").value = document.getElementById(
     `curva${curva}`
   ).value;
-  //adicionarLinha();
 }
 
 //Adicionar Camera ou Post no field Curva/Post
@@ -639,9 +770,11 @@ function checkPassword() {
   if (document.getElementById("numpadUnlock").value == numpadPassword) {
     generateNumpad();
     fecharPopupNumpadPassword();
+    fecharPopupRodaDentada()
   } else {
     window.alert("Código introduzido errado!");
     fecharPopupNumpadPassword();
+    fecharPopupRodaDentada()
   }
 }
 
@@ -667,7 +800,7 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/dropData";
+  const url = "http://localhost:3000/dropData";
   //IP casa Luís
   //const url = "http://localhost/dropData";
   //IP config WFR
@@ -704,6 +837,7 @@ function atualizarEstadoCheckbox(checkbox) {
 // Certifique-se de que a função carregarDados() é chamada após o carregamento da página
 document.addEventListener("DOMContentLoaded", function () {
   carregarDados();
+  //carregarDadosNumpad();
 });
 
 // Adicionar tratamento de erros para requisições fetch
@@ -713,16 +847,16 @@ function refreshPage() {
 
 let popupAberto = false;
 let popup2Aberto = false;
-let popupNumpadAbero = false;
+let popupNumpadAberto = false;
 let popupNumpadPasswordAberto = false;
 let popupRodaDentada = false;
 let popupConfiguracoes = false;
 let popupFiltros = false;
 
 function atualizarPagina() {
-  if (!popupAberto && !popup2Aberto) {
+  if (!popupAberto && !popup2Aberto && campoPesquisa==false &&!popupConfiguracoes) {
     // Lógica para atualizar a página
-    location.reload();
+    //location.reload();
   }
 }
 
@@ -731,10 +865,10 @@ function carregarNumpad() {
   document.getElementById("numberCurvas").value =
     localStorage.getItem("numCurves");
   generateNumpad();
+  adicionarNumpadNum();
 }
 
-// Chamar a função atualizarPagina a cada 5 segundos
-setInterval(atualizarPagina, 10000);
+
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
 function scrollToBottomWithDelay() {
@@ -786,13 +920,18 @@ window.addEventListener("load", updateClock);
 // Gerar Número de curvas no numpad
 
 let generatedNumber = 0;
-let numpadLinhas;
+
 
 function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
   if (document.getElementById("numpad-table") == null) {
     const num = document.getElementById("numberCurvas").value;
-    generatedNumber = num;
+    const databaseNum = localStorage.getItem('numCurva')
+    if(databaseNum!=undefined || databaseNum !=null){
+      generatedNumber = databaseNum
+    }else{
+      generatedNumber = num;
+    }
     const numpadDiv = document.getElementById("numpad");
     const numpadTable = document.createElement("table");
     numpadTable.id = "numpad-table";
@@ -970,6 +1109,7 @@ function editarNumpad2() {
 let campoPesquisa = false;
 
 document.addEventListener("DOMContentLoaded", function () {
+  loadPesquisaChoice();
   const pesquisaField = document.getElementById("pesquisa");
   if (!pesquisaField) {
     console.log(pesquisaField);
@@ -986,18 +1126,38 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+
+if(campoPesquisa==false){
+  // Chamar a função atualizarPagina a cada 5 segundos
+  setInterval(atualizarPagina, 10000);
+}
+
+
+
+// Valor para o segundo input numérico no numpad
+document.addEventListener("keydown", function (e) {
+  if (popupNumpadAberto == true){
+    let curvaInput = document.getElementById("curvaInput")
+    const maxCurvas = localStorage.getItem("numCurves")
+    console.log(maxCurvas);
+    curvaInput.value += `${e.key}`;
+    if(Number(curvaInput.value) > maxCurvas){
+      curvaInput.value = String(maxCurvas)
+    }
+}
+})
+
 //Atalhos para o numpad (no numpad físico) até 9
 document.addEventListener("keydown", function (e) {
   //Vai buscar o numero currente de curvas definido
   numpadNumbers = localStorage.getItem("numCurves");
   botaoEditar = document.getElementById("botao-numpad-editar");
-  console.log('eh')
 
   // Caso nenhum dos popus estejam abertos
   if (
     popupAberto == false &&
     popup2Aberto == false &&
-    popupNumpadAbero == false &&
+    popupNumpadAberto == false &&
     popupNumpadPasswordAberto == false &&
     popupRodaDentada == false &&
     popupConfiguracoes == false &&
@@ -1021,6 +1181,24 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+
+document.addEventListener("keydown", function (e) {
+  if(e.key === 's' || e.key==='S'){
+    document.getElementById("curvaInput").value = 'Start';
+    obterHoraAtual()
+    adicionarLinha();
+  }else if(e.key==='r' || e.key==='R'){
+    document.getElementById("curvaInput").value = 'Red Flag';
+    obterHoraAtual()
+    adicionarLinha();
+  }else if(e.key==='a' || e.key==='A'){
+    document.getElementById("curvaInput").value = 'Slow Flag';
+    obterHoraAtual()
+    adicionarLinha();
+  }
+})
+
+
 // Função para determinar qual ação executar com base no popup aberto
 function handleEnterKey(e) {
   if (e.key === "Enter") {
@@ -1033,6 +1211,9 @@ function handleEnterKey(e) {
     else if (popup2Aberto) {
       updateLinha();
       fecharPopup2();
+    }
+    else if (popupNumpadPasswordAberto){
+      checkPassword();
     }
     // Adicione mais verificações para outros popups, se necessário
     else {
@@ -1067,24 +1248,33 @@ document.getElementById("pesquisaOptions").value = 1;
 console.log(document.getElementById("pesquisaOptions").value);
 // Alterar a coluna de pesquisa no campo de pesquisa
 
+
 function mudaPesquisa() {
-  const pesquisaChoice = document.getElementById("pesquisaOptions");
+  let pesquisaChoice = document.getElementById("pesquisaOptions");
+  const historyChoice = localStorage.getItem("pesquisaChoice");
+  
   const pesquisa = document.getElementById("pesquisa");
   console.log(pesquisaChoice.value);
+  let num = Number(pesquisaChoice.value);
   if (!pesquisaChoice) {
     console.log("Não há select");
   } else {
     pesquisaChoice.addEventListener("change", function () {
       if (pesquisaChoice.value == 1) {
-        pesquisa.onkeyup = function () {
+        localStorage.setItem('pesquisaChoice', pesquisaChoice.value)
+        pesquisa.onkeyup = function () {         
           pesquisarTabelaPost();
         };
+        console.log(localStorage.getItem('pesquisaChoice'))
       } else if (pesquisaChoice.value == 2) {
+        localStorage.setItem('pesquisaChoice', pesquisaChoice.value)
         console.log("Selected2!");
-        pesquisa.onkeyup = function () {
+        console.log(localStorage.getItem('pesquisaChoice'))
+        pesquisa.onkeyup = function () {     
           pesquisarTabelaHour();
         };
       } else if (pesquisaChoice.value == 3) {
+        localStorage.setItem('pesquisaChoice', pesquisaChoice.value)
         console.log("Selected3!");
         pesquisa.onkeyup = function () {
           pesquisarTabelaObs();
@@ -1094,7 +1284,34 @@ function mudaPesquisa() {
   }
 }
 
-
+function loadPesquisaChoice(){
+  console.log('It ran')
+  let pesquisaChoice = document.getElementById("pesquisaOptions")
+  const choice = localStorage.getItem("pesquisaChoice")
+  const pesquisa = document.getElementById("pesquisa");
+  console.log(pesquisaChoice.value)
+  console.log(choice)
+  if(choice!=null){
+    pesquisaChoice.value = choice;
+    console.log(pesquisaChoice.value)
+    if (pesquisaChoice.value == 1) {
+      pesquisa.onkeyup = function () {         
+        pesquisarTabelaPost();
+      };
+    } else if (pesquisaChoice.value == 2) {
+      console.log("Selected2!");
+      pesquisa.onkeyup = function () {     
+        pesquisarTabelaHour();
+      };
+    } else if (pesquisaChoice.value == 3) {
+      console.log("Selected3!");
+      pesquisa.onkeyup = function () {
+        pesquisarTabelaObs();
+      };
+    }
+  }
+  
+}
 
 /* Adiciona função filtragem*/
 function pesquisarTabelaObs() {
@@ -1177,6 +1394,29 @@ function pesquisaEscolhaPostObs() {
   actualChoice.classList.remove("hidden");
 }
 
+// Filtragem em intervalos de start
+/* function filtrarPorStart(){
+  // Declare variables
+  var table = document.getElementById("tabela");
+  var tr = table.getElementsByTagName("tr"); 
+  var startFound = false;
+
+for (var i = 0; i < tr.length; i++) { 
+  var td = tr[i].getElementsByTagName("td")[2]; //Consider the column where "Start" is located 
+  if (td) { 
+    var txtValue = td.textContent || td.innerText; 
+      if (txtValue.toUpperCase() === "START") { 
+        startFound = !startFound;
+        if (startFound) { console.log("Row containing 'Start':"); 
+        } else { 
+          break; // Stop searching when next "Start" is found 
+        } 
+      } 
+      if (startFound) { console.log(tr[i].textContent); 
+      } 
+    } 
+  }
+} */
 
 /* Esconder/Mostrar Tabela/Numpad */
 
@@ -1384,7 +1624,7 @@ function updatePosition() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://192.168.50.53:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís 
     //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
@@ -1424,7 +1664,7 @@ function updatePosition() {
     console.log(id2);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url2 = `http://192.168.50.53:3000/updateData/${id2}`;
+    const url2 = `http://localhost:3000/updateData/${id2}`;
     //IP casa Luís 
     //const url = `http://localhost/updateData/${id}`;
     //IP config WFR

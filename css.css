@@ -511,11 +511,11 @@ tr.post-start td {
 }
 tr.post-slow td {
   background-color: #d6ff07 ; /* Cor de fundo vermelha */
-  color: white; /* Cor do texto branco */
+  /* color: white;  *//* Cor do texto branco */
 }
-tr.post.redflag td{
+tr.post-redflag td{
   background-color: #E30613;
-color: white;
+  color: white;
 }
 
 tr.priority-set td{
@@ -558,9 +558,14 @@ tr.priority-set td{
 }
 
 #filtroImg{
-  width:5%;
+  content:url(images/pesquisa.png);
+  width:7%;
   cursor: pointer;
   vertical-align:bottom;
+}
+
+#filtroImg:hover{
+  content:url(images/pesquisaGif.png);
 }
 
 #filtroImgtd{
@@ -571,8 +576,13 @@ tr.priority-set td{
   z-index: 10000;
 }
 
+#popupFiltros p{
+  font-size: 14px;
+  color: black;
+}
+
 #popupFiltros button{
-  margin-left: 25px;
+  margin-left: 40px;
 }
 
 

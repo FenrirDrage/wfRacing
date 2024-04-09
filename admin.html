@@ -9,7 +9,7 @@
 <script src="scriptslogin.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-<body onload="carregarNumpad();makeAllSortable()">
+<body onload="carregarNumpad()">
 <img id="logo" src="images/unnamed.png" alt="Logo">
 
 <div id="content-top">
@@ -27,7 +27,7 @@
       <tr>
         <td id="pesquisaObs">
           <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Insira a Pesquisa" />
-          <img src="images/pesquisa.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa()"/>
+          <img src="images/pesquisaGif.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa()"/>
         </td>
       </tr>
     </table>
@@ -171,10 +171,10 @@
       <span class="close" onclick="fecharPopup()">&times;</span>
       <input type="text" id="curvaInput" placeholder="Curva/Posto">
       <input type="text" id="horainput" value="" placeholder="hora"><br>
+      <input type="text" class="hidden" id="cameraNumber" placeholder="Camera"><br>
       <input type="checkbox" id="videoCheck">Vídeo<br>
       <input type="checkbox" id="reportCheck">Report<br>
       <input type="checkbox" id="priorityCheck"> Priority<br>
-      <input type="text" class="hidden" id="cameraNumber">Post Type<br>
       <textarea id="obsInput" placeholder="obs"></textarea><br>
       <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
     </div>
@@ -185,11 +185,11 @@
     <span class="close" onclick="fecharPopup2()">&times;</span>
       <input type="text" id="curvaInput2" placeholder="Curva/Posto">
       <input type="text" id="horainput2" value="" placeholder="hora"><br>
+      <input type="text" id="cameraNumber2" placeholder="Camera"><br><br>
       <input type="checkbox" id="videoCheck2"> Vídeo<br>
       <input type="checkbox" id="reportCheck2"> Report<br>
       <input type="checkbox" id="nfacheck2"> N.F.A.<br>
       <input type="checkbox" id="priorityCheck2"> Priority<br>
-      <input type="text" id="cameraNumber2" placeholder="Camera"><br><br>
       <textarea id="obsInput2" placeholder="obs"></textarea><br>
       <button onclick="fecharPopup2(); updateLinha()">Update</button>
       <button onclick="fecharPopup2(); deleteLinha()">Delete</button>
@@ -228,7 +228,7 @@
     <table id="pesquisaTable">
       <tr>
         <td colspan="2">
-          <p>Escolha de filtro:</p>
+          <p>Escolha o tipo de pesquisa:</p>
         </td>
         <td>
           <span class="close" onclick="fecharPopupFiltros()">&times;</span>
