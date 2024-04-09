@@ -39,9 +39,9 @@ function carregarDadosNumpad(){
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/getDataNumpad";
+  const url = "http://192.168.1.136:3000/getDataNumpad";
   //IP casa Luís
-  //const url = "http://192.168.50.53:3000/getData";
+  //const url = "http://192.168.1.136:3000/getData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/getData";
   //IP CORRIDAS
@@ -84,9 +84,9 @@ function enviarJsonNumpad() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/addDataNumpad";
+  const url = "http://192.168.1.136:3000/addDataNumpad";
   //IP config casa Luís
-  //const url ="http:// 192.168.50.53:3000/addData";
+  //const url ="http:// 192.168.1.136:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
   //const url = "http://192.168.1.136:3000/addData";
@@ -119,9 +119,9 @@ function eliminarNumpadNum() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/dropDataNumpad";
+  const url = "http://192.168.1.136:3000/dropDataNumpad";
   //IP casa Luís
-  //const url = "http://192.168.50.53/dropData";
+  //const url = "http://192.168.1.136/dropData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/dropData";
   //IP CORRIDAS
@@ -190,9 +190,9 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/addData";
+  const url = "http://192.168.1.136:3000/addData";
   //IP config casa Luís
-  //const url ="http:// 192.168.50.53:3000/addData";
+  //const url ="http:// 192.168.1.136:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
   //const url = "http://192.168.1.136:3000/addData";
@@ -368,9 +368,9 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://192.168.50.53:3000/updateData/${id}`;
+    const url = `http://192.168.1.136:3000/updateData/${id}`;
     //IP casa Luís
-    //const url = `http://192.168.50.53/updateData/${id}`;
+    //const url = `http://192.168.1.136/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;
@@ -411,7 +411,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://192.168.50.53:3000/dropData/${detalhes._id}`, {
+    fetch(`http://192.168.1.136:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -679,9 +679,9 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/getData";
+  const url = "http://192.168.1.136:3000/getData";
   //IP casa Luís
-  //const url = "http://192.168.50.53:3000/getData";
+  //const url = "http://192.168.1.136:3000/getData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/getData";
   //IP CORRIDAS
@@ -793,9 +793,9 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.50.53:3000/dropData";
+  const url = "http://192.168.1.136:3000/dropData";
   //IP casa Luís
-  //const url = "http://192.168.50.53/dropData";
+  //const url = "http://192.168.1.136/dropData";
   //IP config WFR
   //const url = "http://192.168.1.136:3000/dropData";
   //IP CORRIDAS
@@ -919,7 +919,7 @@ function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
   if (document.getElementById("numpad-table") == null) {
     const num = document.getElementById("numberCurvas").value;
-    const databaseNum = localStorage.getItem('numCurva')
+    const databaseNum = localStorage.getItem('numpadNum')
     if(databaseNum!=undefined || databaseNum !=null){
       generatedNumber = databaseNum
     }else{
@@ -1122,7 +1122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 if(campoPesquisa==false){
   // Chamar a função atualizarPagina a cada 5 segundos
-  setInterval(atualizarPagina, 10000);
+  setInterval(atualizarPagina, 5000);
 }
 
 
@@ -1627,9 +1627,9 @@ function updatePosition() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://192.168.50.53:3000/updateData/${id}`;
+    const url = `http://192.168.1.136:3000/updateData/${id}`;
     //IP casa Luís 
-    //const url = `http://192.168.50.53/updateData/${id}`;
+    //const url = `http://192.168.1.136/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;
@@ -1667,9 +1667,9 @@ function updatePosition() {
     console.log(id2);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url2 = `http://192.168.50.53:3000/updateData/${id2}`;
+    const url2 = `http://192.168.1.136:3000/updateData/${id2}`;
     //IP casa Luís 
-    //const url = `http://192.168.50.53/updateData/${id}`;
+    //const url = `http://192.168.1.136/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
     //const url = `http://192.168.1.136:3000/updateData/${id}`;

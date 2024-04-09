@@ -1,3 +1,11 @@
+function handlekeypress(event){
+  if (event.key === "Enter"){
+    login();
+  }
+}
+
+document.addEventListener("keypress", handlekeypress);
+
 function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -7,7 +15,7 @@ function login() {
   };
 
   // Enviar solicitação HTTP para validar o login
-  fetch("http://192.168.50.53:3000/auth/login", {
+  fetch("http://192.168.1.136:3000/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +67,7 @@ function playVideoAndRedirect(data) {
   // Função para verificar o tipo de usuário e redirecionar
   function checkUserTypeAndRedirect() {
       const responseData = JSON.parse(localStorage.getItem("responseData"));
-      if (responseData && responseData.usertype === "admin") {
+      if (responseData && responseData.usertype === "admin" || responseData && responseData.usertype === "operator") {
           // Redireciona para a página de administração se o usuário for admin
           window.location.href = "/admin.html";
       } else {
@@ -101,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   logoutButton.addEventListener("click", function() {
       // Fazer solicitação para logout
-      fetch("http://192.168.50.53:3000/auth/logout", {
+      fetch("http://192.168.1.136:3000/auth/logout", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
