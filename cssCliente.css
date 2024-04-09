@@ -391,14 +391,15 @@ filter:invert();
 }
 
  /* Estilos para linhas com report true */
-tr.report-true td {
-  background-color: #E30613; /* Cor de fundo vermelha */
+ tr.report-true td {
+  background-color: #575656; /* Cor de fundo vermelha */
   color: white; /* Cor do texto branco */
 }
 
 /* Estilos para linhas com nfa true */
 tr.nfa-true td {
-  background-color: #d2e003; /* Cor de fundo amarela */
+  background-color: #5756565d; /* Cor de fundo amarela */
+  color:black;
 }
 
 #popupRodadentada {
@@ -445,15 +446,23 @@ tr.nfa-true td {
 }
 
 tr.post-start td {
-  background-color: #287cb4; /* Cor de fundo vermelha */
+  background-color: #18cc00 ; /* Cor de fundo vermelha */
   color: white; /* Cor do texto branco */
+}
+tr.post-slow td {
+  background-color: #d6ff07 ; /* Cor de fundo vermelha */
+  /* color: white;  *//* Cor do texto branco */
+}
+tr.post-redflag td{
+  background-color: #E30613;
+  color: white;
 }
 
 tr.priority-set td{
   background-color: #e29032; /* Cor de fundo vermelha */
   color: white; /* Cor do texto branco */
-  animation: blinks 0.5s  infinite;
-  transition-duration: 0.5s infinite; 
+  animation: blinks 1s  infinite;
+  transition-duration: 1s infinite; 
   
 }
 
