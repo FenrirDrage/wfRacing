@@ -1183,6 +1183,15 @@ document.addEventListener("keydown", function (e) {
 
 
 document.addEventListener("keydown", function (e) {
+  if (
+    popupAberto == false &&
+    popup2Aberto == false &&
+    popupNumpadAberto == false &&
+    popupNumpadPasswordAberto == false &&
+    popupRodaDentada == false &&
+    popupConfiguracoes == false &&
+    campoPesquisa == false
+  ) {
   if(e.key === 's' || e.key==='S'){
     document.getElementById("curvaInput").value = 'Start';
     obterHoraAtual()
@@ -1196,6 +1205,7 @@ document.addEventListener("keydown", function (e) {
     obterHoraAtual()
     adicionarLinha();
   }
+}
 })
 
 
