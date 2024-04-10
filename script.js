@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
   const dadosExistentes = localStorage.getItem('dadosTabela')
   const data = JSON.parse(dadosExistentes)
-  console.log(data);
   //filtrarPorStart();
   let indiceMaximo = 1;
   if(data!=null){
@@ -46,7 +45,6 @@ function carregarDadosNumpad(){
   //const url = "http://192.168.1.136:3000/getData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/getData";
-
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -63,16 +61,15 @@ function carregarDadosNumpad(){
 // Adicionar numero ao numpad
 
 function adicionarNumpadNum(){
+  // Eliminar o anterior
   eliminarNumpadNum()
-  const numpadNumber = localStorage.getItem('numCurves');
+  const numpadNumber = document.getElementById("numberCurvas").value;
   /* if(numpadNumber==null){
     numpadNumber = localStorage.getItem('numCurves')
   } */
   const newNum={
     numberButtons:numpadNumber,
   }
-  console.log('Here')
-  console.log(newNum)
   localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
   enviarJsonNumpad();
 }
@@ -575,8 +572,6 @@ function atualizarTabela(data) {
       novaLinha.classList.add("post-redflag");
     }
 
-
-    console.log(counter)
     counter++;
     tabela.appendChild(novaLinha);
   });
@@ -761,6 +756,7 @@ function checkPassword() {
   numpadPassword = "WFR2012";
   console.log(document.getElementById("numpadUnlock").value);
   if (document.getElementById("numpadUnlock").value == numpadPassword) {
+    adicionarNumpadNum();
     generateNumpad();
     fecharPopupNumpadPassword();
     fecharPopupRodaDentada()
@@ -829,8 +825,8 @@ function atualizarEstadoCheckbox(checkbox) {
 
 // Certifique-se de que a função carregarDados() é chamada após o carregamento da página
 document.addEventListener("DOMContentLoaded", function () {
+  carregarDadosNumpad();
   carregarDados();
-  //carregarDadosNumpad();
 });
 
 // Adicionar tratamento de erros para requisições fetch
@@ -855,10 +851,21 @@ function atualizarPagina() {
 
 // Função para carregar o mesmo número introduzido no numpad(quando é feito reload)
 function carregarNumpad() {
-  document.getElementById("numberCurvas").value =
+  // Se existir um numero na base de dados vai buscar, senão usa localmente
+  const databaseNum = JSON.parse(localStorage.getItem("numpadNum"))
+  if(databaseNum){
+
+      databaseNum.forEach((item)=>{
+        if(item.numberButtons!=null || item.numberButtons != undefined){
+          document.getElementById("numberCurvas").value = item.numberButtons
+          console.log(item.numberButtons)
+        }
+      })
+  }else{
+    document.getElementById("numberCurvas").value =
     localStorage.getItem("numCurves");
+  }
   generateNumpad();
-  adicionarNumpadNum();
 }
 
 
@@ -919,9 +926,15 @@ function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
   if (document.getElementById("numpad-table") == null) {
     const num = document.getElementById("numberCurvas").value;
-    const databaseNum = localStorage.getItem('numpadNum')
+    const databaseNum = JSON.parse(localStorage.getItem("numpadNum"))
+    console.log(databaseNum)
     if(databaseNum!=undefined || databaseNum !=null){
-      generatedNumber = databaseNum
+      setTimeout(() => {
+      databaseNum.forEach((item)=>{
+        console.log(item.numberButtons);
+        generatedNumber = item.numberButtons
+      })
+      },100)
     }else{
       generatedNumber = num;
     }
@@ -1228,7 +1241,7 @@ function handleEnterKey(e) {
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
 
-function checkPassword2() {
+/* function checkPassword2() {
   numpadPassword = "WFR2012";
   console.log(document.getElementById("numpadUnlock2").value);
   if (document.getElementById("numpadUnlock2").value == numpadPassword) {
@@ -1238,14 +1251,14 @@ function checkPassword2() {
     window.alert("Código introduzido errado!");
     fecharPopupNumpadPassword();
   }
-}
+} */
 
-function carregarNumpad2() {
+/* function carregarNumpad2() {
   console.log(localStorage.getItem("numCurves"));
   document.getElementById("numberCurvas").value =
     localStorage.getItem("numCurves");
   generateNumpad2();
-}
+} */
 
 document.getElementById("pesquisaOptions").value = 1;
 console.log(document.getElementById("pesquisaOptions").value);
@@ -1287,12 +1300,11 @@ function mudaPesquisa() {
   }
 }
 
+// Carregar a pesquisa selecionada anteriormente
 function loadPesquisaChoice(){
-  console.log('It ran')
   let pesquisaChoice = document.getElementById("pesquisaOptions")
   const choice = localStorage.getItem("pesquisaChoice")
   const pesquisa = document.getElementById("pesquisa");
-  console.log(pesquisaChoice.value)
   console.log(choice)
   if(choice!=null){
     pesquisaChoice.value = choice;
@@ -1397,29 +1409,6 @@ function pesquisaEscolhaPostObs() {
   actualChoice.classList.remove("hidden");
 }
 
-// Filtragem em intervalos de start
-/* function filtrarPorStart(){
-  // Declare variables
-  var table = document.getElementById("tabela");
-  var tr = table.getElementsByTagName("tr"); 
-  var startFound = false;
-
-for (var i = 0; i < tr.length; i++) { 
-  var td = tr[i].getElementsByTagName("td")[2]; //Consider the column where "Start" is located 
-  if (td) { 
-    var txtValue = td.textContent || td.innerText; 
-      if (txtValue.toUpperCase() === "START") { 
-        startFound = !startFound;
-        if (startFound) { console.log("Row containing 'Start':"); 
-        } else { 
-          break; // Stop searching when next "Start" is found 
-        } 
-      } 
-      if (startFound) { console.log(tr[i].textContent); 
-      } 
-    } 
-  }
-} */
 
 /* Esconder/Mostrar Tabela/Numpad */
 

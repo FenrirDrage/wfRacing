@@ -5,7 +5,7 @@ exports.dropDataNumpad = async (req, res) => {
   try {
     // Excluir todos os documentos da coleção
     await DadosNumpad.deleteMany({});
-    res.json({ message: "Todos os dados foram removidos com sucesso." });
+    res.json({ message: "Numero eliminado com sucesso." });
   } catch (error) {
     console.error("Erro ao remover os dados:", error);
     res.status(500).json({ error: "Erro ao remover os dados." });
