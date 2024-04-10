@@ -1,10 +1,76 @@
-function handlekeypress(event){
-  if (event.key === "Enter"){
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker
+      .register("/pwa/service-worker.js")
+      .then(function (registration) {
+        console.log(
+          "ServiceWorker registration successful with scope: ",
+          registration.scope
+        );
+      })
+      .catch(function (err) {
+        console.error("ServiceWorker registration failed: ", err);
+      });
+  });
+}
+document.addEventListener("keypress", handlekeypress);
+
+document.addEventListener("DOMContentLoaded", function () {
+  const videoContainer = document.getElementById("videoContainer");
+
+  // Mostrar o contêiner do vídeo por 3 segundos
+  videoContainer.style.display = "block";
+
+  // Carregar o vídeo
+  const video = document.createElement("video");
+  video.src = "images/wfrtrans.mp4";
+  video.autoplay = true;
+  video.preload = "metadata"; // Carregar apenas os metadados do vídeo
+
+  // Adicionar o vídeo ao contêiner
+  videoContainer.appendChild(video);
+
+  // Definir temporizador para ocultar o contêiner após 3 segundos
+  setTimeout(function () {
+    videoContainer.style.display = "none";
+  }, 2500); // Tempo em milissegundos (3 segundos)
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const logoutButton = document.getElementById("logoutButton");
+
+  logoutButton.addEventListener("click", function () {
+    // Fazer solicitação para logout
+    fetch("http://192.168.1.136:3000/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Inclua o token de autenticação no cabeçalho Authorization
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
+          localStorage.removeItem("token");
+          // Redirecionar de volta para a página index.html
+          window.location.href = "index.html";
+        } else {
+          // Se o logout falhar, exiba uma mensagem de erro
+          console.error("Failed to logout");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+});
+
+function handlekeypress(event) {
+  if (event.key === "Enter") {
     login();
   }
 }
-
-document.addEventListener("keypress", handlekeypress);
 
 function login() {
   const username = document.getElementById("username").value;
@@ -34,7 +100,7 @@ function login() {
       console.log("Response:", responseData);
 
       // Salvar responseData no localStorage
-      localStorage.setItem('responseData', JSON.stringify(responseData));
+      localStorage.setItem("responseData", JSON.stringify(responseData));
 
       // Reproduzir o vídeo e redirecionar após o término do vídeo
       playVideoAndRedirect(responseData);
@@ -59,21 +125,24 @@ function playVideoAndRedirect(data) {
   videoContainer.appendChild(video);
 
   // Definindo o evento 'ended' para lidar com o término do vídeo
-  video.addEventListener("ended", function() {
-      console.log("Vídeo terminado!");
-      checkUserTypeAndRedirect();
+  video.addEventListener("ended", function () {
+    console.log("Vídeo terminado!");
+    checkUserTypeAndRedirect();
   });
 
   // Função para verificar o tipo de usuário e redirecionar
   function checkUserTypeAndRedirect() {
-      const responseData = JSON.parse(localStorage.getItem("responseData"));
-      if (responseData && responseData.usertype === "admin" || responseData && responseData.usertype === "operator") {
-          // Redireciona para a página de administração se o usuário for admin
-          window.location.href = "/admin.html";
-      } else {
-          // Redireciona para a página de cliente se o usuário não for admin
-          window.location.href = "/cliente.html";
-      }
+    const responseData = JSON.parse(localStorage.getItem("responseData"));
+    if (
+      (responseData && responseData.usertype === "admin") ||
+      (responseData && responseData.usertype === "operator")
+    ) {
+      // Redireciona para a página de administração se o usuário for admin
+      window.location.href = "/admin.html";
+    } else {
+      // Redireciona para a página de cliente se o usuário não for admin
+      window.location.href = "/cliente.html";
+    }
   }
 
   // Definir temporizador para verificar responseData após 5 segundos
@@ -82,54 +151,3 @@ function playVideoAndRedirect(data) {
   // Executar o vídeo
   video.play();
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-  const videoContainer = document.getElementById("videoContainer");
-
-  // Mostrar o contêiner do vídeo por 3 segundos
-  videoContainer.style.display = "block";
-
-  // Carregar o vídeo
-    const video = document.createElement("video");
-    video.src = "images/wfrtrans.mp4";
-    video.autoplay = true;
-    video.preload = "metadata"; // Carregar apenas os metadados do vídeo
-
-    // Adicionar o vídeo ao contêiner
-    videoContainer.appendChild(video);
-
-  // Definir temporizador para ocultar o contêiner após 3 segundos
-  setTimeout(function() {
-      videoContainer.style.display = "none";
-  }, 2500); // Tempo em milissegundos (3 segundos)
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  const logoutButton = document.getElementById("logoutButton");
-
-  logoutButton.addEventListener("click", function() {
-      // Fazer solicitação para logout
-      fetch("http://192.168.1.136:3000/auth/logout", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              // Inclua o token de autenticação no cabeçalho Authorization
-              "Authorization": `Bearer ${localStorage.getItem("token")}`
-          }
-      })
-      .then(response => {
-          if (response.ok) {
-              // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
-              localStorage.removeItem("token");
-              // Redirecionar de volta para a página index.html
-              window.location.href = "index.html";
-          } else {
-              // Se o logout falhar, exiba uma mensagem de erro
-              console.error("Failed to logout");
-          }
-      })
-      .catch(error => {
-          console.error("Error:", error);
-      });
-  });
-});

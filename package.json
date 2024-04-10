@@ -1,5 +1,5 @@
 {
-  "name": "wfrracing",
+  "name": "wfr-racetech",
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
@@ -17,6 +17,7 @@
     "mongoose": "^8.2.1",
     "morgan": "^1.10.0",
     "socket.io": "^4.7.5",
-    "update": "^0.7.4"
+    "update": "^0.7.4",
+    "workbox-precaching": "^7.0.0"
   }
 }

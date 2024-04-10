@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WFR Login</title>
     <link rel="stylesheet" type="text/css" href="cs.css">
-    <script src="scriptslogin.js"></script>
+    <script>navigator.serviceWorker.register("pwa/pwabuilder-adv-sw.js")</script> 
+    <script>navigator.serviceWorker.register("pwa/pwabuilder-adv-sw.js")</script> 
+    <link rel="manifest" href="pwa/manifest.json" />    
 </head>
 <body>
     <!-- Vídeo Container -->
@@ -25,5 +27,6 @@
             </form>
         </div>
     </div>
+    <script src="scriptslogin.js"></script>
 </body>
 </html>
