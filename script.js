@@ -1,221 +1,187 @@
-function inputRace() {
-  const rname = prompt("Qual é o nome da corrida?");
-  if (rname != null) {
-    document.getElementById("header").innerHTML = rname;
+//--------------------------------------------DECLARAÇÕES VARIAVEIS---------------------------------------------------------
+let popupAberto = false;
+let popup2Aberto = false;
+let popupNumpadAberto = false;
+let popupNumpadPasswordAberto = false;
+let popupRodaDentada = false;
+let popupConfiguracoes = false;
+let popupFiltros = false;
+
+// Gerar Número de curvas no numpad
+let generatedNumber = 0;
+
+// Gravar os detalhes da curva (se é Post ou Turn)
+
+
+
+// Atualizar o relógio a cada segundo
+setInterval(updateClock, 1000);
+
+/* // Função para verificar o token
+async function verifyToken() {
+  const token = localStorage.getItem("token"); // Obtém o token armazenado localmente
+  if (!token) {
+    // Se não houver token, redireciona para index.html
+    window.location.href = "index.html";
+    return;
   }
+
+  // Envia uma solicitação para o servidor para validar o token
+  try {
+    const response = await fetch("/validate-token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Envia o token no cabeçalho Authorization
+      },
+    });
+    const data = await response.json();
+    if (!response.ok || !data.valid) {
+      // Se o token não for válido, redireciona para index.html
+      window.location.href = "index.html";
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    // Em caso de erro, redireciona para index.html
+    window.location.href = "index.html";
+  }
+} 
+
+// Chama a função para verificar o token quando a página é carregada
+window.onload = verifyToken;
+
+
+*/
+
+
+//Verificar se o campo de pesquisa esta ativo
+let campoPesquisa = false;
+
+//-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
+document.addEventListener("DOMContentLoaded", function () {
+  loadPesquisaChoice();
+  const pesquisaField = document.getElementById("pesquisa");
+  if (!pesquisaField) {
+    console.log(pesquisaField);
+    console.log("Campo não encontrado");
+  } else {
+    pesquisaField.addEventListener("focus", function () {
+      console.log("focused on it");
+      campoPesquisa = true;
+    });
+    pesquisaField.addEventListener("focusout", function () {
+      console.log("unfocused on it");
+      campoPesquisa = false;
+    });
+  }
+});
+
+if (campoPesquisa == false) {
+  // Chamar a função atualizarPagina a cada 5 segundos
+  setInterval(atualizarPagina, 5000);
 }
 
-//limpar LocalStorage
-function limparLS() {
-  localStorage.clear();
-  console.log("localStorage foi limpo.");
-}
+// Valor para o segundo input numérico no numpad
+document.addEventListener("keydown", function (e) {
+  if (popupNumpadAberto == true) {
+    let curvaInput = document.getElementById("curvaInput");
+    const maxCurvas = localStorage.getItem("numCurves");
+    console.log(maxCurvas);
+    curvaInput.value += `${e.key}`;
+    if (Number(curvaInput.value) > maxCurvas) {
+      curvaInput.value = String(maxCurvas);
+    }
+  }
+});
 
+//Atalhos para o numpad (no numpad físico) até 9
+document.addEventListener("keydown", function (e) {
+  //Vai buscar o numero currente de curvas definido
+  numpadNumbers = localStorage.getItem("numCurves");
+  botaoEditar = document.getElementById("botao-numpad-editar");
+
+  // Caso nenhum dos popus estejam abertos
+  if (
+    popupAberto == false &&
+    popup2Aberto == false &&
+    popupNumpadAberto == false &&
+    popupNumpadPasswordAberto == false &&
+    popupRodaDentada == false &&
+    popupConfiguracoes == false &&
+    campoPesquisa == false
+  ) {
+    for (let i = 1; i <= numpadNumbers; i++) {
+      if (e.key === `${i}`) {
+        abrirPopupNumpad();
+        abrirPopup();
+        obterHoraAtual();
+        obterCurvaNum(i);
+      }
+    }
+  }
+
+  if (e.key === "Escape") {
+    fecharPopup();
+    fecharPopup2();
+    fecharPopupNumpad();
+    fecharPopupNumpadPassword();
+  }
+});
+
+document.addEventListener("keydown", function (e) {
+  if (
+    popupAberto == false &&
+    popup2Aberto == false &&
+    popupNumpadAberto == false &&
+    popupNumpadPasswordAberto == false &&
+    popupRodaDentada == false &&
+    popupConfiguracoes == false &&
+    campoPesquisa == false
+  ) {
+
+    const corridaData = JSON.parse(localStorage.getItem('numpadData'))
+    let corrida;
+    corridaData.forEach((item)=>{
+      if(item.corridaNumber!=null){
+        corrida=item.corridaNumber;
+      }else{
+        corrida=1;
+      }
+    })
+
+    if (e.key === "p" || e.key === "P") {
+      document.getElementById("curvaInput").value = "Start";
+      document.getElementById("obsInput").value=`Race nº: ${corrida}`;
+      obterHoraAtual();
+      adicionarLinha();
+    } else if (e.key === "r" || e.key === "R") {
+      document.getElementById("curvaInput").value = "Red Flag";
+      obterHoraAtual();
+      adicionarLinha();
+    } else if (e.key === "s" || e.key === "S") {
+      document.getElementById("curvaInput").value = "Slow Flag";
+      obterHoraAtual();
+      adicionarLinha();
+    }
+  }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
-  
   // é necessário um pequeno delay para a local storage atualizar devidamente
   setTimeout(() => {
-  const dadosExistentes = localStorage.getItem('dadosTabela')
-  const data = JSON.parse(dadosExistentes)
-  //filtrarPorStart();
-  let indiceMaximo = 1;
-  if(data!=null){
-    data.forEach((item) =>{
-      indiceMaximo++;
-    })
-  }
-  console.log(indiceMaximo);
-    localStorage.setItem('indiceCorrente',indiceMaximo);
+    const dadosExistentes = localStorage.getItem("dadosTabela");
+    const data = JSON.parse(dadosExistentes);
+    //filtrarPorStart();
+    let indiceMaximo = 1;
+    if (data != null) {
+      data.forEach((item) => {
+        indiceMaximo++;
+      });
+    }
+    console.log(indiceMaximo);
+    localStorage.setItem("indiceCorrente", indiceMaximo);
   }, 1000); // 1 second delay
-  
-})
-
-// Ir buscar dados numpad a database
-
-function carregarDadosNumpad(){
-  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
-
-  // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  const url = "http://192.168.1.136:3000/getDataNumpad";
-  //IP casa Luís
-  //const url = "http://192.168.1.136:3000/getData";
-  //IP config WFR
-  //const url = "http://192.168.1.136:3000/getData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/getData";
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      // Atualiza a tabela com os dados recebidos
-      atualizarTabela(data);
-      // Armazena os dados localmente para uso posterior
-      localStorage.setItem("numpadNum", JSON.stringify(data));
-    })
-    .catch((error) => console.error("Erro ao obter dados:", error));
-}
-
-
-
-// Adicionar numero ao numpad
-
-function adicionarNumpadNum(){
-  // Eliminar o anterior
-  eliminarNumpadNum()
-  const numpadNumber = document.getElementById("numberCurvas").value;
-  /* if(numpadNumber==null){
-    numpadNumber = localStorage.getItem('numCurves')
-  } */
-  const newNum={
-    numberButtons:numpadNumber,
-  }
-  localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
-  enviarJsonNumpad();
-}
-
-function enviarJsonNumpad() {
-  // Recuperar os dados do localStorage
-  const localStorageData = localStorage.getItem("novoNumpadNum");
-  console.log(localStorageData);
-
-  // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  const url = "http://192.168.1.136:3000/addDataNumpad";
-  //IP config casa Luís
-  //const url ="http:// 192.168.1.136:3000/addData";
-  //IP config WFR
-  //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://192.168.1.136:3000/addData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/addData";
-
-  // Verificar se existem dados no localStorage
-  if (localStorageData) {
-    const parsedData = JSON.parse(localStorageData);
-    // Enviar os dados para o servidor
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(parsedData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) =>
-        console.error("Erro ao enviar dados para o servidor:", error)
-      );
-  } else {
-    console.log("Nenhum dado encontrado no localStorage.");
-  }
-}
-
-// Dar reset ao numero de numpad
-function eliminarNumpadNum() {
-
-  // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  const url = "http://192.168.1.136:3000/dropDataNumpad";
-  //IP casa Luís
-  //const url = "http://192.168.1.136/dropData";
-  //IP config WFR
-  //const url = "http://192.168.1.136:3000/dropData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/dropData";
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      //location.reload;
-      console.log(data.message); // Mensagem retornada pelo servidor
-    })
-    .catch((error) => {
-      console.error("Erro ao apagar dados:", error);
-    });
-}
-
-// Adicionadar função para adicionar nova linha à tabela
-function adicionarLinha() {
-  const tabela = document.querySelector("tbody");
-  const novaLinha = document.createElement("tr");
-  // Capturar os valores dos campos do pop-up
-  const camera = document.getElementById("cameraNumber").value;
-  const curva = document.getElementById("curvaInput").value;
-  const hora = document.getElementById("horainput").value;
-  const video = document.getElementById("videoCheck").checked;
-  const report = document.getElementById("reportCheck").checked;
-  const priority = document.getElementById("priorityCheck").checked;
-  const obs = document.getElementById("obsInput").value;
-
-  // Se report for 0, definir nfa como 1
-  let nfa = false;
-  if (!report) {
-    nfa = null;
-  }
-
-  // Armazenar os dados no localStorage
-  const newData = {
-    camera: camera,
-    curva: curva,
-    hora: hora,
-    video: video,
-    report: report,
-    nfa: nfa,
-    priority: priority,
-    obs: obs,
-  };
-console.log(newData)
-
-  // Convertendo para JSON e armazenando no localStorage
-  localStorage.setItem("novaLinhaData", JSON.stringify(newData));
-  enviarJson();
-  location.reload();
-}
-
-
-//envio dados para servidor
-function enviarJson() {
-  // Recuperar os dados do localStorage
-  const localStorageData = localStorage.getItem("novaLinhaData");
-  console.log(localStorageData);
-
-  // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  const url = "http://192.168.1.136:3000/addData";
-  //IP config casa Luís
-  //const url ="http:// 192.168.1.136:3000/addData";
-  //IP config WFR
-  //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://192.168.1.136:3000/addData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/addData";
-
-  // Verificar se existem dados no localStorage
-  if (localStorageData) {
-    const parsedData = JSON.parse(localStorageData);
-    // Enviar os dados para o servidor
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(parsedData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) =>
-        console.error("Erro ao enviar dados para o servidor:", error)
-      );
-  } else {
-    console.log("Nenhum dado encontrado no localStorage.");
-  }
-}
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   const reportCheckbox = document.getElementById("reportCheck2");
@@ -293,11 +259,246 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Certifique-se de que a função carregarDados() é chamada após o carregamento da página
+document.addEventListener("DOMContentLoaded", function () {
+  carregarDados();
+  carregarDadosNumpad();
+});
+
+document.getElementById("pesquisaOptions").value = 1;
+console.log(document.getElementById("pesquisaOptions").value);
+// Alterar a coluna de pesquisa no campo de pesquisa
+
+// Chamar a função updateClock() para exibir a hora atual quando a página for carregada
+window.addEventListener("load", updateClock);
+
+// Chamar a função para rolar até o final da página quando a página for carregada
+window.addEventListener("load", function () {
+  scrollToBottomWithDelay();
+});
+
+//--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
+function inputRace() {
+  const rname = prompt("Qual é o nome da corrida?");
+  if (rname != null) {
+    document.getElementById("header").innerHTML = rname;
+  }
+}
+
+//limpar LocalStorage
+function limparLS() {
+  localStorage.clear();
+  console.log("localStorage foi limpo.");
+}
+
+// Ir buscar dados numpad a database
+
+function carregarDadosNumpad() {
+  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://192.168.1.136:3000/getDataNumpad";
+  //IP casa Luís
+  //const url = "http://192.168.1.136:3000/getData";
+  //IP config WFR
+  //const url = "http://192.168.1.136:3000/getData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/getData";
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      // Atualiza a tabela com os dados recebidos
+      // Armazena os dados localmente para uso posterior
+      localStorage.setItem("numpadNum", JSON.stringify(data));
+    })
+    .catch((error) => console.error("Erro ao obter dados:", error));
+}
+
+// Adicionar numero ao numpad
+
+function adicionarNumpadNum(corridaNum) {
+  // Eliminar o anterior
+  eliminarNumpadNum()
+  const numpadNumber = document.getElementById("numberCurvas").value;
+  let corridaNumber;
+  // Se tiver recebido alteração por um input na corrida(popup de criação)
+  if(corridaNum){
+    corridaNumber = document.getElementById("inputCorrida").value
+  }else{
+    corridaNumber = document.getElementById("numberCorrida").value;
+  }
+  
+  const newNum={
+    numberButtons:numpadNumber,
+    numberCorrida:corridaNumber,
+  }
+  localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
+  enviarJsonNumpad();
+}
+
+function enviarJsonNumpad() {
+  // Recuperar os dados do localStorage
+  const localStorageData = localStorage.getItem("novoNumpadNum");
+  console.log(localStorageData);
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://192.168.1.136:3000/addDataNumpad";
+  //IP config casa Luís
+  //const url ="http:// 192.168.1.136:3000/addData";
+  //IP config WFR
+  //const url = "http://192.168.1.148:3000/addData";
+  //const url = "http://192.168.1.136:3000/addData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/addData";
+
+  // Verificar se existem dados no localStorage
+  if (localStorageData) {
+    const parsedData = JSON.parse(localStorageData);
+    // Enviar os dados para o servidor
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error("Erro ao enviar dados para o servidor:", error)
+      );
+      localStorage.removeItem('novoNumpadNum')
+  } else {
+    console.log("Nenhum dado encontrado no localStorage.");
+  }
+}
+
+// Dar reset ao numero de numpad
+function eliminarNumpadNum() {
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://192.168.1.136:3000/dropDataNumpad";
+  //IP casa Luís
+  //const url = "http://192.168.1.136/dropData";
+  //IP config WFR
+  //const url = "http://192.168.1.136:3000/dropData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/dropData";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      //location.reload;
+      console.log(data.message); // Mensagem retornada pelo servidor
+    })
+    .catch((error) => {
+      console.error("Erro ao apagar dados:", error);
+    });
+}
+
+// Adicionadar função para adicionar nova linha à tabela
+function adicionarLinha() {
+
+  let corrida = document.getElementById("inputCorrida").value;
+  // Ir buscar o numero da corrida
+  if(corrida == null || corrida==""){
+    numpadDBData.forEach((item)=>{
+      corrida=item.numberCorrida;
+    })
+  }else{
+    adicionarNumpadNum(corrida)
+  }
+
+  const tabela = document.querySelector("tbody");
+  const novaLinha = document.createElement("tr");
+  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"))
+  // Capturar os valores dos campos do pop-up
+  const camera = document.getElementById("cameraNumber").value;
+  const curva = document.getElementById("curvaInput").value;
+  const hora = document.getElementById("horainput").value;
+  const video = document.getElementById("videoCheck").checked;
+  const report = document.getElementById("reportCheck").checked;
+  const priority = document.getElementById("priorityCheck").checked;
+  let obs = document.getElementById("obsInput").value;
+
+  // Adicionar a corrida ás obs se for start
+  if(curva=="Start" && obs.includes("Race nº:")==false){
+    obs = `Race Nº:${corrida}\n` + document.getElementById("obsInput").value;
+  }  
+
+  // Se report for 0, definir nfa como 1
+  let nfa = false;
+  if (!report) {
+    nfa = null;
+  }
+
+  // Armazenar os dados no localStorage
+  const newData = {
+    camera: camera,
+    curva: curva,
+    hora: hora,
+    video: video,
+    report: report,
+    nfa: nfa,
+    priority: priority,
+    obs: obs,
+  };
+  console.log(newData);
+
+  // Convertendo para JSON e armazenando no localStorage
+  localStorage.setItem("novaLinhaData", JSON.stringify(newData));
+  enviarJson();
+  location.reload();
+}
+
+//envio dados para servidor
+function enviarJson() {
+  // Recuperar os dados do localStorage
+  const localStorageData = localStorage.getItem("novaLinhaData");
+  console.log(localStorageData);
+
+  // Definir o IP/URL para onde enviar os dados
+  //IP config casa
+  const url = "http://192.168.1.136:3000/addData";
+  //IP config casa Luís
+  //const url ="http:// 192.168.1.136:3000/addData";
+  //IP config WFR
+  //const url = "http://192.168.1.148:3000/addData";
+  //const url = "http://192.168.1.136:3000/addData";
+  //IP CORRIDAS
+  //const url = "http://192.168.1.53:3000/addData";
+
+  // Verificar se existem dados no localStorage
+  if (localStorageData) {
+    const parsedData = JSON.parse(localStorageData);
+    // Enviar os dados para o servidor
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error("Erro ao enviar dados para o servidor:", error)
+      );
+  } else {
+    console.log("Nenhum dado encontrado no localStorage.");
+  }
+}
 
 // Detalhe da turn
 
-let detalheCurva="NaN";
-
+let detalheCurva = "NaN";
 
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
@@ -309,11 +510,11 @@ function updateLinha() {
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
   const obs = document.getElementById("obsInput2").value;
-  console.log(curva)
+  console.log(curva);
   console.log(detalheCurva);
   // Caso tenham sido Post ou Turn anteriormente
-  if(!curva.includes('P') && !curva.includes('Turn')){
-    if(detalheCurva=='P' || detalheCurva=='Turn'){
+  if (!curva.includes("P") && !curva.includes("Turn")) {
+    if (detalheCurva == "P" || detalheCurva == "Turn") {
       curva += detalheCurva;
     }
   }
@@ -404,7 +605,7 @@ function envUpJson() {
 function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
-  console.log(detalhes._id)
+  console.log(detalhes._id);
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
@@ -479,11 +680,11 @@ function fecharPopup() {
 //fecha o pupup2
 function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
-  const popupEdit = document.getElementById("popupEdit")
-  const botaoUp = document.getElementById("buttonUp")
-  const botaoDown = document.getElementById("buttonDown")
-  popupEdit.removeChild(botaoUp)
-  popupEdit.removeChild(botaoDown)
+  const popupEdit = document.getElementById("popupEdit");
+  const botaoUp = document.getElementById("buttonUp");
+  const botaoDown = document.getElementById("buttonDown");
+  popupEdit.removeChild(botaoUp);
+  popupEdit.removeChild(botaoDown);
 
   popup2Aberto = false;
   //location.reload();
@@ -528,7 +729,7 @@ function atualizarTabela(data) {
   }
 
   // Adiciona linhas à tabela com os dados recebidos
-  var counter=1;
+  var counter = 1;
   data.forEach((item) => {
     const novaLinha = document.createElement("tr");
     novaLinha.innerHTML = `
@@ -549,7 +750,11 @@ function atualizarTabela(data) {
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
         item._id
       }')"></td>
-      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${item._id}" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${item._id}" onclick="moveDown(this)">↓</button>
+      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${
+        item._id
+      }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
+      item._id
+    }" onclick="moveDown(this)">↓</button>
       `;
 
     // Adiciona classes CSS com base nos valores de report e nfa
@@ -575,6 +780,17 @@ function atualizarTabela(data) {
     counter++;
     tabela.appendChild(novaLinha);
   });
+
+  // Carregar o numero currente da corrida
+  const numCorrida = JSON.parse(localStorage.getItem("numpadData"))
+  numCorrida.forEach((item)=>{
+    if(item.numberCorrida!=null){
+      document.getElementById('inputCorrida').value = item.numberCorrida;
+    }
+    else{
+      document.getElementById('inputCorrida').value = 1;
+    }
+  })
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -590,7 +806,6 @@ function abrirDetalhes(id) {
     console.error("Detalhes não encontrados para o ID:", id);
   }
 }
-
 
 function getDataFromLocalStorage() {
   const localStorageData = localStorage.getItem("novaLinhaData");
@@ -612,11 +827,22 @@ function preencherPopupComDetalhes(detalhes) {
     const priorityCheck = document.getElementById("priorityCheck2");
     const obsInput = document.getElementById("obsInput2");
     const nfaCheck = document.getElementById("nfacheck2");
-    
+    const corridaInput = document.getElementById("inputCorrida2");
 
     // Verifica se os elementos existem no DOM
-    if (curvaInput && horainput && videoCheck && reportCheck && nfaCheck && obsInput && cameraInput && priorityCheck) {
+    if (
+      curvaInput &&
+      horainput &&
+      videoCheck &&
+      reportCheck &&
+      nfaCheck &&
+      obsInput &&
+      cameraInput &&
+      priorityCheck && 
+      corridaInput
+    ) {
       // Atribui os valores dos detalhes aos campos do popup
+      corridaInput.value = detalhes.corrida|| "";
       cameraInput.value = detalhes.camera || "";
       curvaInput.value = detalhes.curva || "";
       horainput.value = detalhes.hora || "";
@@ -627,10 +853,10 @@ function preencherPopupComDetalhes(detalhes) {
       obsInput.value = detalhes.obs || "";
 
       //Guardar o input da curva anterior Turn ou Post
-      if(curvaInput.value.includes("P")){
-        detalheCurva = "P"
-      }else if (curvaInput.value.includes("Turn")){
-        detalheCurva = "Turn"
+      if (curvaInput.value.includes("P")) {
+        detalheCurva = "P";
+      } else if (curvaInput.value.includes("Turn")) {
+        detalheCurva = "Turn";
       }
       console.log(detalheCurva);
     } else {
@@ -644,28 +870,28 @@ function preencherPopupComDetalhes(detalhes) {
 }
 
 // Função para criar os botões de troca de posição da linha selecionada
-function generatePositionButtons(detalhes){
-  const popupEdit = document.getElementById('popupEdit');
-  const originalUp = document.getElementById(`buttonUp${detalhes._id}`)
-  const originalDown = document.getElementById(`buttonDown${detalhes._id}`)
+function generatePositionButtons(detalhes) {
+  const popupEdit = document.getElementById("popupEdit");
+  const originalUp = document.getElementById(`buttonUp${detalhes._id}`);
+  const originalDown = document.getElementById(`buttonDown${detalhes._id}`);
   const buttonUp = document.createElement("button");
   buttonUp.classList.add("buttaoUpDown");
   buttonUp.textContent = "↑";
   buttonUp.id = `buttonUp`;
-  buttonUp.addEventListener('click',()=> {
+  buttonUp.addEventListener("click", () => {
     originalUp.click();
-  })
+  });
 
-  const buttonDown = document.createElement("button")
+  const buttonDown = document.createElement("button");
   buttonDown.classList.add("buttaoUpDown");
   buttonDown.textContent = "↓";
   buttonDown.id = `buttonDown`;
-  buttonDown.addEventListener('click',()=> {
+  buttonDown.addEventListener("click", () => {
     originalDown.click();
-  })
+  });
 
-  popupEdit.appendChild(buttonUp)
-  popupEdit.appendChild(buttonDown)
+  popupEdit.appendChild(buttonUp);
+  popupEdit.appendChild(buttonDown);
 }
 
 // Define a função para carregar os dados quando a página é carregada
@@ -694,8 +920,6 @@ function carregarDados() {
 }
 
 //Quando a página acaba de carregar verifica o indice máximo corrente
-
-
 
 // Adicionadar o evento de editar a hora
 function editarHora() {
@@ -737,18 +961,16 @@ function obterCurvaNum(curva) {
 
 //Adicionar Camera ou Post no field Curva/Post
 function adicionarCameraOrPost(opcao) {
-  if(opcao!='Camera'){
-    document.getElementById("cameraNumber").value = ""
+  if (opcao != "Camera") {
+    document.getElementById("cameraNumber").value = "";
     document.getElementById("curvaInput").value += document.getElementById(
       `opcao${opcao}`
     ).value;
-  }else{
-    document.getElementById("cameraNumber").value = document.getElementById("curvaInput").value;
-    document.getElementById("curvaInput").value = ""
-
+  } else {
+    document.getElementById("cameraNumber").value =
+      document.getElementById("curvaInput").value;
+    document.getElementById("curvaInput").value = "";
   }
- 
-
 }
 
 //Verificar password dar input de curvas
@@ -759,11 +981,11 @@ function checkPassword() {
     adicionarNumpadNum();
     generateNumpad();
     fecharPopupNumpadPassword();
-    fecharPopupRodaDentada()
+    fecharPopupRodaDentada();
   } else {
     window.alert("Código introduzido errado!");
     fecharPopupNumpadPassword();
-    fecharPopupRodaDentada()
+    fecharPopupRodaDentada();
   }
 }
 
@@ -823,27 +1045,18 @@ function atualizarEstadoCheckbox(checkbox) {
   );
 }
 
-// Certifique-se de que a função carregarDados() é chamada após o carregamento da página
-document.addEventListener("DOMContentLoaded", function () {
-  carregarDadosNumpad();
-  carregarDados();
-});
-
 // Adicionar tratamento de erros para requisições fetch
 function refreshPage() {
   carregarDados(); // Chama a função para carregar os dados ao carregar a página
 }
 
-let popupAberto = false;
-let popup2Aberto = false;
-let popupNumpadAberto = false;
-let popupNumpadPasswordAberto = false;
-let popupRodaDentada = false;
-let popupConfiguracoes = false;
-let popupFiltros = false;
-
 function atualizarPagina() {
-  if (!popupAberto && !popup2Aberto && campoPesquisa==false &&!popupConfiguracoes) {
+  if (
+    !popupAberto &&
+    !popup2Aberto &&
+    campoPesquisa == false &&
+    !popupConfiguracoes
+  ) {
     // Lógica para atualizar a página
     //location.reload();
   }
@@ -852,23 +1065,20 @@ function atualizarPagina() {
 // Função para carregar o mesmo número introduzido no numpad(quando é feito reload)
 function carregarNumpad() {
   // Se existir um numero na base de dados vai buscar, senão usa localmente
-  const databaseNum = JSON.parse(localStorage.getItem("numpadNum"))
-  if(databaseNum){
-
-      databaseNum.forEach((item)=>{
-        if(item.numberButtons!=null || item.numberButtons != undefined){
-          document.getElementById("numberCurvas").value = item.numberButtons
-          console.log(item.numberButtons)
-        }
-      })
-  }else{
+  const databaseNum = JSON.parse(localStorage.getItem("numpadNum"));
+  if (databaseNum) {
+    databaseNum.forEach((item) => {
+      if (item.numberButtons != null || item.numberButtons != undefined) {
+        document.getElementById("numberCurvas").value = item.numberButtons;
+        console.log(item.numberButtons);
+      }
+    });
+  } else {
     document.getElementById("numberCurvas").value =
-    localStorage.getItem("numCurves");
+      localStorage.getItem("numCurves");
   }
   generateNumpad();
 }
-
-
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
 function scrollToBottomWithDelay() {
@@ -881,12 +1091,7 @@ function scrollToBottomWithDelay() {
       }
     }
   }, 100); // Ajuste o valor do atraso conforme necessário
-} 
-
-// Chamar a função para rolar até o final da página quando a página for carregada
-window.addEventListener("load", function () {
-  scrollToBottomWithDelay();
-});
+}
 
 function updateClock() {
   var now = new Date();
@@ -911,31 +1116,20 @@ function updateClock() {
   }
 }
 
-// Atualizar o relógio a cada segundo
-setInterval(updateClock, 1000);
-
-// Chamar a função updateClock() para exibir a hora atual quando a página for carregada
-window.addEventListener("load", updateClock);
-
-// Gerar Número de curvas no numpad
-
-let generatedNumber = 0;
-
-
 function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
   if (document.getElementById("numpad-table") == null) {
     const num = document.getElementById("numberCurvas").value;
-    const databaseNum = JSON.parse(localStorage.getItem("numpadNum"))
-    console.log(databaseNum)
-    if(databaseNum!=undefined || databaseNum !=null){
+    const databaseNum = JSON.parse(localStorage.getItem("numpadNum"));
+    console.log(databaseNum);
+    if (databaseNum != undefined || databaseNum != null) {
       setTimeout(() => {
-      databaseNum.forEach((item)=>{
-        console.log(item.numberButtons);
-        generatedNumber = item.numberButtons
-      })
-      },100)
-    }else{
+        databaseNum.forEach((item) => {
+          console.log(item.numberButtons);
+          generatedNumber = item.numberButtons;
+        });
+      }, 100);
+    } else {
       generatedNumber = num;
     }
     const numpadDiv = document.getElementById("numpad");
@@ -1111,110 +1305,6 @@ function editarNumpad2() {
   numpadGenerateButton.classList.toggle("hidden");
 }
 
-//Verificar se o campo de pesquisa esta ativo
-let campoPesquisa = false;
-
-document.addEventListener("DOMContentLoaded", function () {
-  loadPesquisaChoice();
-  const pesquisaField = document.getElementById("pesquisa");
-  if (!pesquisaField) {
-    console.log(pesquisaField);
-    console.log("Campo não encontrado");
-  } else {
-    pesquisaField.addEventListener("focus", function () {
-      console.log("focused on it");
-      campoPesquisa = true;
-    });
-    pesquisaField.addEventListener("focusout", function () {
-      console.log("unfocused on it");
-      campoPesquisa = false;
-    });
-  }
-});
-
-
-if(campoPesquisa==false){
-  // Chamar a função atualizarPagina a cada 5 segundos
-  setInterval(atualizarPagina, 5000);
-}
-
-
-
-// Valor para o segundo input numérico no numpad
-document.addEventListener("keydown", function (e) {
-  if (popupNumpadAberto == true){
-    let curvaInput = document.getElementById("curvaInput")
-    const maxCurvas = localStorage.getItem("numCurves")
-    console.log(maxCurvas);
-    curvaInput.value += `${e.key}`;
-    if(Number(curvaInput.value) > maxCurvas){
-      curvaInput.value = String(maxCurvas)
-    }
-}
-})
-
-//Atalhos para o numpad (no numpad físico) até 9
-document.addEventListener("keydown", function (e) {
-  //Vai buscar o numero currente de curvas definido
-  numpadNumbers = localStorage.getItem("numCurves");
-  botaoEditar = document.getElementById("botao-numpad-editar");
-
-  // Caso nenhum dos popus estejam abertos
-  if (
-    popupAberto == false &&
-    popup2Aberto == false &&
-    popupNumpadAberto == false &&
-    popupNumpadPasswordAberto == false &&
-    popupRodaDentada == false &&
-    popupConfiguracoes == false &&
-    campoPesquisa == false
-  ) {
-    for (let i = 1; i <= numpadNumbers; i++) {
-      if (e.key === `${i}`) {
-        abrirPopupNumpad();
-        abrirPopup();
-        obterHoraAtual();
-        obterCurvaNum(i);
-      }
-    }
-  }
-
-  if (e.key === "Escape") {
-    fecharPopup();
-    fecharPopup2();
-    fecharPopupNumpad();
-    fecharPopupNumpadPassword();
-  }
-});
-
-
-document.addEventListener("keydown", function (e) {
-  if (
-    popupAberto == false &&
-    popup2Aberto == false &&
-    popupNumpadAberto == false &&
-    popupNumpadPasswordAberto == false &&
-    popupRodaDentada == false &&
-    popupConfiguracoes == false &&
-    campoPesquisa == false
-  ) {
-  if(e.key === 'p' || e.key==='P'){
-    document.getElementById("curvaInput").value = 'Start';
-    obterHoraAtual()
-    adicionarLinha();
-  }else if(e.key==='r' || e.key==='R'){
-    document.getElementById("curvaInput").value = 'Red Flag';
-    obterHoraAtual()
-    adicionarLinha();
-  }else if(e.key==='s' || e.key==='S'){
-    document.getElementById("curvaInput").value = 'Slow Flag';
-    obterHoraAtual()
-    adicionarLinha();
-  }
-}
-})
-
-
 // Função para determinar qual ação executar com base no popup aberto
 function handleEnterKey(e) {
   if (e.key === "Enter") {
@@ -1227,8 +1317,7 @@ function handleEnterKey(e) {
     else if (popup2Aberto) {
       updateLinha();
       fecharPopup2();
-    }
-    else if (popupNumpadPasswordAberto){
+    } else if (popupNumpadPasswordAberto) {
       checkPassword();
     }
     // Adicione mais verificações para outros popups, se necessário
@@ -1241,34 +1330,11 @@ function handleEnterKey(e) {
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
 
-/* function checkPassword2() {
-  numpadPassword = "WFR2012";
-  console.log(document.getElementById("numpadUnlock2").value);
-  if (document.getElementById("numpadUnlock2").value == numpadPassword) {
-    generateNumpad2();
-    fecharPopupNumpadPassword();
-  } else {
-    window.alert("Código introduzido errado!");
-    fecharPopupNumpadPassword();
-  }
-} */
-
-/* function carregarNumpad2() {
-  console.log(localStorage.getItem("numCurves"));
-  document.getElementById("numberCurvas").value =
-    localStorage.getItem("numCurves");
-  generateNumpad2();
-} */
-
-document.getElementById("pesquisaOptions").value = 1;
-console.log(document.getElementById("pesquisaOptions").value);
-// Alterar a coluna de pesquisa no campo de pesquisa
-
 
 function mudaPesquisa() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const historyChoice = localStorage.getItem("pesquisaChoice");
-  
+
   const pesquisa = document.getElementById("pesquisa");
   console.log(pesquisaChoice.value);
   let num = Number(pesquisaChoice.value);
@@ -1277,20 +1343,20 @@ function mudaPesquisa() {
   } else {
     pesquisaChoice.addEventListener("change", function () {
       if (pesquisaChoice.value == 1) {
-        localStorage.setItem('pesquisaChoice', pesquisaChoice.value)
-        pesquisa.onkeyup = function () {         
+        localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
+        pesquisa.onkeyup = function () {
           pesquisarTabelaPost();
         };
-        console.log(localStorage.getItem('pesquisaChoice'))
+        console.log(localStorage.getItem("pesquisaChoice"));
       } else if (pesquisaChoice.value == 2) {
-        localStorage.setItem('pesquisaChoice', pesquisaChoice.value)
+        localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
         console.log("Selected2!");
-        console.log(localStorage.getItem('pesquisaChoice'))
-        pesquisa.onkeyup = function () {     
+        console.log(localStorage.getItem("pesquisaChoice"));
+        pesquisa.onkeyup = function () {
           pesquisarTabelaHour();
         };
       } else if (pesquisaChoice.value == 3) {
-        localStorage.setItem('pesquisaChoice', pesquisaChoice.value)
+        localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
         console.log("Selected3!");
         pesquisa.onkeyup = function () {
           pesquisarTabelaObs();
@@ -1301,21 +1367,21 @@ function mudaPesquisa() {
 }
 
 // Carregar a pesquisa selecionada anteriormente
-function loadPesquisaChoice(){
-  let pesquisaChoice = document.getElementById("pesquisaOptions")
-  const choice = localStorage.getItem("pesquisaChoice")
+function loadPesquisaChoice() {
+  let pesquisaChoice = document.getElementById("pesquisaOptions");
+  const choice = localStorage.getItem("pesquisaChoice");
   const pesquisa = document.getElementById("pesquisa");
-  console.log(choice)
-  if(choice!=null){
+  console.log(choice);
+  if (choice != null) {
     pesquisaChoice.value = choice;
-    console.log(pesquisaChoice.value)
+    console.log(pesquisaChoice.value);
     if (pesquisaChoice.value == 1) {
-      pesquisa.onkeyup = function () {         
+      pesquisa.onkeyup = function () {
         pesquisarTabelaPost();
       };
     } else if (pesquisaChoice.value == 2) {
       console.log("Selected2!");
-      pesquisa.onkeyup = function () {     
+      pesquisa.onkeyup = function () {
         pesquisarTabelaHour();
       };
     } else if (pesquisaChoice.value == 3) {
@@ -1325,7 +1391,6 @@ function loadPesquisaChoice(){
       };
     }
   }
-  
 }
 
 /* Adiciona função filtragem*/
@@ -1409,7 +1474,6 @@ function pesquisaEscolhaPostObs() {
   actualChoice.classList.remove("hidden");
 }
 
-
 /* Esconder/Mostrar Tabela/Numpad */
 
 function trocarParaNumpad() {
@@ -1433,58 +1497,61 @@ function trocarParaTabela() {
   const numpadIcon = document.getElementById("iconNumpad");
   const headerText = document.getElementById("currentOptionHeader");
 
-  headerText.textContent='Numpad:';
-  tabela.classList.remove('hidden');
-  tabelaIcon.classList.add('hidden');
-  numpad.classList.add('hidden');
-  numpadIcon.classList.remove('hidden');
+  headerText.textContent = "Numpad:";
+  tabela.classList.remove("hidden");
+  tabelaIcon.classList.add("hidden");
+  numpad.classList.add("hidden");
+  numpadIcon.classList.remove("hidden");
 }
 
 // Mover a linha para cima
 
-function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dessa célula
+function moveUp(button) {
+  //Vai buscar a celula do botão, e depois a linha dessa célula
   var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
-  const idLinha = row.cells[0].textContent
+  const idLinha = row.cells[0].textContent;
   var table = row.parentNode;
 
-  const dadosExistentes = localStorage.getItem('dadosTabela')
-  const data = JSON.parse(dadosExistentes)
+  const dadosExistentes = localStorage.getItem("dadosTabela");
+  const data = JSON.parse(dadosExistentes);
   var LinhaDados1;
   var LinhaDados2;
   var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
   var tablePosition; // Variável para saber a posição no loop (e ir buscar o anterior na tabela mais tarde)
-  var numCiclo=1;
-  var allowNext = false // Variavel para executar o segundo if (entrada seguinte)
+  var numCiclo = 1;
+  var allowNext = false; // Variavel para executar o segundo if (entrada seguinte)
   if (rowIndex > 1) {
-    if(data!=null){
+    if (data != null) {
+      data.forEach((item) => {
+        //Por cada item já armazenado na tabela
+        if (item._id == idLinha) {
+          //Vai buscar o id da linha onde foi primido o botao
 
-      data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        if(item._id==idLinha){ //Vai buscar o id da linha onde foi primido o botao
-          
-          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
+          LinhaDados1 = { ...item }; // Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
 
           tablePosition = numCiclo; //Guarda a posição da linha onde foi primido o botao
-          allowNext = true // Para adquirir os dados do que vem a seguir
+          allowNext = true; // Para adquirir os dados do que vem a seguir
           //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-
         }
         numCiclo++;
-      })
+      });
 
-      const linhaAnterior = table.rows[tablePosition-1]; // Ir buscar a linha da tabela anterior
+      const linhaAnterior = table.rows[tablePosition - 1]; // Ir buscar a linha da tabela anterior
       const idLinhaAnterior = linhaAnterior.cells[0].textContent; // Ir buscar o Id da linha anterior
 
-      data.forEach((item)=>{ // Ciclo para encontrar os dados da linha anterior
-        if(item._id==idLinhaAnterior){
-          LinhaDados2 = {...item}; // Ir buscar dados da linha anterior
+      data.forEach((item) => {
+        // Ciclo para encontrar os dados da linha anterior
+        if (item._id == idLinhaAnterior) {
+          LinhaDados2 = { ...item }; // Ir buscar dados da linha anterior
         }
+      });
 
-      })
+      data.forEach((item) => {
+        // Ciclo para fazer a troca
 
-      data.forEach((item) =>{ // Ciclo para fazer a troca
-      
-        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
+        if (item._id == LinhaDados1._id) {
+          //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+
           item.camera = LinhaDados2.camera;
           item.curva = LinhaDados2.curva;
           item.hora = LinhaDados2.hora;
@@ -1493,12 +1560,12 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
           item.nfa = LinhaDados2.nfa;
           item.priority = LinhaDados2.priority;
           item.obs = LinhaDados2.obs;
-          item.__v= LinhaDados2.__v;
-          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-  
+          item.__v = LinhaDados2.__v;
+          localStorage.setItem("LinhaPosition1", JSON.stringify(item));
         }
-        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
+        if (item._id == LinhaDados2._id) {
+          //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+
           item.camera = LinhaDados1.camera;
           item.curva = LinhaDados1.curva;
           item.hora = LinhaDados1.hora;
@@ -1507,58 +1574,57 @@ function moveUp(button) { //Vai buscar a celula do botão, e depois a linha dess
           item.nfa = LinhaDados1.nfa;
           item.priority = LinhaDados1.priority;
           item.obs = LinhaDados1.obs;
-          item.__v= LinhaDados1.__v;
-          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
+          item.__v = LinhaDados1.__v;
+          localStorage.setItem("LinhaPosition2", JSON.stringify(item));
         }
-      })
+      });
 
       updatePosition();
     }
   } else {
     console.log("No row before the current row");
   }
-  
 }
-
 
 // Mover a linha para baixo
 
 function moveDown(button) {
   var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
-  const idLinha = row.cells[0].textContent
+  const idLinha = row.cells[0].textContent;
   var table = row.parentNode;
 
-  const dadosExistentes = localStorage.getItem('dadosTabela')
-  const data = JSON.parse(dadosExistentes)
+  const dadosExistentes = localStorage.getItem("dadosTabela");
+  const data = JSON.parse(dadosExistentes);
   var LinhaDados1;
   var LinhaDados2;
   var rowIndex = Array.from(table.rows).indexOf(row); //Procura o indice do elemento row dem relação á tabela. Podia só usar o rowIndex = row.rowIndex
-  var allowNext = false // Variavel para executar o segundo if (entrada seguinte)
-  if (rowIndex < table.rows.length-1) {
-    if(data!=null){
+  var allowNext = false; // Variavel para executar o segundo if (entrada seguinte)
+  if (rowIndex < table.rows.length - 1) {
+    if (data != null) {
+      data.forEach((item) => {
+        //Por cada item já armazenado na tabela
 
-      data.forEach((item) =>{ //Por cada item já armazenado na tabela
-        
-        if(item._id==idLinha){ //Vai buscar o id da linha anterior
-          LinhaDados1 = {...item};// Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
-          allowNext = true // Para adquirir os dados do que vem a seguir
+        if (item._id == idLinha) {
+          //Vai buscar o id da linha anterior
+          LinhaDados1 = { ...item }; // Como o valor LinhaDados1 passa por referencia ao item, quando o item era alterado, alterava o LinhaDados1 também, {...}->spread, utilizando o operador spread, cria-se uma copia do objecto para utilizar sem que o seu valor seja alterado.
+          allowNext = true; // Para adquirir os dados do que vem a seguir
           //localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-        }
-        else if(allowNext == true){ //Vai buscar o indice corrente e retira uma posição(passa para cima)
-          LinhaDados2 = {...item};
+        } else if (allowNext == true) {
+          //Vai buscar o indice corrente e retira uma posição(passa para cima)
+          LinhaDados2 = { ...item };
           allowNext = false;
           //item.indice-=1;
           //localStorage.setItem('LinhaPosition2',JSON.stringify(item))
         }
-      })
+      });
 
+      data.forEach((item) => {
+        //Ciclo para substituir
 
-      data.forEach((item) =>{ //Ciclo para substituir
-      
-        if(item._id==LinhaDados1._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
+        if (item._id == LinhaDados1._id) {
+          //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+          item.corrida = LinhaDados2.corrida
           item.camera = LinhaDados2.camera;
-          item.indice = LinhaDados2.indice;
           item.curva = LinhaDados2.curva;
           item.hora = LinhaDados2.hora;
           item.video = LinhaDados2.video;
@@ -1566,14 +1632,13 @@ function moveDown(button) {
           item.nfa = LinhaDados2.nfa;
           item.priority = LinhaDados2.priority;
           item.obs = LinhaDados2.obs;
-          item.__v= LinhaDados2.__v;
-          localStorage.setItem('LinhaPosition1',JSON.stringify(item))
-  
+          item.__v = LinhaDados2.__v;
+          localStorage.setItem("LinhaPosition1", JSON.stringify(item));
         }
-        if(item._id==LinhaDados2._id){ //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-  
+        if (item._id == LinhaDados2._id) {
+          //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
+          item.corrida = LinhaDados1.corrida
           item.camera = LinhaDados1.camera;
-          item.indice = LinhaDados1.indice;
           item.curva = LinhaDados1.curva;
           item.hora = LinhaDados1.hora;
           item.video = LinhaDados1.video;
@@ -1581,23 +1646,17 @@ function moveDown(button) {
           item.nfa = LinhaDados1.nfa;
           item.priority = LinhaDados1.priority;
           item.obs = LinhaDados1.obs;
-          item.__v= LinhaDados1.__v;
-          localStorage.setItem('LinhaPosition2',JSON.stringify(item))
-  
+          item.__v = LinhaDados1.__v;
+          localStorage.setItem("LinhaPosition2", JSON.stringify(item));
         }
         updatePosition();
-      })
+      });
       //
     }
   } else {
     console.log("No row after the current row");
   }
 }
-
-
-
-
-
 
 /* Fazer update dos indices quando as linhas trocarem de lugar*/
 function updatePosition() {
@@ -1617,7 +1676,7 @@ function updatePosition() {
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
     const url = `http://192.168.1.136:3000/updateData/${id}`;
-    //IP casa Luís 
+    //IP casa Luís
     //const url = `http://192.168.1.136/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
@@ -1647,17 +1706,17 @@ function updatePosition() {
         );
       });
 
-      //Processo da outra linha
-      const updatedData2 = JSON.parse(updatedDataString2);
-      console.log(updatedData2);
+    //Processo da outra linha
+    const updatedData2 = JSON.parse(updatedDataString2);
+    console.log(updatedData2);
 
-      // Define o ID do documento a ser atualizado (obtido do localStorage)
+    // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id2 = updatedData2._id;
     console.log(id2);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
     const url2 = `http://192.168.1.136:3000/updateData/${id2}`;
-    //IP casa Luís 
+    //IP casa Luís
     //const url = `http://192.168.1.136/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
@@ -1686,10 +1745,8 @@ function updatePosition() {
           error
         );
       });
-      location.reload();
-      
+    location.reload();
   } else {
     console.error("Nenhum dos dados encontrados no localStorage para enviar.");
   }
-  
 }

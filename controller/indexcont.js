@@ -5,6 +5,7 @@ const putController = require("./put");
 const addNumpadController = require("./addNumpad");
 const dropNumpadController = require("./dropNumpad");
 const getNumpadController = require("./getNumpad");
+const putNumpadController = require("./putNumpad");
 
 module.exports = {
   addController,
@@ -13,5 +14,6 @@ module.exports = {
   putController,
   addNumpadController,
   dropNumpadController,
-  getNumpadController
+  getNumpadController,
+  putNumpadController
 };

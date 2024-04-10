@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const dadoNumpadSchema = new mongoose.Schema({
   numberButtons:{
     type: Number,
+  },
+  numberCorrida:{
+    type: Number,
   }
 });
 

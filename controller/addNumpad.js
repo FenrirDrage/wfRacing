@@ -2,11 +2,12 @@ const DadosNumpad = require("../models/numpadSchema");
 
 exports.addDataNumpad = async (req, res) => {
   try {
-    const { numberButtons } = req.body;
+    const { numberButtons, numberCorrida } = req.body;
 
     // Criar um novo objeto de dados com os dados recebidos
     const novoDado = new DadosNumpad({
-      numberButtons
+      numberButtons,
+      numberCorrida
     });
     console.log(novoDado);
     // Salvar o novo dado no banco de dados
