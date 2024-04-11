@@ -8,13 +8,10 @@ let popupRodaDentada = false;
 let popupConfiguracoes = false;
 let popupFiltros = false;
 
-// Gerar Número de curvas no numpad
-let generatedNumber = 0;
 
-// Detalhe da turn
-let detalheCurva = "NaN";
 
 // Gravar os detalhes da curva (se é Post ou Turn)
+let detalheCurva = "NaN";
 
 // Atualizar o relógio a cada segundo
 setInterval(updateClock, 1000);
@@ -59,11 +56,13 @@ if (campoPesquisa == false) {
   setInterval(atualizarPagina, 5000);
 }
 
+
 // Valor para o segundo input numérico no numpad
 document.addEventListener("keydown", function (e) {
   if (popupNumpadAberto == true) {
     let curvaInput = document.getElementById("curvaInput");
-    const maxCurvas = localStorage.getItem("numCurves");
+    const maxCurvas = localStorage.getItem("numCurvasBD");
+    console.log(maxCurvas);
     curvaInput.value += `${e.key}`;
     if (Number(curvaInput.value) > maxCurvas) {
       curvaInput.value = String(maxCurvas);
@@ -74,8 +73,7 @@ document.addEventListener("keydown", function (e) {
 //Atalhos para o numpad (no numpad físico) até 9
 document.addEventListener("keydown", function (e) {
   //Vai buscar o numero currente de curvas definido
-  numpadNumbers = localStorage.getItem("numCurves");
-  botaoEditar = document.getElementById("botao-numpad-editar");
+  const numpadNumbers = localStorage.getItem("numCurvasBD");
 
   // Caso nenhum dos popus estejam abertos
   if (
@@ -115,7 +113,8 @@ document.addEventListener("keydown", function (e) {
     popupConfiguracoes == false &&
     campoPesquisa == false
   ) {
-    const corridaData = JSON.parse(localStorage.getItem("numpadData"));
+
+    const corridaData = JSON.parse(localStorage.getItem('numpadNum'))
     let corrida;
     corridaData.forEach((item) => {
       if (item.corridaNumber != null) {
@@ -123,7 +122,8 @@ document.addEventListener("keydown", function (e) {
       } else {
         corrida = 1;
       }
-    });
+    })
+    
 
     if (e.key === "p" || e.key === "P") {
       document.getElementById("curvaInput").value = "Start";
@@ -238,6 +238,13 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   carregarDados();
   carregarDadosNumpad();
+  const numpadNum = JSON.parse(localStorage.getItem("numpadNum"))
+  numpadNum.forEach((item)=>{
+    document.getElementById("numberCorrida").value = Number(item.numberCorrida);
+    localStorage.setItem("numCorridas",item.numberCorrida)
+    localStorage.setItem('numCurvasBD',item.numberButtons);
+  })
+  
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -338,15 +345,13 @@ function carregarDadosNumpad() {
 
 // Adicionar numero ao numpad
 
-function adicionarNumpadNum(corridaNum) {
-  // Eliminar o anterior
-  eliminarNumpadNum();
+function adicionarNumpadNum(corrida) {
   const numpadNumber = document.getElementById("numberCurvas").value;
   let corridaNumber;
   // Se tiver recebido alteração por um input na corrida(popup de criação)
-  if (corridaNum) {
-    corridaNumber = document.getElementById("inputCorrida").value;
-  } else {
+  if(corrida){
+    corridaNumber = document.getElementById("inputCorrida").value
+  }else{
     corridaNumber = document.getElementById("numberCorrida").value;
   }
 
@@ -355,6 +360,8 @@ function adicionarNumpadNum(corridaNum) {
     numberCorrida: corridaNumber,
   };
   localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
+  // Eliminar o anterior
+  eliminarNumpadNum()
   enviarJsonNumpad();
 }
 
@@ -410,6 +417,8 @@ function eliminarNumpadNum() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
+  
+  const numpadDBData = JSON.parse(localStorage.getItem("numpadNum"))
   let corrida = document.getElementById("inputCorrida").value;
   // Ir buscar o numero da corrida
   if (corrida == null || corrida == "") {
@@ -422,7 +431,7 @@ function adicionarLinha() {
 
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
-  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
+  
   // Capturar os valores dos campos do pop-up
   const camera = document.getElementById("cameraNumber").value;
   const curva = document.getElementById("curvaInput").value;
@@ -445,6 +454,7 @@ function adicionarLinha() {
 
   // Armazenar os dados no localStorage
   const newData = {
+    corrida: corrida,
     camera: camera,
     curva: curva,
     hora: hora,
@@ -490,6 +500,8 @@ function enviarJson() {
     console.log("Nenhum dado encontrado no localStorage.");
   }
 }
+
+
 
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
@@ -731,6 +743,7 @@ function atualizarTabela(data) {
       }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
       item._id
     }" onclick="moveDown(this)">↓</button>
+     <td class="hidden">${item.corrida}</td>
       `;
 
     // Adiciona classes CSS com base nos valores de report e nfa
@@ -757,19 +770,16 @@ function atualizarTabela(data) {
     tabela.appendChild(novaLinha);
   });
 
-  const numCorrida = JSON.parse(localStorage.getItem("numpadData"));
-
-  if (numCorrida !== null) {
-    numCorrida.forEach((item) => {
-      if (item.numberCorrida != null) {
-        document.getElementById("inputCorrida").value = item.numberCorrida;
-      } else {
-        document.getElementById("inputCorrida").value = 1;
-      }
-    });
-  } else {
-    document.getElementById("inputCorrida").value = 1; // Defina o valor padrão se não houver dados no localStorage
-  }
+  // Carregar o numero currente da corrida
+  const numCorrida = JSON.parse(localStorage.getItem("numpadNum"))
+  numCorrida.forEach((item)=>{
+    if(item.numberCorrida!=null){
+      document.getElementById('inputCorrida').value = item.numberCorrida;
+    }
+    else{
+      document.getElementById('inputCorrida').value = 1;
+    }
+  })
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -1082,15 +1092,13 @@ function updateClock() {
 
 function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
+  // Gerar Número de curvas no numpad
+  let generatedNumber;
   if (document.getElementById("numpad-table") == null) {
     const num = document.getElementById("numberCurvas").value;
-    const databaseNum = JSON.parse(localStorage.getItem("numpadNum"));
-    if (databaseNum != undefined || databaseNum != null) {
-      setTimeout(() => {
-        databaseNum.forEach((item) => {
-          generatedNumber = item.numberButtons;
-        });
-      }, 100);
+    const databaseNum = Number(localStorage.getItem("numCurvasBD"));
+    if (databaseNum) {
+      generatedNumber = databaseNum;
     } else {
       generatedNumber = num;
     }
@@ -1102,7 +1110,7 @@ function generateNumpad() {
     numpadTable.appendChild(numpadRow);
     numpadDiv.appendChild(numpadTable);
     // De acordo com o numero recebido gera 2 buttoes por linha
-    for (let i = 1; i <= num; i++) {
+    for (let i = 1; i <= generatedNumber; i++) {
       const numpadCell = document.createElement("td");
       numpadCell.classList.add("numpad-cell");
       const numpadButton = document.createElement("button");
@@ -1128,18 +1136,31 @@ function generateNumpad() {
     //Esconder o botão e textbox.
     /* editarNumpad(); */
     //Guardar ultimo numero de curvas guardado
-    localStorage.setItem("numCurves", num);
+    if(generatedNumber!=num){
+      localStorage.setItem("numCurves", generatedNumber);
+    }else{
+      localStorage.setItem("numCurves", num);
+    }
+    
+
+    
   } else {
     //Caso já exista uma, remover e adicionar novo input
     const num = document.getElementById("numberCurvas").value;
-    generatedNumber = num;
+    const databaseNum = localStorage.getItem("numCurvasBD");
+    console.log(databaseNum);
+    if (databaseNum != undefined || databaseNum != null) {
+      generatedNumber =  databaseNum;
+    } else {
+      generatedNumber = num;
+    }
     const numpadTable = document.getElementById("numpad-table");
     numpadTable.innerHTML = "";
     let numpadRow = document.createElement("tr");
     numpadRow.classList.add("numpad-row");
     numpadTable.appendChild(numpadRow);
     // De acordo com o numero recebido gera 2 buttoes por linha
-    for (let i = 1; i <= num; i++) {
+    for (let i = 1; i <= generatedNumber; i++) {
       const numpadCell = document.createElement("td");
       numpadCell.classList.add("numpad-cell");
       const numpadButton = document.createElement("button");
@@ -1162,7 +1183,11 @@ function generateNumpad() {
         numpadTable.appendChild(numpadRow);
       }
     }
-    localStorage.setItem("numCurves", num);
+    if(generatedNumber!=num){
+      localStorage.setItem("numCurves", generatedNumber);
+    }else{
+      localStorage.setItem("numCurves", num);
+    }
     /* editarNumpad(); */
   }
 }
@@ -1178,94 +1203,7 @@ function editarNumpad() {
 
 /*--------------------------------------------------Extra Numpad(numpad.html)-----------------------------------------*/
 
-function generateNumpad2() {
-  //Se já existir um numpad gerado, não acrescenta mais um
-  if (document.getElementById("numpad-table2") == null) {
-    const num = document.getElementById("numberCurvas").value;
-    generatedNumber = num;
-    const numpadDiv = document.getElementById("numpad2");
-    const numpadTable = document.createElement("table");
-    numpadTable.id = "numpad-table2";
-    let numpadRow = document.createElement("tr");
-    numpadRow.classList.add("numpad-row");
-    numpadTable.appendChild(numpadRow);
-    numpadDiv.appendChild(numpadTable);
-    // De acordo com o numero recebido gera 2 buttoes por linha
-    for (let i = 1; i <= num; i++) {
-      const numpadCell = document.createElement("td");
-      numpadCell.classList.add("numpad-cell");
-      const numpadButton = document.createElement("button");
-      numpadButton.classList.add("numpad-Button");
-      numpadButton.textContent = i;
-      numpadButton.id = `curva${i}`;
-      numpadButton.onclick = function () {
-        abrirPopupNumpad();
-        abrirPopup();
-        obterHoraAtual();
-        obterCurvaNum(i);
-      };
-      numpadButton.value = i;
-      numpadCell.appendChild(numpadButton);
-      numpadRow.appendChild(numpadCell);
-      //A cada 2 celulas, fecha e abro uma linha nova
-      if (i % 2 == 0 && i != num) {
-        numpadRow = document.createElement("tr");
-        numpadRow.classList.add("numpad-row");
-        numpadTable.appendChild(numpadRow);
-      }
-    }
-    //Esconder o botão e textbox.
-    /*  editarNumpad();
-    editarNumpad2(); */
-    //Guardar ultimo numero de curvas guardado
-    localStorage.setItem("numCurves", num);
-  } else {
-    //Caso já exista uma, remover e adicionar novo input
-    const num = document.getElementById("numberCurvas").value;
-    generatedNumber = num;
-    const numpadTable = document.getElementById("numpad-table2");
-    numpadTable.innerHTML = "";
-    let numpadRow = document.createElement("tr");
-    numpadRow.classList.add("numpad-row");
-    numpadTable.appendChild(numpadRow);
-    // De acordo com o numero recebido gera 2 buttoes por linha
-    for (let i = 1; i <= num; i++) {
-      const numpadCell = document.createElement("td");
-      numpadCell.classList.add("numpad-cell");
-      const numpadButton = document.createElement("button");
-      numpadButton.classList.add("numpad-Button");
-      numpadButton.textContent = i;
-      numpadButton.id = `curva${i}`;
-      numpadButton.onclick = function () {
-        abrirPopupNumpad();
-        abrirPopup();
-        obterHoraAtual();
-        obterCurvaNum(i);
-      };
-      numpadButton.value = i;
-      numpadCell.appendChild(numpadButton);
-      numpadRow.appendChild(numpadCell);
-      //A cada 2 celulas, fecha e abro uma linha nova
-      if (i % 2 == 0 && i != num) {
-        numpadRow = document.createElement("tr");
-        numpadRow.classList.add("numpad-row");
-        numpadTable.appendChild(numpadRow);
-      }
-    }
-    localStorage.setItem("numCurves", num);
-    /* editarNumpad();
-    editarNumpad2(); */
-  }
-}
 
-function editarNumpad2() {
-  const numpadButton = document.getElementById("botao-numpad-editar");
-  const numpadTextBox = document.getElementById("numberCurvas");
-  const numpadGenerateButton = document.getElementById("botao-numpad");
-  numpadButton.classList.toggle("hidden");
-  numpadTextBox.classList.toggle("hidden");
-  numpadGenerateButton.classList.toggle("hidden");
-}
 
 // Função para determinar qual ação executar com base no popup aberto
 function handleEnterKey(e) {
@@ -1387,6 +1325,45 @@ function pesquisarTabelaHour() {
       }
     }
   }
+}
+
+function pesquisarCorrida(){
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("pesquisaCorrida");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function carregarOpcoesCorrida(){
+  const selectCorrida = document.getElementById('pesquisaCorrida')
+  const numCorridas = Number(localStorage.getItem('numCorridas'))
+  console.log(numCorridas)
+  for(i=1; i<=numCorridas;i++){
+    console.log('inside')
+    const option = document.createElement("option")
+    option.value=i;
+    option.id=`corrida${i}`;
+    option.textContent=`Race nº ${i}`;
+    selectCorrida.appendChild(option);
+  }
+}
+
+function resetCorridas(){
+  const selectCorrida = document.getElementById("pesquisaCorrida")
+  selectCorrida.innerHTML='<option value="">Race</option>'
 }
 
 function pesquisarTabelaPost() {

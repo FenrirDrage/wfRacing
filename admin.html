@@ -28,8 +28,8 @@
       </tr>
       <tr>
         <td id="pesquisaObs">
-          <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Insira a Pesquisa" />
-          <img src="images/pesquisaGif.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa()"/>
+          <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Search here" />
+          <img src="images/pesquisaGif.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa();carregarOpcoesCorrida()"/>
           <label for="pesquisa" id="searchFiltro"></label>
         </td>
       </tr>
@@ -62,6 +62,7 @@
             <th id="thcolorObs">Obs</th>
             <th id="tdlg">Edit</th>
             <th id ="hcolor" class="hidden">Posição</th>
+            <th id="thcolorCorrida" class="hidden">Race</th>
         </tr>
     </thead>
     <tbody>
@@ -92,19 +93,11 @@
         <td>
           Numero de Botões:
         </td>
-        <td>
-          Escolha a corrida:
-        </td>
       </tr>
       <tr>
         <td>
           <input type="number" id="numberCurvas" placeholder="Numero de cameras" value="" style="text-align: center;font-size: 20px;width: 155px;">
           <input type="number" id="numberCorrida"placeholder="Numero de corrida" value="">
-        </td>
-        <td>
-          <select name="raceSelect">
-            <option value="1" name="raceOne">RaceOne</option>
-          </select>
         </td>
       </tr>
       <tr>
@@ -230,7 +223,7 @@
           <p>Escolha o tipo de pesquisa:</p>
         </td>
         <td>
-          <span class="close" onclick="fecharPopupFiltros()">&times;</span>
+          <span class="close" onclick="fecharPopupFiltros();resetCorridas()">&times;</span>
         </td>
       </tr>
       <tr>
@@ -241,9 +234,14 @@
             <option value="3" id="pesquisa3" name="Obs">Obs</option>
           </select>
         </td>
+        <td>
+          <select id="pesquisaCorrida" onchange="pesquisaCorrida()">
+            <option value="">All Races</option>
+          </select>
+        </td>
       </tr>
     </table>
-    <button onclick="fecharPopupFiltros()">Confirmar</button>
+    <button onclick="fecharPopupFiltros();pesquisarCorrida();resetCorridas()">Confirmar</button>
   </div>
 </div>
                
