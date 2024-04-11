@@ -258,12 +258,53 @@ window.addEventListener("load", function () {
   scrollToBottomWithDelay();
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  updateHeaderWithLastRaceText();
+});
+
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
+    // Enviar o nome da corrida para o backend
+    fetch("http://localhost:3000/api/addRace", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ race: rname }), // Alterado de 'name' para 'race'
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao adicionar corrida");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Corrida adicionada com sucesso:", data);
+      })
+      .catch((error) => {
+        console.error("Erro ao adicionar corrida:", error);
+      });
   }
+}
+
+function updateHeaderWithLastRaceText() {
+  fetch("http://localhost:3000/getLRace")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erro ao obter o texto da última corrida");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const headerElement = document.getElementById("headerr");
+      headerElement.innerHTML = data.lastRaceText;
+    })
+    .catch((error) => {
+      console.error("Erro ao obter o texto da última corrida:", error);
+    });
 }
 
 //limpar LocalStorage

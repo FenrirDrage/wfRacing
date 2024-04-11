@@ -7,7 +7,9 @@ const {
   putController,
   addNumpadController,
   dropNumpadController,
-  getNumpadController
+  getNumpadController,
+  addRaceController,
+  getRaceController,
 } = require("../controller/indexcont");
 
 //CRUD
@@ -34,5 +36,11 @@ router.post("/dropDataNumpad", dropNumpadController.dropDataNumpad);
 
 // Rota para consultar numero do numpad
 router.get("/getDataNumpad", getNumpadController.getDataNumpad);
+
+// Rota para adicionar RACE
+router.post("/addRace", addRaceController.addRace);
+
+// Rota para consultar Last RACE
+router.get("/getLRace", getRaceController.getLastRaceId);
 
 module.exports = router;
