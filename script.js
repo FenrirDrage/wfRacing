@@ -12,52 +12,24 @@ let generatedNumber = 0;
 
 // Gravar os detalhes da curva (se é Post ou Turn)
 
-
-
 // Atualizar o relógio a cada segundo
 setInterval(updateClock, 1000);
-
-/* // Função para verificar o token
-async function verifyToken() {
-  const token = localStorage.getItem("token"); // Obtém o token armazenado localmente
-  if (!token) {
-    // Se não houver token, redireciona para index.html
-    window.location.href = "index.html";
-    return;
-  }
-
-  // Envia uma solicitação para o servidor para validar o token
-  try {
-    const response = await fetch("/validate-token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Envia o token no cabeçalho Authorization
-      },
-    });
-    const data = await response.json();
-    if (!response.ok || !data.valid) {
-      // Se o token não for válido, redireciona para index.html
-      window.location.href = "index.html";
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    // Em caso de erro, redireciona para index.html
-    window.location.href = "index.html";
-  }
-} 
-
-// Chama a função para verificar o token quando a página é carregada
-window.onload = verifyToken;
-
-
-*/
-
 
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
+
+//VALIDAÇÃO DE TOKEN!!!!!!!
+document.addEventListener("DOMContentLoaded", function () {
+  // Verifica se a variável responseData existe na localStorage
+  const responseData = localStorage.getItem("responseData");
+  if (!responseData) {
+    // Se a variável responseData não existir, redirecione o usuário para index.html
+    window.location.href = "http://localhost:5500/index.html";
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   loadPesquisaChoice();
   const pesquisaField = document.getElementById("pesquisa");
@@ -138,20 +110,19 @@ document.addEventListener("keydown", function (e) {
     popupConfiguracoes == false &&
     campoPesquisa == false
   ) {
-
-    const corridaData = JSON.parse(localStorage.getItem('numpadData'))
+    const corridaData = JSON.parse(localStorage.getItem("numpadData"));
     let corrida;
-    corridaData.forEach((item)=>{
-      if(item.corridaNumber!=null){
-        corrida=item.corridaNumber;
-      }else{
-        corrida=1;
+    corridaData.forEach((item) => {
+      if (item.corridaNumber != null) {
+        corrida = item.corridaNumber;
+      } else {
+        corrida = 1;
       }
-    })
+    });
 
     if (e.key === "p" || e.key === "P") {
       document.getElementById("curvaInput").value = "Start";
-      document.getElementById("obsInput").value=`Race nº: ${corrida}`;
+      document.getElementById("obsInput").value = `Race nº: ${corrida}`;
       obterHoraAtual();
       adicionarLinha();
     } else if (e.key === "r" || e.key === "R") {
@@ -298,11 +269,11 @@ function carregarDadosNumpad() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.1.136:3000/getDataNumpad";
+  const url = "http://localhost:3000/getDataNumpad";
   //IP casa Luís
-  //const url = "http://192.168.1.136:3000/getData";
+  //const url = "http://localhost:3000/getData";
   //IP config WFR
-  //const url = "http://192.168.1.136:3000/getData";
+  //const url = "http://localhost:3000/getData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/getData";
   fetch(url)
@@ -319,20 +290,20 @@ function carregarDadosNumpad() {
 
 function adicionarNumpadNum(corridaNum) {
   // Eliminar o anterior
-  eliminarNumpadNum()
+  eliminarNumpadNum();
   const numpadNumber = document.getElementById("numberCurvas").value;
   let corridaNumber;
   // Se tiver recebido alteração por um input na corrida(popup de criação)
-  if(corridaNum){
-    corridaNumber = document.getElementById("inputCorrida").value
-  }else{
+  if (corridaNum) {
+    corridaNumber = document.getElementById("inputCorrida").value;
+  } else {
     corridaNumber = document.getElementById("numberCorrida").value;
   }
-  
-  const newNum={
-    numberButtons:numpadNumber,
-    numberCorrida:corridaNumber,
-  }
+
+  const newNum = {
+    numberButtons: numpadNumber,
+    numberCorrida: corridaNumber,
+  };
   localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
   enviarJsonNumpad();
 }
@@ -344,12 +315,12 @@ function enviarJsonNumpad() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.1.136:3000/addDataNumpad";
+  const url = "http://localhost:3000/addDataNumpad";
   //IP config casa Luís
-  //const url ="http:// 192.168.1.136:3000/addData";
+  //const url ="http:// localhost:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://192.168.1.136:3000/addData";
+  //const url = "http://localhost:3000/addData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/addData";
 
@@ -369,7 +340,7 @@ function enviarJsonNumpad() {
       .catch((error) =>
         console.error("Erro ao enviar dados para o servidor:", error)
       );
-      localStorage.removeItem('novoNumpadNum')
+    localStorage.removeItem("novoNumpadNum");
   } else {
     console.log("Nenhum dado encontrado no localStorage.");
   }
@@ -379,11 +350,11 @@ function enviarJsonNumpad() {
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.1.136:3000/dropDataNumpad";
+  const url = "http://localhost:3000/dropDataNumpad";
   //IP casa Luís
-  //const url = "http://192.168.1.136/dropData";
+  //const url = "http://localhost/dropData";
   //IP config WFR
-  //const url = "http://192.168.1.136:3000/dropData";
+  //const url = "http://localhost:3000/dropData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/dropData";
 
@@ -405,20 +376,19 @@ function eliminarNumpadNum() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
-
   let corrida = document.getElementById("inputCorrida").value;
   // Ir buscar o numero da corrida
-  if(corrida == null || corrida==""){
-    numpadDBData.forEach((item)=>{
-      corrida=item.numberCorrida;
-    })
-  }else{
-    adicionarNumpadNum(corrida)
+  if (corrida == null || corrida == "") {
+    numpadDBData.forEach((item) => {
+      corrida = item.numberCorrida;
+    });
+  } else {
+    adicionarNumpadNum(corrida);
   }
 
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
-  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"))
+  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
   // Capturar os valores dos campos do pop-up
   const camera = document.getElementById("cameraNumber").value;
   const curva = document.getElementById("curvaInput").value;
@@ -429,9 +399,9 @@ function adicionarLinha() {
   let obs = document.getElementById("obsInput").value;
 
   // Adicionar a corrida ás obs se for start
-  if(curva=="Start" && obs.includes("Race nº:")==false){
+  if (curva == "Start" && obs.includes("Race nº:") == false) {
     obs = `Race Nº:${corrida}\n` + document.getElementById("obsInput").value;
-  }  
+  }
 
   // Se report for 0, definir nfa como 1
   let nfa = false;
@@ -466,12 +436,12 @@ function enviarJson() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.1.136:3000/addData";
+  const url = "http://localhost:3000/addData";
   //IP config casa Luís
-  //const url ="http:// 192.168.1.136:3000/addData";
+  //const url ="http:// localhost:3000/addData";
   //IP config WFR
   //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://192.168.1.136:3000/addData";
+  //const url = "http://localhost:3000/addData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/addData";
 
@@ -566,12 +536,12 @@ function envUpJson() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://192.168.1.136:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís
-    //const url = `http://192.168.1.136/updateData/${id}`;
+    //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //const url = `http://localhost:3000/updateData/${id}`;
     //IP CORRIDAS
     //const url = "http://192.168.1.53:3000/updateData/";
     console.log(url);
@@ -609,7 +579,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://192.168.1.136:3000/dropData/${detalhes._id}`, {
+    fetch(`http://localhost:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -782,15 +752,14 @@ function atualizarTabela(data) {
   });
 
   // Carregar o numero currente da corrida
-  const numCorrida = JSON.parse(localStorage.getItem("numpadData"))
-  numCorrida.forEach((item)=>{
-    if(item.numberCorrida!=null){
-      document.getElementById('inputCorrida').value = item.numberCorrida;
+  const numCorrida = JSON.parse(localStorage.getItem("numpadData"));
+  numCorrida.forEach((item) => {
+    if (item.numberCorrida != null) {
+      document.getElementById("inputCorrida").value = item.numberCorrida;
+    } else {
+      document.getElementById("inputCorrida").value = 1;
     }
-    else{
-      document.getElementById('inputCorrida').value = 1;
-    }
-  })
+  });
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -838,11 +807,11 @@ function preencherPopupComDetalhes(detalhes) {
       nfaCheck &&
       obsInput &&
       cameraInput &&
-      priorityCheck && 
+      priorityCheck &&
       corridaInput
     ) {
       // Atribui os valores dos detalhes aos campos do popup
-      corridaInput.value = detalhes.corrida|| "";
+      corridaInput.value = detalhes.corrida || "";
       cameraInput.value = detalhes.camera || "";
       curvaInput.value = detalhes.curva || "";
       horainput.value = detalhes.hora || "";
@@ -900,11 +869,11 @@ function carregarDados() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.1.136:3000/getData";
+  const url = "http://localhost:3000/getData";
   //IP casa Luís
-  //const url = "http://192.168.1.136:3000/getData";
+  //const url = "http://localhost:3000/getData";
   //IP config WFR
-  //const url = "http://192.168.1.136:3000/getData";
+  //const url = "http://localhost:3000/getData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/getData";
 
@@ -1011,11 +980,11 @@ function limparTabela() {
 
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
-  const url = "http://192.168.1.136:3000/dropData";
+  const url = "http://localhost:3000/dropData";
   //IP casa Luís
-  //const url = "http://192.168.1.136/dropData";
+  //const url = "http://localhost/dropData";
   //IP config WFR
-  //const url = "http://192.168.1.136:3000/dropData";
+  //const url = "http://localhost:3000/dropData";
   //IP CORRIDAS
   //const url = "http://192.168.1.53:3000/dropData";
 
@@ -1330,7 +1299,6 @@ function handleEnterKey(e) {
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
 
-
 function mudaPesquisa() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const historyChoice = localStorage.getItem("pesquisaChoice");
@@ -1623,7 +1591,7 @@ function moveDown(button) {
 
         if (item._id == LinhaDados1._id) {
           //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-          item.corrida = LinhaDados2.corrida
+          item.corrida = LinhaDados2.corrida;
           item.camera = LinhaDados2.camera;
           item.curva = LinhaDados2.curva;
           item.hora = LinhaDados2.hora;
@@ -1637,7 +1605,7 @@ function moveDown(button) {
         }
         if (item._id == LinhaDados2._id) {
           //Vai buscar o objecto com o mesmo e ID e substituir pelos contéudos do qual pretende trocar
-          item.corrida = LinhaDados1.corrida
+          item.corrida = LinhaDados1.corrida;
           item.camera = LinhaDados1.camera;
           item.curva = LinhaDados1.curva;
           item.hora = LinhaDados1.hora;
@@ -1675,12 +1643,12 @@ function updatePosition() {
     console.log(id);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url = `http://192.168.1.136:3000/updateData/${id}`;
+    const url = `http://localhost:3000/updateData/${id}`;
     //IP casa Luís
-    //const url = `http://192.168.1.136/updateData/${id}`;
+    //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //const url = `http://localhost:3000/updateData/${id}`;
     //IP CORRIDAS
     //const url = "http://192.168.1.53:3000/updateData/";
     console.log(url);
@@ -1715,12 +1683,12 @@ function updatePosition() {
     console.log(id2);
     // Definir o IP/URL para onde enviar os dados
     //Ip casa
-    const url2 = `http://192.168.1.136:3000/updateData/${id2}`;
+    const url2 = `http://localhost:3000/updateData/${id2}`;
     //IP casa Luís
-    //const url = `http://192.168.1.136/updateData/${id}`;
+    //const url = `http://localhost/updateData/${id}`;
     //IP config WFR
     //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://192.168.1.136:3000/updateData/${id}`;
+    //const url = `http://localhost:3000/updateData/${id}`;
     //IP CORRIDAS
     //const url = "http://192.168.1.53:3000/updateData/";
     console.log(url2);

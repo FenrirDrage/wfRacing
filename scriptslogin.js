@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   logoutButton.addEventListener("click", function () {
     // Fazer solicitação para logout
-    fetch("http://192.168.1.136:3000/auth/logout", {
+    fetch("http://localhost:3000/auth/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => {
         if (response.ok) {
           // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
-          localStorage.removeItem("token");
+          localStorage.removeItem("responseData");
           // Redirecionar de volta para a página index.html
           window.location.href = "index.html";
         } else {
@@ -81,7 +81,7 @@ function login() {
   };
 
   // Enviar solicitação HTTP para validar o login
-  fetch("http://192.168.1.136:3000/auth/login", {
+  fetch("http://localhost:3000/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
