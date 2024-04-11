@@ -307,6 +307,10 @@ function updateHeaderWithLastRaceText() {
     });
 }
 
+function showWorkInProgress() {
+  alert("Esta funcionalidade está em desenvolvimento!");
+}
+
 //limpar LocalStorage
 function limparLS() {
   localStorage.clear();
