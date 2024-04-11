@@ -946,8 +946,9 @@ function limparTabela() {
   })
     .then((response) => response.json())
     .then((data) => {
-      //location.reload;
-      console.log(data.message); // Mensagem retornada pelo servidor
+      location.reload;
+      console.log(data.message);
+      fecharPopupRodaDentada(); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
       console.error("Erro ao apagar dados:", error);
