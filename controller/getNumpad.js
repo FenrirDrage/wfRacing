@@ -5,7 +5,6 @@ exports.getDataNumpad = async (req, res) => {
   try {
     // Buscar todos os dados no banco de dados
     const dados = await DadosNumpad.find();
-    console.log(dados);
     // Retornar os dados encontrados como resposta
     res.json(dados);
   } catch (error) {

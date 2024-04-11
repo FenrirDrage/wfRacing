@@ -18,52 +18,65 @@ document.addEventListener("keypress", handlekeypress);
 document.addEventListener("DOMContentLoaded", function () {
   const videoContainer = document.getElementById("videoContainer");
 
-  // Mostrar o contêiner do vídeo por 3 segundos
-  videoContainer.style.display = "block";
+  if (videoContainer !== null) {
+    try {
+      // Mostrar o contêiner do vídeo por 3 segundos
+      videoContainer.style.display = "block";
 
-  // Carregar o vídeo
-  const video = document.createElement("video");
-  video.src = "images/wfrtrans.mp4";
-  video.autoplay = true;
-  video.preload = "metadata"; // Carregar apenas os metadados do vídeo
+      // Carregar o vídeo
+      const video = document.createElement("video");
+      video.src = "images/wfrtrans.mp4";
+      video.autoplay = true;
+      video.preload = "metadata"; // Carregar apenas os metadados do vídeo
 
-  // Adicionar o vídeo ao contêiner
-  videoContainer.appendChild(video);
+      // Adicionar o vídeo ao contêiner
+      videoContainer.appendChild(video);
 
-  // Definir temporizador para ocultar o contêiner após 3 segundos
-  setTimeout(function () {
-    videoContainer.style.display = "none";
-  }, 2500); // Tempo em milissegundos (3 segundos)
+      // Definir temporizador para ocultar o contêiner após 3 segundos
+      setTimeout(function () {
+        videoContainer.style.display = "none";
+      }, 2500); // Tempo em milissegundos (3 segundos)
+    } catch (error) {
+      // Ignorar o erro
+      console.error("Erro ao tentar mostrar o contêiner do vídeo:", error);
+    }
+  } else {
+    console.error("Elemento com ID 'videoContainer' não encontrado.");
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const logoutButton = document.getElementById("logoutButton");
+  try {
+    const logoutButton = document.getElementById("logoutButton");
 
-  logoutButton.addEventListener("click", function () {
-    // Fazer solicitação para logout
-    fetch("http://localhost:3000/auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Inclua o token de autenticação no cabeçalho Authorization
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
-          localStorage.removeItem("responseData");
-          // Redirecionar de volta para a página index.html
-          window.location.href = "index.html";
-        } else {
-          // Se o logout falhar, exiba uma mensagem de erro
-          console.error("Failed to logout");
-        }
+    logoutButton.addEventListener("click", function () {
+      // Fazer solicitação para logout
+      fetch("http://localhost:3000/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Inclua o token de autenticação no cabeçalho Authorization
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  });
+        .then((response) => {
+          if (response.ok) {
+            // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
+            localStorage.removeItem("responseData");
+            // Redirecionar de volta para a página index.html
+            window.location.href = "index.html";
+          } else {
+            // Se o logout falhar, exiba uma mensagem de erro
+            console.error("Failed to logout");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  } catch (error) {
+    console.error("Botao nao disponivel.");
+  }
 });
 
 function handlekeypress(event) {

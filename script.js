@@ -1,4 +1,5 @@
 //--------------------------------------------DECLARAÇÕES VARIAVEIS---------------------------------------------------------
+
 let popupAberto = false;
 let popup2Aberto = false;
 let popupNumpadAberto = false;
@@ -10,6 +11,9 @@ let popupFiltros = false;
 // Gerar Número de curvas no numpad
 let generatedNumber = 0;
 
+// Detalhe da turn
+let detalheCurva = "NaN";
+
 // Gravar os detalhes da curva (se é Post ou Turn)
 
 // Atualizar o relógio a cada segundo
@@ -17,6 +21,9 @@ setInterval(updateClock, 1000);
 
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
+
+//Declarado URL's
+const url = "http://localhost:3000/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -34,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
   loadPesquisaChoice();
   const pesquisaField = document.getElementById("pesquisa");
   if (!pesquisaField) {
-    console.log(pesquisaField);
     console.log("Campo não encontrado");
   } else {
     pesquisaField.addEventListener("focus", function () {
@@ -58,7 +64,6 @@ document.addEventListener("keydown", function (e) {
   if (popupNumpadAberto == true) {
     let curvaInput = document.getElementById("curvaInput");
     const maxCurvas = localStorage.getItem("numCurves");
-    console.log(maxCurvas);
     curvaInput.value += `${e.key}`;
     if (Number(curvaInput.value) > maxCurvas) {
       curvaInput.value = String(maxCurvas);
@@ -149,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
         indiceMaximo++;
       });
     }
-    console.log(indiceMaximo);
     localStorage.setItem("indiceCorrente", indiceMaximo);
   }, 1000); // 1 second delay
 });
@@ -236,9 +240,15 @@ document.addEventListener("DOMContentLoaded", function () {
   carregarDadosNumpad();
 });
 
-document.getElementById("pesquisaOptions").value = 1;
-console.log(document.getElementById("pesquisaOptions").value);
-// Alterar a coluna de pesquisa no campo de pesquisa
+document.addEventListener("DOMContentLoaded", function () {
+  const pesquisaOptions = document.getElementById("pesquisaOptions");
+
+  if (pesquisaOptions !== null) {
+    pesquisaOptions.value = 1;
+  } else {
+    console.error("Elemento com ID 'pesquisaOptions' não encontrado.");
+  }
+});
 
 // Chamar a função updateClock() para exibir a hora atual quando a página for carregada
 window.addEventListener("load", updateClock);
@@ -268,15 +278,10 @@ function carregarDadosNumpad() {
   // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
 
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
-  const url = "http://localhost:3000/getDataNumpad";
-  //IP casa Luís
-  //const url = "http://localhost:3000/getData";
-  //IP config WFR
-  //const url = "http://localhost:3000/getData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/getData";
-  fetch(url)
+  const endpoint = "getDataNumpad";
+  const furl = url + endpoint;
+
+  fetch(furl)
     .then((response) => response.json())
     .then((data) => {
       // Atualiza a tabela com os dados recebidos
@@ -311,18 +316,9 @@ function adicionarNumpadNum(corridaNum) {
 function enviarJsonNumpad() {
   // Recuperar os dados do localStorage
   const localStorageData = localStorage.getItem("novoNumpadNum");
-  console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
   const url = "http://localhost:3000/addDataNumpad";
-  //IP config casa Luís
-  //const url ="http:// localhost:3000/addData";
-  //IP config WFR
-  //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://localhost:3000/addData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -349,14 +345,7 @@ function enviarJsonNumpad() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
   const url = "http://localhost:3000/dropDataNumpad";
-  //IP casa Luís
-  //const url = "http://localhost/dropData";
-  //IP config WFR
-  //const url = "http://localhost:3000/dropData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/dropData";
 
   fetch(url, {
     method: "POST",
@@ -420,7 +409,6 @@ function adicionarLinha() {
     priority: priority,
     obs: obs,
   };
-  console.log(newData);
 
   // Convertendo para JSON e armazenando no localStorage
   localStorage.setItem("novaLinhaData", JSON.stringify(newData));
@@ -435,15 +423,7 @@ function enviarJson() {
   console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
   const url = "http://localhost:3000/addData";
-  //IP config casa Luís
-  //const url ="http:// localhost:3000/addData";
-  //IP config WFR
-  //const url = "http://192.168.1.148:3000/addData";
-  //const url = "http://localhost:3000/addData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -466,10 +446,6 @@ function enviarJson() {
   }
 }
 
-// Detalhe da turn
-
-let detalheCurva = "NaN";
-
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
   const camera = document.getElementById("cameraNumber2").value;
@@ -480,8 +456,6 @@ function updateLinha() {
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
   const obs = document.getElementById("obsInput2").value;
-  console.log(curva);
-  console.log(detalheCurva);
   // Caso tenham sido Post ou Turn anteriormente
   if (!curva.includes("P") && !curva.includes("Turn")) {
     if (detalheCurva == "P" || detalheCurva == "Turn") {
@@ -525,26 +499,14 @@ function updateLinha() {
 function envUpJson() {
   // Obtém os dados atualizados do localStorage
   const updatedDataString = localStorage.getItem("novaLinhaData");
-  console.log(updatedDataString);
   // Verifica se há dados no localStorage
   if (updatedDataString) {
     const updatedData = JSON.parse(updatedDataString);
-    console.log(updatedData);
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
-    console.log(id);
     // Definir o IP/URL para onde enviar os dados
-    //Ip casa
     const url = `http://localhost:3000/updateData/${id}`;
-    //IP casa Luís
-    //const url = `http://localhost/updateData/${id}`;
-    //IP config WFR
-    //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://localhost:3000/updateData/${id}`;
-    //IP CORRIDAS
-    //const url = "http://192.168.1.53:3000/updateData/";
-    console.log(url);
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -575,7 +537,6 @@ function envUpJson() {
 function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
-  console.log(detalhes._id);
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
@@ -751,15 +712,19 @@ function atualizarTabela(data) {
     tabela.appendChild(novaLinha);
   });
 
-  // Carregar o numero currente da corrida
   const numCorrida = JSON.parse(localStorage.getItem("numpadData"));
-  numCorrida.forEach((item) => {
-    if (item.numberCorrida != null) {
-      document.getElementById("inputCorrida").value = item.numberCorrida;
-    } else {
-      document.getElementById("inputCorrida").value = 1;
-    }
-  });
+
+  if (numCorrida !== null) {
+    numCorrida.forEach((item) => {
+      if (item.numberCorrida != null) {
+        document.getElementById("inputCorrida").value = item.numberCorrida;
+      } else {
+        document.getElementById("inputCorrida").value = 1;
+      }
+    });
+  } else {
+    document.getElementById("inputCorrida").value = 1; // Defina o valor padrão se não houver dados no localStorage
+  }
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -827,7 +792,6 @@ function preencherPopupComDetalhes(detalhes) {
       } else if (curvaInput.value.includes("Turn")) {
         detalheCurva = "Turn";
       }
-      console.log(detalheCurva);
     } else {
       console.error(
         "Um ou mais elementos do popup não foram encontrados no DOM."
@@ -870,12 +834,6 @@ function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
   //IP config casa
   const url = "http://localhost:3000/getData";
-  //IP casa Luís
-  //const url = "http://localhost:3000/getData";
-  //IP config WFR
-  //const url = "http://localhost:3000/getData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/getData";
 
   fetch(url)
     .then((response) => response.json())
@@ -945,7 +903,6 @@ function adicionarCameraOrPost(opcao) {
 //Verificar password dar input de curvas
 function checkPassword() {
   numpadPassword = "WFR2012";
-  console.log(document.getElementById("numpadUnlock").value);
   if (document.getElementById("numpadUnlock").value == numpadPassword) {
     adicionarNumpadNum();
     generateNumpad();
@@ -979,14 +936,7 @@ function limparTabela() {
   }
 
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
   const url = "http://localhost:3000/dropData";
-  //IP casa Luís
-  //const url = "http://localhost/dropData";
-  //IP config WFR
-  //const url = "http://localhost:3000/dropData";
-  //IP CORRIDAS
-  //const url = "http://192.168.1.53:3000/dropData";
 
   fetch(url, {
     method: "POST",
@@ -1039,7 +989,6 @@ function carregarNumpad() {
     databaseNum.forEach((item) => {
       if (item.numberButtons != null || item.numberButtons != undefined) {
         document.getElementById("numberCurvas").value = item.numberButtons;
-        console.log(item.numberButtons);
       }
     });
   } else {
@@ -1090,11 +1039,9 @@ function generateNumpad() {
   if (document.getElementById("numpad-table") == null) {
     const num = document.getElementById("numberCurvas").value;
     const databaseNum = JSON.parse(localStorage.getItem("numpadNum"));
-    console.log(databaseNum);
     if (databaseNum != undefined || databaseNum != null) {
       setTimeout(() => {
         databaseNum.forEach((item) => {
-          console.log(item.numberButtons);
           generatedNumber = item.numberButtons;
         });
       }, 100);
@@ -1304,34 +1251,28 @@ function mudaPesquisa() {
   const historyChoice = localStorage.getItem("pesquisaChoice");
 
   const pesquisa = document.getElementById("pesquisa");
-  console.log(pesquisaChoice.value);
-  let num = Number(pesquisaChoice.value);
-  if (!pesquisaChoice) {
-    console.log("Não há select");
-  } else {
-    pesquisaChoice.addEventListener("change", function () {
-      if (pesquisaChoice.value == 1) {
-        localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaPost();
-        };
-        console.log(localStorage.getItem("pesquisaChoice"));
-      } else if (pesquisaChoice.value == 2) {
-        localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
-        console.log("Selected2!");
-        console.log(localStorage.getItem("pesquisaChoice"));
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaHour();
-        };
-      } else if (pesquisaChoice.value == 3) {
-        localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
-        console.log("Selected3!");
-        pesquisa.onkeyup = function () {
-          pesquisarTabelaObs();
-        };
-      }
-    });
-  }
+  const searchFiltro = document.getElementById("searchFiltro");
+
+  pesquisaChoice.addEventListener("change", function () {
+    const selectedOption =
+      pesquisaChoice.options[pesquisaChoice.selectedIndex].text;
+    searchFiltro.textContent = selectedOption;
+    localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
+
+    if (pesquisaChoice.value == 1) {
+      pesquisa.onkeyup = function () {
+        pesquisarTabelaPost();
+      };
+    } else if (pesquisaChoice.value == 2) {
+      pesquisa.onkeyup = function () {
+        pesquisarTabelaHour();
+      };
+    } else if (pesquisaChoice.value == 3) {
+      pesquisa.onkeyup = function () {
+        pesquisarTabelaObs();
+      };
+    }
+  });
 }
 
 // Carregar a pesquisa selecionada anteriormente
@@ -1339,21 +1280,17 @@ function loadPesquisaChoice() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const choice = localStorage.getItem("pesquisaChoice");
   const pesquisa = document.getElementById("pesquisa");
-  console.log(choice);
   if (choice != null) {
     pesquisaChoice.value = choice;
-    console.log(pesquisaChoice.value);
     if (pesquisaChoice.value == 1) {
       pesquisa.onkeyup = function () {
         pesquisarTabelaPost();
       };
     } else if (pesquisaChoice.value == 2) {
-      console.log("Selected2!");
       pesquisa.onkeyup = function () {
         pesquisarTabelaHour();
       };
     } else if (pesquisaChoice.value == 3) {
-      console.log("Selected3!");
       pesquisa.onkeyup = function () {
         pesquisarTabelaObs();
       };
@@ -1630,28 +1567,16 @@ function moveDown(button) {
 function updatePosition() {
   // Obtém os dados da linha atualizados do localStorage
   const updatedDataString1 = localStorage.getItem("LinhaPosition1");
-  console.log(updatedDataString1);
   const updatedDataString2 = localStorage.getItem("LinhaPosition2");
-  console.log(updatedDataString2);
   // Verifica se há dados no localStorage
   if (updatedDataString1 && updatedDataString2) {
     const updatedData1 = JSON.parse(updatedDataString1);
-    console.log(updatedData1);
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
-    console.log(id);
     // Definir o IP/URL para onde enviar os dados
-    //Ip casa
     const url = `http://localhost:3000/updateData/${id}`;
-    //IP casa Luís
-    //const url = `http://localhost/updateData/${id}`;
-    //IP config WFR
-    //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://localhost:3000/updateData/${id}`;
-    //IP CORRIDAS
-    //const url = "http://192.168.1.53:3000/updateData/";
-    console.log(url);
+
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -1676,22 +1601,13 @@ function updatePosition() {
 
     //Processo da outra linha
     const updatedData2 = JSON.parse(updatedDataString2);
-    console.log(updatedData2);
 
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id2 = updatedData2._id;
-    console.log(id2);
+
     // Definir o IP/URL para onde enviar os dados
-    //Ip casa
     const url2 = `http://localhost:3000/updateData/${id2}`;
-    //IP casa Luís
-    //const url = `http://localhost/updateData/${id}`;
-    //IP config WFR
-    //const url = `http://192.168.1.148:3000/updateData/${id}`;
-    //const url = `http://localhost:3000/updateData/${id}`;
-    //IP CORRIDAS
-    //const url = "http://192.168.1.53:3000/updateData/";
-    console.log(url2);
+
     // Envia os dados atualizados para o servidor
     fetch(url2, {
       method: "PUT",

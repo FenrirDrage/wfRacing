@@ -3,12 +3,14 @@
 <link rel="shortcut icon" href="images/wfrLogo.jpg" type="image/x-icon">
 <link rel="stylesheet" href="css.css">
 
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/express"></script>
+
 <script src="script.js"></script>
 <script src="server.js"></script>
 <script src="expexcell.js"></script>
 <script src="scriptslogin.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 <body onload="carregarNumpad()">
 <img id="logo" src="images/unnamed.png" alt="Logo">
 
@@ -28,6 +30,7 @@
         <td id="pesquisaObs">
           <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Insira a Pesquisa" />
           <img src="images/pesquisaGif.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa()"/>
+          <label for="pesquisa" id="searchFiltro"></label>
         </td>
       </tr>
     </table>
@@ -41,9 +44,6 @@
     <button id="penasdicionar" onclick="abrirPopup(); obterHoraAtual()">Adicionar Linha</button>
     
 </div> -->
-
-
-
 
 <div id="clock"></div>
 <div id="date"></div>
@@ -69,8 +69,6 @@
     </tbody>
 </table> 
 
-
-
 <div id="extraButtons">
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('RF')" id="raceRF" value="Red Flag">Red Flag</button></br>
   <button class="numpad-Button" onclick="abrirPopup(); obterHoraAtual();obterStartOrRF('SF')" id="raceSF" value="Slow Flag">Slow </button></br>
@@ -81,7 +79,6 @@
 <div id ="numpad">
   <!--<button id="botao-numpad-voltar" onclick ="window.open('/cliente.html')">Cliente</button> -->
 </div>
-
 
 <div id="popupRodadentada" class="popup">
   <div class="popup-content">
@@ -164,7 +161,6 @@
     </table>
   </div>
 </div>
-
 
 <!-- PopUp para adicionar dados -->
 <div id="popup" class="popup"  onload="limparLS()">
@@ -252,4 +248,5 @@
 </div>
                
 </div>
+
 </body>

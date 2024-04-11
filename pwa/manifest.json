@@ -11,24 +11,29 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "https://www.pwabuilder.com/assets/icons/icon_512.png",
-      "sizes": "512x512",
+      "src": "/images/pwa/wfr_rc-72.png",
+      "sizes": "72x72",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "https://www.pwabuilder.com/assets/icons/icon_192.png",
+      "src": "/images/pwa/wfr_rc-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
-    }
+    },
+    {
+      "src": "/images/pwa/wfr_rc-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+  }
   ],
   "screenshots": [
     {
       "src": "https://www.pwabuilder.com/assets/screenshots/screen1.png",
       "sizes": "2880x1800",
-      "type": "image/png",
-      "description": "A screenshot of the home page"
+      "type": "image/png"
     }
   ],
   "related_applications": [
@@ -42,16 +47,6 @@
       "name": "WFR-RaceTech",
       "url": "/index.html",
       "description": "A description of the functionality of this shortcut"
-    }
-  ],
-  "protocol_handlers": [
-    {
-      "protocol": "mailto",
-      "url": "/mailto-handler.html"
-    },
-    {
-      "protocol": "web+customprotocol",
-      "url": "/custom-handler.html"
     }
   ]
 }
