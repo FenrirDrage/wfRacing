@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//
+// Definir se o campo de pesquisa está selecionado ou não
 document.addEventListener("DOMContentLoaded", function () {
   loadPesquisaChoice();
   const pesquisaField = document.getElementById("pesquisa");
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//
+// Impedir o refresh quando ao campo de pesquisa se encontra selecionado
 if (campoPesquisa == false) {
   // Chamar a função atualizarPagina a cada 5 segundos
   setInterval(atualizarPagina, 5000);
@@ -116,8 +116,10 @@ document.addEventListener("keydown", function (e) {
     const corridaData = JSON.parse(localStorage.getItem("numpadNum"));
     let corrida;
     corridaData.forEach((item) => {
-      if (item.corridaNumber != null) {
-        corrida = item.corridaNumber;
+      console.log('here')
+      console.log(item.numberCorrida)
+      if (item.numberCorrida != null) {
+        corrida = item.numberCorrida;
       } else {
         corrida = 1;
       }
@@ -507,6 +509,7 @@ function enviarJson() {
 //Funçao para dar update á linha selecionada da tabela
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
+  const corrida = document.getElementById("inputCorrida2").value
   const camera = document.getElementById("cameraNumber2").value;
   let curva = document.getElementById("curvaInput2").value;
   const hora = document.getElementById("horainput2").value;
@@ -524,6 +527,7 @@ function updateLinha() {
 
   // Cria um objeto com os dados atualizados
   const updatedData = {
+    corrida: corrida,
     camera: camera,
     curva: curva,
     hora: hora,
@@ -672,11 +676,7 @@ function fecharPopup() {
 //fecha o pupup2
 function fecharPopup2() {
   document.getElementById("popup2").style.display = "none";
-  const popupEdit = document.getElementById("popupEdit");
-  const botaoUp = document.getElementById("buttonUp");
-  const botaoDown = document.getElementById("buttonDown");
-  popupEdit.removeChild(botaoUp);
-  popupEdit.removeChild(botaoDown);
+  resetPositionButtons();
 
   popup2Aberto = false;
   //location.reload();
@@ -787,12 +787,103 @@ function atualizarTabela(data) {
   });
 }
 
+//----------------------------------------------------------------------------vPROTOTYPO PESQUISAR COM CORRIDA SELECTEDv--------------------------------------------
+/* function atualizarTabelaPesquisa(data, numCorrida){
+  const tabela = document.getElementById("tabela");
+  const tabelaPesquisa = document.getElementById("tabelaCorrida");
+ 
+   // Limpa apenas as linhas de dados da tabela, mantendo o cabeçalho
+   while (tabelaPesquisa.rows.length > 1) {
+     tabelaPesquisa.deleteRow(1);
+   }
+ 
+   // Adiciona linhas à tabela com os dados recebidos
+   var counter = 1;
+ if(numCorrida){
+    tabela.classList.add("hidden")
+    tabelaPesquisa.classList.remove("hidden")
+   data.forEach((item) => {
+     if(item.corrida==numCorrida){
+ 
+     const novaLinha = document.createElement("tr");
+     novaLinha.innerHTML = `
+       <td class="hidden">${item._id}</td>
+       <td contenteditable="false">${item.camera}</td>
+       <td contenteditable="false">${item.curva}</td>
+       <td contenteditable="false">${item.hora}</td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.video ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.report ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.nfa ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false">${item.obs}</td>
+       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
+         item._id
+       }')"></td>
+       <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${
+         item._id
+       }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
+       item._id
+     }" onclick="moveDown(this)">↓</button>
+      <td class="hidden">${item.corrida}</td>
+       `;
+ 
+     // Adiciona classes CSS com base nos valores de report e nfa
+     if (item.report) {
+       novaLinha.classList.add("report-true");
+     }
+     if (item.nfa) {
+       novaLinha.classList.add("nfa-true");
+     }
+     if (item.priority) {
+       novaLinha.classList.add("priority-set");
+     }
+     if (item.curva == "Start") {
+       novaLinha.classList.add("post-start");
+     }
+     if (item.curva == "Slow Flag") {
+       novaLinha.classList.add("post-slow");
+     }
+     if (item.curva == "Red Flag") {
+       novaLinha.classList.add("post-redflag");
+     }
+     }
+     counter++;
+     tabelaPesquisa.appendChild(novaLinha);
+   });
+ }else{
+    tabela.classList.remove("hidden")
+    tabelaPesquisa.classList.add("hidden")
+ }
+ 
+ }
+ */
+
+//----------------------------------------------------------------------------^PROTOTYPO PESQUISAR COM CORRIDA SELECTED ^-------------------------------------------
+
+// Dar reset aos botoes de posição
+function resetPositionButtons(){
+    const popupEdit = document.getElementById("popupEdit");
+    const botaoUp = document.getElementById("buttonUp");
+    const botaoDown = document.getElementById("buttonDown");
+    popupEdit.removeChild(botaoUp);
+    popupEdit.removeChild(botaoDown);
+}
+
 // Função para abrir o pop-up com os detalhes da linha correspondente
 function abrirDetalhes(id) {
   const data = JSON.parse(localStorage.getItem("dadosTabela")); // Obtemos os dados da localStorage
   const detalhes = data.find((item) => item._id === id); // Encontramos o item com o id correspondente
   if (detalhes) {
     // Se encontrarmos os detalhes, preenchemos o pop-up e o exibimos
+    if(popup2Aberto==true){
+      resetPositionButtons()
+    }
+    
     preencherPopupComDetalhes(detalhes);
     generatePositionButtons(detalhes);
     abrirPopup2();
@@ -1090,7 +1181,7 @@ function updateClock() {
   }
 }
 
-//
+// Gera o numpad na página baseado no numero armazenado na localStorage(este é alcançado pelo valor na database)
 function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
   // Gerar Número de curvas no numpad
@@ -1190,15 +1281,7 @@ function generateNumpad() {
   }
 }
 
-//
-function editarNumpad() {
-  const numpadButton = document.getElementById("botao-numpad-editar");
-  const numpadTextBox = document.getElementById("numberCurvas");
-  const numpadGenerateButton = document.getElementById("botao-numpad");
-  numpadButton.classList.toggle("hidden");
-  numpadTextBox.classList.toggle("hidden");
-  numpadGenerateButton.classList.toggle("hidden");
-}
+
 
 // Função para determinar qual ação executar com base no popup aberto
 function handleEnterKey(e) {
@@ -1225,7 +1308,7 @@ function handleEnterKey(e) {
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
 
-//
+//Função que muda a pesquisa quando o usuário seleciona uma opção no menu de filtros (Lupa)
 function mudaPesquisa() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const historyChoice = localStorage.getItem("pesquisaChoice");
@@ -1301,7 +1384,7 @@ function pesquisarTabelaObs() {
   }
 }
 
-//
+// Pesquisar pela Hora
 function pesquisarTabelaHour() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -1324,7 +1407,7 @@ function pesquisarTabelaHour() {
   }
 }
 
-//
+// Seleção da corrida no menu de filtros(Por enquanto se o usuário escrever na barra de pesquisa, esta função leva overwrite e são exibidos todos os registo de acordo com a pesquisa)
 function pesquisarCorrida() {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("pesquisaCorrida");
@@ -1345,7 +1428,7 @@ function pesquisarCorrida() {
   }
 }
 
-//
+//Função que vai buscar o numero de corridas á localStorage(que por sua vez foi buscar o numero a base de dados)
 function carregarOpcoesCorrida() {
   const selectCorrida = document.getElementById("pesquisaCorrida");
   const numCorridas = Number(localStorage.getItem("numCorridas"));
@@ -1360,13 +1443,13 @@ function carregarOpcoesCorrida() {
   }
 }
 
-//
+// Impedir que a lista seja replicada caso o usuario feixe a janela e abra outra vez(dá clear da lista aquando do fecho da janela)
 function resetCorridas() {
   const selectCorrida = document.getElementById("pesquisaCorrida");
   selectCorrida.innerHTML = '<option value="">Race</option>';
 }
 
-//
+// Pesquisar na tabela pelo campo Turn/Post
 function pesquisarTabelaPost() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -1389,23 +1472,9 @@ function pesquisarTabelaPost() {
   }
 }
 
-//
-function pesquisaEscolhaPost() {
-  const choice = getElementById("pesquisaObs");
-  choice.classList.add("hidden");
-  const actualChoice = getElementById("pesquisaPost");
-  actualChoice.classList.remove("hidden");
-}
 
-//
-function pesquisaEscolhaPostObs() {
-  const choice = getElementById("pesquisaPost");
-  choice.classList.add("hidden");
-  const actualChoice = getElementById("pesquisaObs");
-  actualChoice.classList.remove("hidden");
-}
 
-//
+// Na página de cliente, troca a exibição da Tabela para o Numpad
 function trocarParaNumpad() {
   const tabela = document.getElementById("tabela");
   const tabelaIcon = document.getElementById("iconTabela");
@@ -1420,7 +1489,7 @@ function trocarParaNumpad() {
   numpadIcon.classList.add("hidden");
 }
 
-//
+// Na página de cliente, troca a exibição do Numpad para a Tabela
 function trocarParaTabela() {
   const tabela = document.getElementById("tabela");
   const tabelaIcon = document.getElementById("iconTabela");
