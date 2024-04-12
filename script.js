@@ -8,8 +8,6 @@ let popupRodaDentada = false;
 let popupConfiguracoes = false;
 let popupFiltros = false;
 
-
-
 // Gravar os detalhes da curva (se é Post ou Turn)
 let detalheCurva = "NaN";
 
@@ -34,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+//
 document.addEventListener("DOMContentLoaded", function () {
   loadPesquisaChoice();
   const pesquisaField = document.getElementById("pesquisa");
@@ -51,11 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+//
 if (campoPesquisa == false) {
   // Chamar a função atualizarPagina a cada 5 segundos
   setInterval(atualizarPagina, 5000);
 }
-
 
 // Valor para o segundo input numérico no numpad
 document.addEventListener("keydown", function (e) {
@@ -103,6 +102,7 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+//
 document.addEventListener("keydown", function (e) {
   if (
     popupAberto == false &&
@@ -113,8 +113,7 @@ document.addEventListener("keydown", function (e) {
     popupConfiguracoes == false &&
     campoPesquisa == false
   ) {
-
-    const corridaData = JSON.parse(localStorage.getItem('numpadNum'))
+    const corridaData = JSON.parse(localStorage.getItem("numpadNum"));
     let corrida;
     corridaData.forEach((item) => {
       if (item.corridaNumber != null) {
@@ -122,8 +121,7 @@ document.addEventListener("keydown", function (e) {
       } else {
         corrida = 1;
       }
-    })
-    
+    });
 
     if (e.key === "p" || e.key === "P") {
       document.getElementById("curvaInput").value = "Start";
@@ -142,6 +140,7 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+//
 document.addEventListener("DOMContentLoaded", function () {
   // é necessário um pequeno delay para a local storage atualizar devidamente
   setTimeout(() => {
@@ -158,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 1000); // 1 second delay
 });
 
+//Verifica a nao validação de NFA e Report
 document.addEventListener("DOMContentLoaded", function () {
   const reportCheckbox = document.getElementById("reportCheck2");
   const nfaCheckbox = document.getElementById("nfacheck2");
@@ -181,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+//
 document.addEventListener("DOMContentLoaded", function () {
   const horaInput = document.getElementById("horainput2");
 
@@ -238,15 +239,15 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   carregarDados();
   carregarDadosNumpad();
-  const numpadNum = JSON.parse(localStorage.getItem("numpadNum"))
-  numpadNum.forEach((item)=>{
+  const numpadNum = JSON.parse(localStorage.getItem("numpadNum"));
+  numpadNum.forEach((item) => {
     document.getElementById("numberCorrida").value = Number(item.numberCorrida);
-    localStorage.setItem("numCorridas",item.numberCorrida)
-    localStorage.setItem('numCurvasBD',item.numberButtons);
-  })
-  
+    localStorage.setItem("numCorridas", item.numberCorrida);
+    localStorage.setItem("numCurvasBD", item.numberButtons);
+  });
 });
 
+//
 document.addEventListener("DOMContentLoaded", function () {
   const pesquisaOptions = document.getElementById("pesquisaOptions");
 
@@ -265,11 +266,13 @@ window.addEventListener("load", function () {
   scrollToBottomWithDelay();
 });
 
+//Muda o nome da corrida para a ultima da tabela
 document.addEventListener("DOMContentLoaded", function () {
   updateHeaderWithLastRaceText();
 });
 
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
+//Muda o nome da corrida e adiciona na BD
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
   if (rname != null) {
@@ -297,6 +300,7 @@ function inputRace() {
   }
 }
 
+//Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
   fetch("http://localhost:3000/getLRace")
     .then((response) => {
@@ -314,6 +318,7 @@ function updateHeaderWithLastRaceText() {
     });
 }
 
+//Alerta de WIP
 function showWorkInProgress() {
   alert("Esta funcionalidade está em desenvolvimento!");
 }
@@ -325,7 +330,6 @@ function limparLS() {
 }
 
 // Ir buscar dados numpad a database
-
 function carregarDadosNumpad() {
   // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
 
@@ -344,14 +348,13 @@ function carregarDadosNumpad() {
 }
 
 // Adicionar numero ao numpad
-
 function adicionarNumpadNum(corrida) {
   const numpadNumber = document.getElementById("numberCurvas").value;
   let corridaNumber;
   // Se tiver recebido alteração por um input na corrida(popup de criação)
-  if(corrida){
-    corridaNumber = document.getElementById("inputCorrida").value
-  }else{
+  if (corrida) {
+    corridaNumber = document.getElementById("inputCorrida").value;
+  } else {
     corridaNumber = document.getElementById("numberCorrida").value;
   }
 
@@ -361,10 +364,11 @@ function adicionarNumpadNum(corrida) {
   };
   localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
   // Eliminar o anterior
-  eliminarNumpadNum()
+  eliminarNumpadNum();
   enviarJsonNumpad();
 }
 
+//Envia o num de numpad á BD
 function enviarJsonNumpad() {
   // Recuperar os dados do localStorage
   const localStorageData = localStorage.getItem("novoNumpadNum");
@@ -417,8 +421,7 @@ function eliminarNumpadNum() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
-  
-  const numpadDBData = JSON.parse(localStorage.getItem("numpadNum"))
+  const numpadDBData = JSON.parse(localStorage.getItem("numpadNum"));
   let corrida = document.getElementById("inputCorrida").value;
   // Ir buscar o numero da corrida
   if (corrida == null || corrida == "") {
@@ -431,7 +434,7 @@ function adicionarLinha() {
 
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
-  
+
   // Capturar os valores dos campos do pop-up
   const camera = document.getElementById("cameraNumber").value;
   const curva = document.getElementById("curvaInput").value;
@@ -501,8 +504,7 @@ function enviarJson() {
   }
 }
 
-
-
+//Funçao para dar update á linha selecionada da tabela
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
   const camera = document.getElementById("cameraNumber2").value;
@@ -553,6 +555,7 @@ function updateLinha() {
   envUpJson();
 }
 
+//Envio dos dados actualizados para a BD
 function envUpJson() {
   // Obtém os dados atualizados do localStorage
   const updatedDataString = localStorage.getItem("novaLinhaData");
@@ -591,6 +594,7 @@ function envUpJson() {
   }
 }
 
+//Apaga a linha
 function deleteLinha() {
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhes = JSON.parse(localStorage.getItem("detalhesPopup"));
@@ -677,12 +681,14 @@ function fecharPopup2() {
   popup2Aberto = false;
   //location.reload();
 }
+
 // Fecha o popup Numpad
 function fecharPopupNumpad() {
   document.getElementById("popupNumpad").style.display = "none";
 
   popupNumpadAberto = false;
 }
+
 // Fechar popup password
 function fecharPopupNumpadPassword() {
   document.getElementById("numpad-password").style.display = "none";
@@ -771,15 +777,14 @@ function atualizarTabela(data) {
   });
 
   // Carregar o numero currente da corrida
-  const numCorrida = JSON.parse(localStorage.getItem("numpadNum"))
-  numCorrida.forEach((item)=>{
-    if(item.numberCorrida!=null){
-      document.getElementById('inputCorrida').value = item.numberCorrida;
+  const numCorrida = JSON.parse(localStorage.getItem("numpadNum"));
+  numCorrida.forEach((item) => {
+    if (item.numberCorrida != null) {
+      document.getElementById("inputCorrida").value = item.numberCorrida;
+    } else {
+      document.getElementById("inputCorrida").value = 1;
     }
-    else{
-      document.getElementById('inputCorrida').value = 1;
-    }
-  })
+  });
 }
 
 // Função para abrir o pop-up com os detalhes da linha correspondente
@@ -796,11 +801,7 @@ function abrirDetalhes(id) {
   }
 }
 
-function getDataFromLocalStorage() {
-  const localStorageData = localStorage.getItem("novaLinhaData");
-  return JSON.parse(localStorageData);
-}
-
+//preenche o popup com os detalhes da linha
 function preencherPopupComDetalhes(detalhes) {
   // Armazena os detalhes no localStorage
   localStorage.setItem("detalhesPopup", JSON.stringify(detalhes));
@@ -884,10 +885,7 @@ function generatePositionButtons(detalhes) {
 
 // Define a função para carregar os dados quando a página é carregada
 function carregarDados() {
-  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
-
   // Definir o IP/URL para onde enviar os dados
-  //IP config casa
   const url = "http://localhost:3000/getData";
 
   fetch(url)
@@ -1025,6 +1023,7 @@ function refreshPage() {
   carregarDados(); // Chama a função para carregar os dados ao carregar a página
 }
 
+//função para atualizar a pagina
 function atualizarPagina() {
   if (
     !popupAberto &&
@@ -1067,6 +1066,7 @@ function scrollToBottomWithDelay() {
   }, 100); // Ajuste o valor do atraso conforme necessário
 }
 
+//
 function updateClock() {
   var now = new Date();
   var hours = now.getHours().toString().padStart(2, "0");
@@ -1090,6 +1090,7 @@ function updateClock() {
   }
 }
 
+//
 function generateNumpad() {
   //Se já existir um numpad gerado, não acrescenta mais um
   // Gerar Número de curvas no numpad
@@ -1136,21 +1137,18 @@ function generateNumpad() {
     //Esconder o botão e textbox.
     /* editarNumpad(); */
     //Guardar ultimo numero de curvas guardado
-    if(generatedNumber!=num){
+    if (generatedNumber != num) {
       localStorage.setItem("numCurves", generatedNumber);
-    }else{
+    } else {
       localStorage.setItem("numCurves", num);
     }
-    
-
-    
   } else {
     //Caso já exista uma, remover e adicionar novo input
     const num = document.getElementById("numberCurvas").value;
     const databaseNum = localStorage.getItem("numCurvasBD");
     console.log(databaseNum);
     if (databaseNum != undefined || databaseNum != null) {
-      generatedNumber =  databaseNum;
+      generatedNumber = databaseNum;
     } else {
       generatedNumber = num;
     }
@@ -1183,15 +1181,16 @@ function generateNumpad() {
         numpadTable.appendChild(numpadRow);
       }
     }
-    if(generatedNumber!=num){
+    if (generatedNumber != num) {
       localStorage.setItem("numCurves", generatedNumber);
-    }else{
+    } else {
       localStorage.setItem("numCurves", num);
     }
     /* editarNumpad(); */
   }
 }
 
+//
 function editarNumpad() {
   const numpadButton = document.getElementById("botao-numpad-editar");
   const numpadTextBox = document.getElementById("numberCurvas");
@@ -1200,10 +1199,6 @@ function editarNumpad() {
   numpadTextBox.classList.toggle("hidden");
   numpadGenerateButton.classList.toggle("hidden");
 }
-
-/*--------------------------------------------------Extra Numpad(numpad.html)-----------------------------------------*/
-
-
 
 // Função para determinar qual ação executar com base no popup aberto
 function handleEnterKey(e) {
@@ -1230,6 +1225,7 @@ function handleEnterKey(e) {
 // Adicione um ouvinte de evento de teclado ao documento
 document.addEventListener("keydown", handleEnterKey);
 
+//
 function mudaPesquisa() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const historyChoice = localStorage.getItem("pesquisaChoice");
@@ -1305,6 +1301,7 @@ function pesquisarTabelaObs() {
   }
 }
 
+//
 function pesquisarTabelaHour() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -1327,7 +1324,8 @@ function pesquisarTabelaHour() {
   }
 }
 
-function pesquisarCorrida(){
+//
+function pesquisarCorrida() {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("pesquisaCorrida");
   filter = input.value.toUpperCase();
@@ -1347,25 +1345,28 @@ function pesquisarCorrida(){
   }
 }
 
-function carregarOpcoesCorrida(){
-  const selectCorrida = document.getElementById('pesquisaCorrida')
-  const numCorridas = Number(localStorage.getItem('numCorridas'))
-  console.log(numCorridas)
-  for(i=1; i<=numCorridas;i++){
-    console.log('inside')
-    const option = document.createElement("option")
-    option.value=i;
-    option.id=`corrida${i}`;
-    option.textContent=`Race nº ${i}`;
+//
+function carregarOpcoesCorrida() {
+  const selectCorrida = document.getElementById("pesquisaCorrida");
+  const numCorridas = Number(localStorage.getItem("numCorridas"));
+  console.log(numCorridas);
+  for (i = 1; i <= numCorridas; i++) {
+    console.log("inside");
+    const option = document.createElement("option");
+    option.value = i;
+    option.id = `corrida${i}`;
+    option.textContent = `Race nº ${i}`;
     selectCorrida.appendChild(option);
   }
 }
 
-function resetCorridas(){
-  const selectCorrida = document.getElementById("pesquisaCorrida")
-  selectCorrida.innerHTML='<option value="">Race</option>'
+//
+function resetCorridas() {
+  const selectCorrida = document.getElementById("pesquisaCorrida");
+  selectCorrida.innerHTML = '<option value="">Race</option>';
 }
 
+//
 function pesquisarTabelaPost() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -1387,7 +1388,8 @@ function pesquisarTabelaPost() {
     }
   }
 }
-/*  Escolher o tipo de pesquisa */
+
+//
 function pesquisaEscolhaPost() {
   const choice = getElementById("pesquisaObs");
   choice.classList.add("hidden");
@@ -1395,6 +1397,7 @@ function pesquisaEscolhaPost() {
   actualChoice.classList.remove("hidden");
 }
 
+//
 function pesquisaEscolhaPostObs() {
   const choice = getElementById("pesquisaPost");
   choice.classList.add("hidden");
@@ -1402,8 +1405,7 @@ function pesquisaEscolhaPostObs() {
   actualChoice.classList.remove("hidden");
 }
 
-/* Esconder/Mostrar Tabela/Numpad */
-
+//
 function trocarParaNumpad() {
   const tabela = document.getElementById("tabela");
   const tabelaIcon = document.getElementById("iconTabela");
@@ -1418,6 +1420,7 @@ function trocarParaNumpad() {
   numpadIcon.classList.add("hidden");
 }
 
+//
 function trocarParaTabela() {
   const tabela = document.getElementById("tabela");
   const tabelaIcon = document.getElementById("iconTabela");
@@ -1433,7 +1436,6 @@ function trocarParaTabela() {
 }
 
 // Mover a linha para cima
-
 function moveUp(button) {
   //Vai buscar a celula do botão, e depois a linha dessa célula
   var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
@@ -1515,7 +1517,6 @@ function moveUp(button) {
 }
 
 // Mover a linha para baixo
-
 function moveDown(button) {
   var row = button.parentNode.parentNode; //Vai buscar o celula do botão, e depois a linha dessa célula
   const idLinha = row.cells[0].textContent;
@@ -1586,7 +1587,7 @@ function moveDown(button) {
   }
 }
 
-/* Fazer update dos indices quando as linhas trocarem de lugar*/
+// Fazer update dos indices quando as linhas trocarem de lugar
 function updatePosition() {
   // Obtém os dados da linha atualizados do localStorage
   const updatedDataString1 = localStorage.getItem("LinhaPosition1");
