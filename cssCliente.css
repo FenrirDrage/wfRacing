@@ -499,9 +499,14 @@ tr.priority-set td{
 
 /*Imagens no header*/
 #filtroImg{
-  width:5%;
+  content:url(images/pesquisa.png);
+  width:6%;
   cursor: pointer;
   vertical-align:bottom;
+}
+
+#filtroImg:hover{
+  content:url(images/pesquisaGif.png);
 }
 
 #filtroImgtd{
@@ -529,6 +534,11 @@ tr.priority-set td{
 #popupFiltros{
   text-align: left;
   z-index: 10000;
+}
+
+#popupFiltros p{
+  font-size: 14px;
+  color: black;
 }
 
 #popupFiltros button{

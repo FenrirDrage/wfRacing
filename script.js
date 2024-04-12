@@ -62,9 +62,11 @@ document.addEventListener("keydown", function (e) {
     let curvaInput = document.getElementById("curvaInput");
     const maxCurvas = localStorage.getItem("numCurvasBD");
     console.log(maxCurvas);
+    if(e.key == 0 || e.key == 1 || e.key == 2 || e.key == 3 || e.key == 4 || e.key == 5 || e.key == 6 || e.key == 7 || e.key == 8 || e.key == 9 ){
     curvaInput.value += `${e.key}`;
-    if (Number(curvaInput.value) > maxCurvas) {
-      curvaInput.value = String(maxCurvas);
+      if (Number(curvaInput.value) > maxCurvas) {
+        curvaInput.value = String(maxCurvas);
+      }
     }
   }
 });
@@ -1482,7 +1484,7 @@ function trocarParaNumpad() {
   const numpadIcon = document.getElementById("iconNumpad");
   const headerText = document.getElementById("currentOptionHeader");
 
-  headerText.textContent = "Tabela:";
+  headerText.textContent = "List:";
   tabela.classList.add("hidden");
   tabelaIcon.classList.remove("hidden");
   numpad.classList.remove("hidden");
