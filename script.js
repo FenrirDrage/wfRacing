@@ -62,8 +62,19 @@ document.addEventListener("keydown", function (e) {
     let curvaInput = document.getElementById("curvaInput");
     const maxCurvas = localStorage.getItem("numCurvasBD");
     console.log(maxCurvas);
-    if(e.key == 0 || e.key == 1 || e.key == 2 || e.key == 3 || e.key == 4 || e.key == 5 || e.key == 6 || e.key == 7 || e.key == 8 || e.key == 9 ){
-    curvaInput.value += `${e.key}`;
+    if (
+      e.key == 0 ||
+      e.key == 1 ||
+      e.key == 2 ||
+      e.key == 3 ||
+      e.key == 4 ||
+      e.key == 5 ||
+      e.key == 6 ||
+      e.key == 7 ||
+      e.key == 8 ||
+      e.key == 9
+    ) {
+      curvaInput.value += `${e.key}`;
       if (Number(curvaInput.value) > maxCurvas) {
         curvaInput.value = String(maxCurvas);
       }
@@ -118,8 +129,8 @@ document.addEventListener("keydown", function (e) {
     const corridaData = JSON.parse(localStorage.getItem("numpadNum"));
     let corrida;
     corridaData.forEach((item) => {
-      console.log('here')
-      console.log(item.numberCorrida)
+      console.log("here");
+      console.log(item.numberCorrida);
       if (item.numberCorrida != null) {
         corrida = item.numberCorrida;
       } else {
@@ -276,6 +287,23 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
+//----------------------PAGINA----------------------
+// Define a função para carregar os dados quando a página é carregada
+function carregarDados() {
+  // Definir o IP/URL para onde enviar os dados
+  const url = "http://localhost:3000/getData";
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      // Atualiza a tabela com os dados recebidos
+      atualizarTabela(data);
+      // Armazena os dados localmente para uso posterior
+      localStorage.setItem("dadosTabela", JSON.stringify(data));
+    })
+    .catch((error) => console.error("Erro ao obter dados:", error));
+}
+
 //Muda o nome da corrida e adiciona na BD
 function inputRace() {
   const rname = prompt("Qual é o nome da corrida?");
@@ -333,95 +361,188 @@ function limparLS() {
   console.log("localStorage foi limpo.");
 }
 
-// Ir buscar dados numpad a database
-function carregarDadosNumpad() {
-  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
-
-  // Definir o IP/URL para onde enviar os dados
-  const endpoint = "getDataNumpad";
-  const furl = url + endpoint;
-
-  fetch(furl)
-    .then((response) => response.json())
-    .then((data) => {
-      // Atualiza a tabela com os dados recebidos
-      // Armazena os dados localmente para uso posterior
-      localStorage.setItem("numpadNum", JSON.stringify(data));
-    })
-    .catch((error) => console.error("Erro ao obter dados:", error));
+//abre o popup
+function abrirPopup() {
+  document.getElementById("popup").style.display = "block";
+  popupAberto = true;
 }
 
-// Adicionar numero ao numpad
-function adicionarNumpadNum(corrida) {
-  const numpadNumber = document.getElementById("numberCurvas").value;
-  let corridaNumber;
-  // Se tiver recebido alteração por um input na corrida(popup de criação)
-  if (corrida) {
-    corridaNumber = document.getElementById("inputCorrida").value;
-  } else {
-    corridaNumber = document.getElementById("numberCorrida").value;
+//abre o popup2
+function abrirPopup2() {
+  document.getElementById("popup2").style.display = "block";
+  popup2Aberto = true;
+}
+
+// Abre popup numpad
+function abrirPopupNumpad() {
+  document.getElementById("popupNumpad").style.display = "block";
+  popupNumpadAberto = true;
+}
+// Abrir popup password
+function abrirPopupNumpadPassword() {
+  document.getElementById("numpad-password").style.display = "block";
+  popupNumpadPasswordAberto = true;
+}
+// Fechar popup rodaDentada
+function abrirPopupRodaDentada() {
+  document.getElementById("popupRodadentada").style.display = "block";
+  popupRodaDentada = true;
+}
+
+// Fechar popup rodaDentada
+function abrirPopupConfiguracoes() {
+  document.getElementById("popupConfiguracoes").style.display = "block";
+  popupConfiguracoes = true;
+}
+
+// Fechar popup filtros
+function abrirPopupFiltros() {
+  document.getElementById("popupFiltros").style.display = "block";
+  popupFiltros = true;
+}
+
+//fecha o popup
+function fecharPopup() {
+  document.getElementById("popup").style.display = "none";
+  popupAberto = false;
+  //location.reload();
+}
+
+//fecha o pupup2
+function fecharPopup2() {
+  document.getElementById("popup2").style.display = "none";
+  resetPositionButtons();
+
+  popup2Aberto = false;
+  //location.reload();
+}
+
+// Fecha o popup Numpad
+function fecharPopupNumpad() {
+  document.getElementById("popupNumpad").style.display = "none";
+
+  popupNumpadAberto = false;
+}
+
+// Fechar popup password
+function fecharPopupNumpadPassword() {
+  document.getElementById("numpad-password").style.display = "none";
+  popupNumpadPasswordAberto = false;
+}
+
+// Fechar popup rodaDentada
+function fecharPopupRodaDentada() {
+  document.getElementById("popupRodadentada").style.display = "none";
+  popupRodaDentada = false;
+}
+
+// Fechar popup Configuracoes
+function fecharPopupConfiguracoes() {
+  document.getElementById("popupConfiguracoes").style.display = "none";
+  popupRodaDentada = false;
+}
+
+// Fechar popup Filtros
+function fecharPopupFiltros() {
+  document.getElementById("popupFiltros").style.display = "none";
+  popupFiltros = false;
+}
+
+// Dar reset aos botoes de posição
+function resetPositionButtons() {
+  const popupEdit = document.getElementById("popupEdit");
+  const botaoUp = document.getElementById("buttonUp");
+  const botaoDown = document.getElementById("buttonDown");
+  popupEdit.removeChild(botaoUp);
+  popupEdit.removeChild(botaoDown);
+}
+
+// Adicionar tratamento de erros para requisições fetch
+function refreshPage() {
+  carregarDados(); // Chama a função para carregar os dados ao carregar a página
+}
+
+//função para atualizar a pagina
+function atualizarPagina() {
+  if (
+    !popupAberto &&
+    !popup2Aberto &&
+    campoPesquisa == false &&
+    !popupConfiguracoes
+  ) {
+    // Lógica para atualizar a página
+    //location.reload();
+  }
+}
+
+// Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
+function scrollToBottomWithDelay() {
+  setTimeout(function () {
+    var table = document.getElementById("tabela"); // ID da sua tabela
+    if (table) {
+      var lastRow = table.rows[table.rows.length - 1];
+      if (lastRow) {
+        lastRow.scrollIntoView();
+      }
+    }
+  }, 100); // Ajuste o valor do atraso conforme necessário
+}
+
+//
+function updateClock() {
+  var now = new Date();
+  var hours = now.getHours().toString().padStart(2, "0");
+  var minutes = now.getMinutes().toString().padStart(2, "0");
+  var seconds = now.getSeconds().toString().padStart(2, "0");
+  var timeString = hours + ":" + minutes + ":" + seconds;
+
+  var clockElement = document.getElementById("clock");
+  if (clockElement) {
+    clockElement.textContent = timeString;
   }
 
-  const newNum = {
-    numberButtons: numpadNumber,
-    numberCorrida: corridaNumber,
-  };
-  localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
-  // Eliminar o anterior
-  eliminarNumpadNum();
-  enviarJsonNumpad();
-}
+  // Obter a data atual e formatá-la
+  var options = { day: "numeric", month: "short", year: "numeric" };
+  var dateString = now.toLocaleDateString("en-UK", options);
 
-//Envia o num de numpad á BD
-function enviarJsonNumpad() {
-  // Recuperar os dados do localStorage
-  const localStorageData = localStorage.getItem("novoNumpadNum");
-
-  // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/addDataNumpad";
-
-  // Verificar se existem dados no localStorage
-  if (localStorageData) {
-    const parsedData = JSON.parse(localStorageData);
-    // Enviar os dados para o servidor
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(parsedData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) =>
-        console.error("Erro ao enviar dados para o servidor:", error)
-      );
-    localStorage.removeItem("novoNumpadNum");
-  } else {
-    console.log("Nenhum dado encontrado no localStorage.");
+  // Exibir a data abaixo do relógio
+  var dateElement = document.getElementById("date");
+  if (dateElement) {
+    dateElement.textContent = dateString;
   }
 }
 
-// Dar reset ao numero de numpad
-function eliminarNumpadNum() {
-  // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/dropDataNumpad";
+// Na página de cliente, troca a exibição da Tabela para o Numpad
+function trocarParaNumpad() {
+  const tabela = document.getElementById("tabela");
+  const tabelaIcon = document.getElementById("iconTabela");
+  const numpad = document.getElementById("numpad");
+  const numpadIcon = document.getElementById("iconNumpad");
+  const headerText = document.getElementById("currentOptionHeader");
 
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      //location.reload;
-      console.log(data.message); // Mensagem retornada pelo servidor
-    })
-    .catch((error) => {
-      console.error("Erro ao apagar dados:", error);
-    });
+  headerText.textContent = "List:";
+  tabela.classList.add("hidden");
+  tabelaIcon.classList.remove("hidden");
+  numpad.classList.remove("hidden");
+  numpadIcon.classList.add("hidden");
 }
+
+// Na página de cliente, troca a exibição do Numpad para a Tabela
+function trocarParaTabela() {
+  const tabela = document.getElementById("tabela");
+  const tabelaIcon = document.getElementById("iconTabela");
+  const numpad = document.getElementById("numpad");
+  const numpadIcon = document.getElementById("iconNumpad");
+  const headerText = document.getElementById("currentOptionHeader");
+
+  headerText.textContent = "Numpad:";
+  tabela.classList.remove("hidden");
+  tabelaIcon.classList.add("hidden");
+  numpad.classList.add("hidden");
+  numpadIcon.classList.remove("hidden");
+}
+
+//----------------------TABELA----------------------
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
@@ -511,7 +632,7 @@ function enviarJson() {
 //Funçao para dar update á linha selecionada da tabela
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
-  const corrida = document.getElementById("inputCorrida2").value
+  const corrida = document.getElementById("inputCorrida2").value;
   const camera = document.getElementById("cameraNumber2").value;
   let curva = document.getElementById("curvaInput2").value;
   const hora = document.getElementById("horainput2").value;
@@ -628,93 +749,6 @@ function deleteLinha() {
   }
 }
 
-//abre o popup
-function abrirPopup() {
-  document.getElementById("popup").style.display = "block";
-  popupAberto = true;
-}
-
-//abre o popup2
-function abrirPopup2() {
-  document.getElementById("popup2").style.display = "block";
-  popup2Aberto = true;
-}
-
-// Abre popup numpad
-function abrirPopupNumpad() {
-  document.getElementById("popupNumpad").style.display = "block";
-  popupNumpadAberto = true;
-}
-// Abrir popup password
-function abrirPopupNumpadPassword() {
-  document.getElementById("numpad-password").style.display = "block";
-  popupNumpadPasswordAberto = true;
-}
-// Fechar popup rodaDentada
-function abrirPopupRodaDentada() {
-  document.getElementById("popupRodadentada").style.display = "block";
-  popupRodaDentada = true;
-}
-
-// Fechar popup rodaDentada
-function abrirPopupConfiguracoes() {
-  document.getElementById("popupConfiguracoes").style.display = "block";
-  popupConfiguracoes = true;
-}
-
-// Fechar popup filtros
-function abrirPopupFiltros() {
-  document.getElementById("popupFiltros").style.display = "block";
-  popupFiltros = true;
-}
-
-//fecha o popup
-function fecharPopup() {
-  document.getElementById("popup").style.display = "none";
-  popupAberto = false;
-  //location.reload();
-}
-
-//fecha o pupup2
-function fecharPopup2() {
-  document.getElementById("popup2").style.display = "none";
-  resetPositionButtons();
-
-  popup2Aberto = false;
-  //location.reload();
-}
-
-// Fecha o popup Numpad
-function fecharPopupNumpad() {
-  document.getElementById("popupNumpad").style.display = "none";
-
-  popupNumpadAberto = false;
-}
-
-// Fechar popup password
-function fecharPopupNumpadPassword() {
-  document.getElementById("numpad-password").style.display = "none";
-  popupNumpadPasswordAberto = false;
-}
-
-// Fechar popup rodaDentada
-function fecharPopupRodaDentada() {
-  document.getElementById("popupRodadentada").style.display = "none";
-  popupRodaDentada = false;
-}
-
-// Fechar popup Configuracoes
-function fecharPopupConfiguracoes() {
-  document.getElementById("popupConfiguracoes").style.display = "none";
-  popupRodaDentada = false;
-}
-
-// Fechar popup Filtros
-function fecharPopupFiltros() {
-  document.getElementById("popupFiltros").style.display = "none";
-  popupFiltros = false;
-}
-
 // Atualiza a tabela com os dados recebidos
 function atualizarTabela(data) {
   const tabela = document.getElementById("tabela");
@@ -789,290 +823,6 @@ function atualizarTabela(data) {
   });
 }
 
-//----------------------------------------------------------------------------vPROTOTYPO PESQUISAR COM CORRIDA SELECTEDv--------------------------------------------
-/* function atualizarTabelaPesquisa(data, numCorrida){
-  const tabela = document.getElementById("tabela");
-  const tabelaPesquisa = document.getElementById("tabelaCorrida");
- 
-   // Limpa apenas as linhas de dados da tabela, mantendo o cabeçalho
-   while (tabelaPesquisa.rows.length > 1) {
-     tabelaPesquisa.deleteRow(1);
-   }
- 
-   // Adiciona linhas à tabela com os dados recebidos
-   var counter = 1;
- if(numCorrida){
-    tabela.classList.add("hidden")
-    tabelaPesquisa.classList.remove("hidden")
-   data.forEach((item) => {
-     if(item.corrida==numCorrida){
- 
-     const novaLinha = document.createElement("tr");
-     novaLinha.innerHTML = `
-       <td class="hidden">${item._id}</td>
-       <td contenteditable="false">${item.camera}</td>
-       <td contenteditable="false">${item.curva}</td>
-       <td contenteditable="false">${item.hora}</td>
-       <td contenteditable="false"><input type="checkbox" ${
-         item.video ? "checked" : ""
-       } disabled></td>
-       <td contenteditable="false"><input type="checkbox" ${
-         item.report ? "checked" : ""
-       } disabled></td>
-       <td contenteditable="false"><input type="checkbox" ${
-         item.nfa ? "checked" : ""
-       } disabled></td>
-       <td contenteditable="false">${item.obs}</td>
-       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
-         item._id
-       }')"></td>
-       <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${
-         item._id
-       }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
-       item._id
-     }" onclick="moveDown(this)">↓</button>
-      <td class="hidden">${item.corrida}</td>
-       `;
- 
-     // Adiciona classes CSS com base nos valores de report e nfa
-     if (item.report) {
-       novaLinha.classList.add("report-true");
-     }
-     if (item.nfa) {
-       novaLinha.classList.add("nfa-true");
-     }
-     if (item.priority) {
-       novaLinha.classList.add("priority-set");
-     }
-     if (item.curva == "Start") {
-       novaLinha.classList.add("post-start");
-     }
-     if (item.curva == "Slow Flag") {
-       novaLinha.classList.add("post-slow");
-     }
-     if (item.curva == "Red Flag") {
-       novaLinha.classList.add("post-redflag");
-     }
-     }
-     counter++;
-     tabelaPesquisa.appendChild(novaLinha);
-   });
- }else{
-    tabela.classList.remove("hidden")
-    tabelaPesquisa.classList.add("hidden")
- }
- 
- }
- */
-
-//----------------------------------------------------------------------------^PROTOTYPO PESQUISAR COM CORRIDA SELECTED ^-------------------------------------------
-
-// Dar reset aos botoes de posição
-function resetPositionButtons(){
-    const popupEdit = document.getElementById("popupEdit");
-    const botaoUp = document.getElementById("buttonUp");
-    const botaoDown = document.getElementById("buttonDown");
-    popupEdit.removeChild(botaoUp);
-    popupEdit.removeChild(botaoDown);
-}
-
-// Função para abrir o pop-up com os detalhes da linha correspondente
-function abrirDetalhes(id) {
-  const data = JSON.parse(localStorage.getItem("dadosTabela")); // Obtemos os dados da localStorage
-  const detalhes = data.find((item) => item._id === id); // Encontramos o item com o id correspondente
-  if (detalhes) {
-    // Se encontrarmos os detalhes, preenchemos o pop-up e o exibimos
-    if(popup2Aberto==true){
-      resetPositionButtons()
-    }
-    
-    preencherPopupComDetalhes(detalhes);
-    generatePositionButtons(detalhes);
-    abrirPopup2();
-  } else {
-    console.error("Detalhes não encontrados para o ID:", id);
-  }
-}
-
-//preenche o popup com os detalhes da linha
-function preencherPopupComDetalhes(detalhes) {
-  // Armazena os detalhes no localStorage
-  localStorage.setItem("detalhesPopup", JSON.stringify(detalhes));
-
-  // Verifica se os detalhes são válidos
-  if (detalhes) {
-    // Obtém os elementos do popup
-    const cameraInput = document.getElementById("cameraNumber2");
-    const curvaInput = document.getElementById("curvaInput2");
-    const horainput = document.getElementById("horainput2");
-    const videoCheck = document.getElementById("videoCheck2");
-    const reportCheck = document.getElementById("reportCheck2");
-    const priorityCheck = document.getElementById("priorityCheck2");
-    const obsInput = document.getElementById("obsInput2");
-    const nfaCheck = document.getElementById("nfacheck2");
-    const corridaInput = document.getElementById("inputCorrida2");
-
-    // Verifica se os elementos existem no DOM
-    if (
-      curvaInput &&
-      horainput &&
-      videoCheck &&
-      reportCheck &&
-      nfaCheck &&
-      obsInput &&
-      cameraInput &&
-      priorityCheck &&
-      corridaInput
-    ) {
-      // Atribui os valores dos detalhes aos campos do popup
-      corridaInput.value = detalhes.corrida || "";
-      cameraInput.value = detalhes.camera || "";
-      curvaInput.value = detalhes.curva || "";
-      horainput.value = detalhes.hora || "";
-      videoCheck.checked = detalhes.video || false;
-      nfaCheck.checked = detalhes.nfa || false;
-      reportCheck.checked = detalhes.report || false;
-      priorityCheck.checked = detalhes.priority || false;
-      obsInput.value = detalhes.obs || "";
-
-      //Guardar o input da curva anterior Turn ou Post
-      if (curvaInput.value.includes("P")) {
-        detalheCurva = "P";
-      } else if (curvaInput.value.includes("Turn")) {
-        detalheCurva = "Turn";
-      }
-    } else {
-      console.error(
-        "Um ou mais elementos do popup não foram encontrados no DOM."
-      );
-    }
-  } else {
-    console.error("Detalhes inválidos.");
-  }
-}
-
-// Função para criar os botões de troca de posição da linha selecionada
-function generatePositionButtons(detalhes) {
-  const popupEdit = document.getElementById("popupEdit");
-  const originalUp = document.getElementById(`buttonUp${detalhes._id}`);
-  const originalDown = document.getElementById(`buttonDown${detalhes._id}`);
-  const buttonUp = document.createElement("button");
-  buttonUp.classList.add("buttaoUpDown");
-  buttonUp.textContent = "↑";
-  buttonUp.id = `buttonUp`;
-  buttonUp.addEventListener("click", () => {
-    originalUp.click();
-  });
-
-  const buttonDown = document.createElement("button");
-  buttonDown.classList.add("buttaoUpDown");
-  buttonDown.textContent = "↓";
-  buttonDown.id = `buttonDown`;
-  buttonDown.addEventListener("click", () => {
-    originalDown.click();
-  });
-
-  popupEdit.appendChild(buttonUp);
-  popupEdit.appendChild(buttonDown);
-}
-
-// Define a função para carregar os dados quando a página é carregada
-function carregarDados() {
-  // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/getData";
-
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      // Atualiza a tabela com os dados recebidos
-      atualizarTabela(data);
-      // Armazena os dados localmente para uso posterior
-      localStorage.setItem("dadosTabela", JSON.stringify(data));
-    })
-    .catch((error) => console.error("Erro ao obter dados:", error));
-}
-
-//Quando a página acaba de carregar verifica o indice máximo corrente
-
-// Adicionadar o evento de editar a hora
-function editarHora() {
-  const celulaHora = event.target;
-  celulaHora.setAttribute("contenteditable", "true");
-  celulaHora.style.color = "#";
-  celulaHora.classList.remove("hora-editavel");
-}
-
-// Adicionar a função para atualizar a hora atual em uma linha
-function atualizarHoraAtual(linha) {
-  const celulaHora = linha.querySelector(".hora-editavel");
-  celulaHora.innerText = obterHoraAtual();
-}
-
-// Adicionar a função para obter a hora atual formatada
-function obterHoraAtual() {
-  const agora = new Date();
-  const horas = agora.getHours().toString().padStart(2, "0");
-  const minutos = agora.getMinutes().toString().padStart(2, "0");
-  const segundos = agora.getSeconds().toString().padStart(2, "0");
-  const hour = `${horas}:${minutos}:${segundos}`;
-  document.getElementById("horainput").value = hour;
-}
-
-//Red Flag e Start
-function obterStartOrRF(valor) {
-  document.getElementById("curvaInput").value = document.getElementById(
-    `race${valor}`
-  ).value;
-}
-
-// Preencher informação com a curva quando utilizar Numpad
-function obterCurvaNum(curva) {
-  document.getElementById("curvaInput").value = document.getElementById(
-    `curva${curva}`
-  ).value;
-}
-
-//Adicionar Camera ou Post no field Curva/Post
-function adicionarCameraOrPost(opcao) {
-  if (opcao != "Camera") {
-    document.getElementById("cameraNumber").value = "";
-    document.getElementById("curvaInput").value += document.getElementById(
-      `opcao${opcao}`
-    ).value;
-  } else {
-    document.getElementById("cameraNumber").value =
-      document.getElementById("curvaInput").value;
-    document.getElementById("curvaInput").value = "";
-  }
-}
-
-//Verificar password dar input de curvas
-function checkPassword() {
-  numpadPassword = "WFR2012";
-  if (document.getElementById("numpadUnlock").value == numpadPassword) {
-    adicionarNumpadNum();
-    generateNumpad();
-    fecharPopupNumpadPassword();
-    fecharPopupRodaDentada();
-  } else {
-    window.alert("Código introduzido errado!");
-    fecharPopupNumpadPassword();
-    fecharPopupRodaDentada();
-  }
-}
-
-// Adicionar a função para parar a contagem de hora
-function pararContagemHora(elementoCurva) {
-  const linha = elementoCurva.parentNode;
-  const celulaHora = linha.querySelector(".hora-editavel");
-  celulaHora.classList.remove("hora-editavel");
-}
-
-// Adicionar a função para enviar o número de linhas ao servidor
-function enviarNumeroDeLinhas(numeroLinhas) {
-  socket.emit("numeroLinhas", { type: "numeroLinhas", data: numeroLinhas });
-}
-
 // Adicionada a função para limpar a tabela
 function limparTabela() {
   // Mensagem de confirmação
@@ -1101,33 +851,7 @@ function limparTabela() {
     });
 }
 
-// Adicionada a função para atualizar o estado do checkbox no localStorage
-function atualizarEstadoCheckbox(checkbox) {
-  const estadoAtual = checkbox.dataset.estado;
-  checkbox.dataset.estado = estadoAtual === "0" ? "1" : "0";
-  localStorage.setItem(
-    `checkbox_${checkbox.parentElement.parentElement.rowIndex}`,
-    checkbox.dataset.estado
-  );
-}
-
-// Adicionar tratamento de erros para requisições fetch
-function refreshPage() {
-  carregarDados(); // Chama a função para carregar os dados ao carregar a página
-}
-
-//função para atualizar a pagina
-function atualizarPagina() {
-  if (
-    !popupAberto &&
-    !popup2Aberto &&
-    campoPesquisa == false &&
-    !popupConfiguracoes
-  ) {
-    // Lógica para atualizar a página
-    //location.reload();
-  }
-}
+//----------------------NUMPAD----------------------
 
 // Função para carregar o mesmo número introduzido no numpad(quando é feito reload)
 function carregarNumpad() {
@@ -1146,41 +870,101 @@ function carregarNumpad() {
   generateNumpad();
 }
 
-// Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
-function scrollToBottomWithDelay() {
-  setTimeout(function () {
-    var table = document.getElementById("tabela"); // ID da sua tabela
-    if (table) {
-      var lastRow = table.rows[table.rows.length - 1];
-      if (lastRow) {
-        lastRow.scrollIntoView();
-      }
-    }
-  }, 100); // Ajuste o valor do atraso conforme necessário
+// Ir buscar dados numpad a database
+function carregarDadosNumpad() {
+  // Faz uma requisição GET para obter os dados do servidor quando a página é carregada
+
+  // Definir o IP/URL para onde enviar os dados
+  const endpoint = "getDataNumpad";
+  const furl = url + endpoint;
+
+  fetch(furl)
+    .then((response) => response.json())
+    .then((data) => {
+      // Atualiza a tabela com os dados recebidos
+      // Armazena os dados localmente para uso posterior
+      localStorage.setItem("numpadNum", JSON.stringify(data));
+    })
+    .catch((error) => console.error("Erro ao obter dados:", error));
 }
 
-//
-function updateClock() {
-  var now = new Date();
-  var hours = now.getHours().toString().padStart(2, "0");
-  var minutes = now.getMinutes().toString().padStart(2, "0");
-  var seconds = now.getSeconds().toString().padStart(2, "0");
-  var timeString = hours + ":" + minutes + ":" + seconds;
-
-  var clockElement = document.getElementById("clock");
-  if (clockElement) {
-    clockElement.textContent = timeString;
+// Adicionar numero ao numpad
+function adicionarNumpadNum(corrida) {
+  const numpadNumber = document.getElementById("numberCurvas").value;
+  let corridaNumber;
+  // Se tiver recebido alteração por um input na corrida(popup de criação)
+  if (corrida) {
+    corridaNumber = document.getElementById("inputCorrida").value;
+  } else {
+    corridaNumber = document.getElementById("numberCorrida").value;
   }
 
-  // Obter a data atual e formatá-la
-  var options = { day: "numeric", month: "short", year: "numeric" };
-  var dateString = now.toLocaleDateString("en-UK", options);
+  const newNum = {
+    numberButtons: numpadNumber,
+    numberCorrida: corridaNumber,
+  };
+  localStorage.setItem("novoNumpadNum", JSON.stringify(newNum));
+  // Eliminar o anterior
+  eliminarNumpadNum();
+  enviarJsonNumpad();
+}
 
-  // Exibir a data abaixo do relógio
-  var dateElement = document.getElementById("date");
-  if (dateElement) {
-    dateElement.textContent = dateString;
+//Envia o num de numpad á BD
+function enviarJsonNumpad() {
+  // Recuperar os dados do localStorage
+  const localStorageData = localStorage.getItem("novoNumpadNum");
+
+  // Definir o IP/URL para onde enviar os dados
+  const url = "http://localhost:3000/addDataNumpad";
+
+  // Verificar se existem dados no localStorage
+  if (localStorageData) {
+    const parsedData = JSON.parse(localStorageData);
+    // Enviar os dados para o servidor
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error("Erro ao enviar dados para o servidor:", error)
+      );
+    localStorage.removeItem("novoNumpadNum");
+  } else {
+    console.log("Nenhum dado encontrado no localStorage.");
   }
+}
+
+// Dar reset ao numero de numpad
+function eliminarNumpadNum() {
+  // Definir o IP/URL para onde enviar os dados
+  const url = "http://localhost:3000/dropDataNumpad";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      //location.reload;
+      console.log(data.message); // Mensagem retornada pelo servidor
+    })
+    .catch((error) => {
+      console.error("Erro ao apagar dados:", error);
+    });
+}
+
+// Preencher informação com a curva quando utilizar Numpad
+function obterCurvaNum(curva) {
+  document.getElementById("curvaInput").value = document.getElementById(
+    `curva${curva}`
+  ).value;
 }
 
 // Gera o numpad na página baseado no numero armazenado na localStorage(este é alcançado pelo valor na database)
@@ -1283,32 +1067,87 @@ function generateNumpad() {
   }
 }
 
+//----------------------PESQUISA----------------------
 
+//----------------------------------------------------------------------------vPROTOTYPO PESQUISAR COM CORRIDA SELECTEDv--------------------------------------------
+/* function atualizarTabelaPesquisa(data, numCorrida){
+  const tabela = document.getElementById("tabela");
+  const tabelaPesquisa = document.getElementById("tabelaCorrida");
+ 
+   // Limpa apenas as linhas de dados da tabela, mantendo o cabeçalho
+   while (tabelaPesquisa.rows.length > 1) {
+     tabelaPesquisa.deleteRow(1);
+   }
+ 
+   // Adiciona linhas à tabela com os dados recebidos
+   var counter = 1;
+ if(numCorrida){
+    tabela.classList.add("hidden")
+    tabelaPesquisa.classList.remove("hidden")
+   data.forEach((item) => {
+     if(item.corrida==numCorrida){
+ 
+     const novaLinha = document.createElement("tr");
+     novaLinha.innerHTML = `
+       <td class="hidden">${item._id}</td>
+       <td contenteditable="false">${item.camera}</td>
+       <td contenteditable="false">${item.curva}</td>
+       <td contenteditable="false">${item.hora}</td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.video ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.report ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.nfa ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false">${item.obs}</td>
+       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
+         item._id
+       }')"></td>
+       <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${
+         item._id
+       }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
+       item._id
+     }" onclick="moveDown(this)">↓</button>
+      <td class="hidden">${item.corrida}</td>
+       `;
+ 
+     // Adiciona classes CSS com base nos valores de report e nfa
+     if (item.report) {
+       novaLinha.classList.add("report-true");
+     }
+     if (item.nfa) {
+       novaLinha.classList.add("nfa-true");
+     }
+     if (item.priority) {
+       novaLinha.classList.add("priority-set");
+     }
+     if (item.curva == "Start") {
+       novaLinha.classList.add("post-start");
+     }
+     if (item.curva == "Slow Flag") {
+       novaLinha.classList.add("post-slow");
+     }
+     if (item.curva == "Red Flag") {
+       novaLinha.classList.add("post-redflag");
+     }
+     }
+     counter++;
+     tabelaPesquisa.appendChild(novaLinha);
+   });
+ }else{
+    tabela.classList.remove("hidden")
+    tabelaPesquisa.classList.add("hidden")
+ }
+ 
+ }
+ */
 
-// Função para determinar qual ação executar com base no popup aberto
-function handleEnterKey(e) {
-  if (e.key === "Enter") {
-    // Verifica se o popup regular está aberto
-    if (popupAberto) {
-      adicionarLinha();
-      fecharPopup();
-    }
-    // Verifica se o popup2 está aberto
-    else if (popup2Aberto) {
-      updateLinha();
-      fecharPopup2();
-    } else if (popupNumpadPasswordAberto) {
-      checkPassword();
-    }
-    // Adicione mais verificações para outros popups, se necessário
-    else {
-      console.error("Erro: Nenhum popup aberto.");
-    }
-  }
-}
+//----------------------------------------------------------------------------^PROTOTYPO PESQUISAR COM CORRIDA SELECTED ^-------------------------------------------
 
-// Adicione um ouvinte de evento de teclado ao documento
-document.addEventListener("keydown", handleEnterKey);
+//Quando a página acaba de carregar verifica o indice máximo corrente
 
 //Função que muda a pesquisa quando o usuário seleciona uma opção no menu de filtros (Lupa)
 function mudaPesquisa() {
@@ -1430,27 +1269,6 @@ function pesquisarCorrida() {
   }
 }
 
-//Função que vai buscar o numero de corridas á localStorage(que por sua vez foi buscar o numero a base de dados)
-function carregarOpcoesCorrida() {
-  const selectCorrida = document.getElementById("pesquisaCorrida");
-  const numCorridas = Number(localStorage.getItem("numCorridas"));
-  console.log(numCorridas);
-  for (i = 1; i <= numCorridas; i++) {
-    console.log("inside");
-    const option = document.createElement("option");
-    option.value = i;
-    option.id = `corrida${i}`;
-    option.textContent = `Race nº ${i}`;
-    selectCorrida.appendChild(option);
-  }
-}
-
-// Impedir que a lista seja replicada caso o usuario feixe a janela e abra outra vez(dá clear da lista aquando do fecho da janela)
-function resetCorridas() {
-  const selectCorrida = document.getElementById("pesquisaCorrida");
-  selectCorrida.innerHTML = '<option value="">Race</option>';
-}
-
 // Pesquisar na tabela pelo campo Turn/Post
 function pesquisarTabelaPost() {
   // Declare variables
@@ -1474,37 +1292,193 @@ function pesquisarTabelaPost() {
   }
 }
 
+//----------------------POPUPs----------------------
 
-
-// Na página de cliente, troca a exibição da Tabela para o Numpad
-function trocarParaNumpad() {
-  const tabela = document.getElementById("tabela");
-  const tabelaIcon = document.getElementById("iconTabela");
-  const numpad = document.getElementById("numpad");
-  const numpadIcon = document.getElementById("iconNumpad");
-  const headerText = document.getElementById("currentOptionHeader");
-
-  headerText.textContent = "List:";
-  tabela.classList.add("hidden");
-  tabelaIcon.classList.remove("hidden");
-  numpad.classList.remove("hidden");
-  numpadIcon.classList.add("hidden");
+// Adicionada a função para atualizar o estado do checkbox no localStorage
+function atualizarEstadoCheckbox(checkbox) {
+  const estadoAtual = checkbox.dataset.estado;
+  checkbox.dataset.estado = estadoAtual === "0" ? "1" : "0";
+  localStorage.setItem(
+    `checkbox_${checkbox.parentElement.parentElement.rowIndex}`,
+    checkbox.dataset.estado
+  );
 }
 
-// Na página de cliente, troca a exibição do Numpad para a Tabela
-function trocarParaTabela() {
-  const tabela = document.getElementById("tabela");
-  const tabelaIcon = document.getElementById("iconTabela");
-  const numpad = document.getElementById("numpad");
-  const numpadIcon = document.getElementById("iconNumpad");
-  const headerText = document.getElementById("currentOptionHeader");
+// Função para abrir o pop-up com os detalhes da linha correspondente
+function abrirDetalhes(id) {
+  const data = JSON.parse(localStorage.getItem("dadosTabela")); // Obtemos os dados da localStorage
+  const detalhes = data.find((item) => item._id === id); // Encontramos o item com o id correspondente
+  if (detalhes) {
+    // Se encontrarmos os detalhes, preenchemos o pop-up e o exibimos
+    if (popup2Aberto == true) {
+      resetPositionButtons();
+    }
 
-  headerText.textContent = "Numpad:";
-  tabela.classList.remove("hidden");
-  tabelaIcon.classList.add("hidden");
-  numpad.classList.add("hidden");
-  numpadIcon.classList.remove("hidden");
+    preencherPopupComDetalhes(detalhes);
+    generatePositionButtons(detalhes);
+    abrirPopup2();
+  } else {
+    console.error("Detalhes não encontrados para o ID:", id);
+  }
 }
+//preenche o popup com os detalhes da linha
+function preencherPopupComDetalhes(detalhes) {
+  // Armazena os detalhes no localStorage
+  localStorage.setItem("detalhesPopup", JSON.stringify(detalhes));
+
+  // Verifica se os detalhes são válidos
+  if (detalhes) {
+    // Obtém os elementos do popup
+    const cameraInput = document.getElementById("cameraNumber2");
+    const curvaInput = document.getElementById("curvaInput2");
+    const horainput = document.getElementById("horainput2");
+    const videoCheck = document.getElementById("videoCheck2");
+    const reportCheck = document.getElementById("reportCheck2");
+    const priorityCheck = document.getElementById("priorityCheck2");
+    const obsInput = document.getElementById("obsInput2");
+    const nfaCheck = document.getElementById("nfacheck2");
+    const corridaInput = document.getElementById("inputCorrida2");
+
+    // Verifica se os elementos existem no DOM
+    if (
+      curvaInput &&
+      horainput &&
+      videoCheck &&
+      reportCheck &&
+      nfaCheck &&
+      obsInput &&
+      cameraInput &&
+      priorityCheck &&
+      corridaInput
+    ) {
+      // Atribui os valores dos detalhes aos campos do popup
+      corridaInput.value = detalhes.corrida || "";
+      cameraInput.value = detalhes.camera || "";
+      curvaInput.value = detalhes.curva || "";
+      horainput.value = detalhes.hora || "";
+      videoCheck.checked = detalhes.video || false;
+      nfaCheck.checked = detalhes.nfa || false;
+      reportCheck.checked = detalhes.report || false;
+      priorityCheck.checked = detalhes.priority || false;
+      obsInput.value = detalhes.obs || "";
+
+      //Guardar o input da curva anterior Turn ou Post
+      if (curvaInput.value.includes("P")) {
+        detalheCurva = "P";
+      } else if (curvaInput.value.includes("Turn")) {
+        detalheCurva = "Turn";
+      }
+    } else {
+      console.error(
+        "Um ou mais elementos do popup não foram encontrados no DOM."
+      );
+    }
+  } else {
+    console.error("Detalhes inválidos.");
+  }
+}
+// Função para criar os botões de troca de posição da linha selecionada
+function generatePositionButtons(detalhes) {
+  const popupEdit = document.getElementById("popupEdit");
+  const originalUp = document.getElementById(`buttonUp${detalhes._id}`);
+  const originalDown = document.getElementById(`buttonDown${detalhes._id}`);
+  const buttonUp = document.createElement("button");
+  buttonUp.classList.add("buttaoUpDown");
+  buttonUp.textContent = "↑";
+  buttonUp.id = `buttonUp`;
+  buttonUp.addEventListener("click", () => {
+    originalUp.click();
+  });
+
+  const buttonDown = document.createElement("button");
+  buttonDown.classList.add("buttaoUpDown");
+  buttonDown.textContent = "↓";
+  buttonDown.id = `buttonDown`;
+  buttonDown.addEventListener("click", () => {
+    originalDown.click();
+  });
+
+  popupEdit.appendChild(buttonUp);
+  popupEdit.appendChild(buttonDown);
+}
+// Adicionadar o evento de editar a hora
+function editarHora() {
+  const celulaHora = event.target;
+  celulaHora.setAttribute("contenteditable", "true");
+  celulaHora.style.color = "#";
+  celulaHora.classList.remove("hora-editavel");
+}
+
+// Adicionar a função para obter a hora atual formatada
+function obterHoraAtual() {
+  const agora = new Date();
+  const horas = agora.getHours().toString().padStart(2, "0");
+  const minutos = agora.getMinutes().toString().padStart(2, "0");
+  const segundos = agora.getSeconds().toString().padStart(2, "0");
+  const hour = `${horas}:${minutos}:${segundos}`;
+  document.getElementById("horainput").value = hour;
+}
+
+//Red Flag e Start
+function obterStartOrRF(valor) {
+  document.getElementById("curvaInput").value = document.getElementById(
+    `race${valor}`
+  ).value;
+}
+
+//Adicionar Camera ou Post no field Curva/Post
+function adicionarCameraOrPost(opcao) {
+  if (opcao != "Camera") {
+    document.getElementById("cameraNumber").value = "";
+    document.getElementById("curvaInput").value += document.getElementById(
+      `opcao${opcao}`
+    ).value;
+  } else {
+    document.getElementById("cameraNumber").value =
+      document.getElementById("curvaInput").value;
+    document.getElementById("curvaInput").value = "";
+  }
+}
+
+//Verificar password dar input de curvas
+function checkPassword() {
+  numpadPassword = "WFR2012";
+  if (document.getElementById("numpadUnlock").value == numpadPassword) {
+    adicionarNumpadNum();
+    generateNumpad();
+    fecharPopupNumpadPassword();
+    fecharPopupRodaDentada();
+  } else {
+    window.alert("Código introduzido errado!");
+    fecharPopupNumpadPassword();
+    fecharPopupRodaDentada();
+  }
+}
+
+// Função para determinar qual ação executar com base no popup aberto
+function handleEnterKey(e) {
+  if (e.key === "Enter") {
+    // Verifica se o popup regular está aberto
+    if (popupAberto) {
+      adicionarLinha();
+      fecharPopup();
+    }
+    // Verifica se o popup2 está aberto
+    else if (popup2Aberto) {
+      updateLinha();
+      fecharPopup2();
+    } else if (popupNumpadPasswordAberto) {
+      checkPassword();
+    }
+    // Adicione mais verificações para outros popups, se necessário
+    else {
+      console.error("Erro: Nenhum popup aberto.");
+    }
+  }
+}
+
+// Adicione um ouvinte de evento de teclado ao documento
+document.addEventListener("keydown", handleEnterKey);
 
 // Mover a linha para cima
 function moveUp(button) {
@@ -1728,4 +1702,25 @@ function updatePosition() {
   } else {
     console.error("Nenhum dos dados encontrados no localStorage para enviar.");
   }
+}
+
+//Função que vai buscar o numero de corridas á localStorage(que por sua vez foi buscar o numero a base de dados)
+function carregarOpcoesCorrida() {
+  const selectCorrida = document.getElementById("pesquisaCorrida");
+  const numCorridas = Number(localStorage.getItem("numCorridas"));
+  console.log(numCorridas);
+  for (i = 1; i <= numCorridas; i++) {
+    console.log("inside");
+    const option = document.createElement("option");
+    option.value = i;
+    option.id = `corrida${i}`;
+    option.textContent = `Race nº ${i}`;
+    selectCorrida.appendChild(option);
+  }
+}
+
+// Impedir que a lista seja replicada caso o usuario feixe a janela e abra outra vez(dá clear da lista aquando do fecho da janela)
+function resetCorridas() {
+  const selectCorrida = document.getElementById("pesquisaCorrida");
+  selectCorrida.innerHTML = '<option value="">Race</option>';
 }
