@@ -18,7 +18,7 @@ setInterval(updateClock, 1000);
 let campoPesquisa = false;
 
 //Declarado URL's
-const url = "http://localhost:3000/";
+//const url = "http://localhost:3000/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -286,6 +286,17 @@ document.addEventListener("DOMContentLoaded", function () {
   updateHeaderWithLastRaceText();
 });
 
+// Verifica se a PWA já foi instalada
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  // Previne o comportamento padrão do browser
+  e.preventDefault();
+  // Armazena o evento para ser usado mais tarde
+  deferredPrompt = e;
+  // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
+  showInstallPrompt();
+});
+
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 //----------------------PAGINA----------------------
 // Define a função para carregar os dados quando a página é carregada
@@ -540,6 +551,25 @@ function trocarParaTabela() {
   tabelaIcon.classList.add("hidden");
   numpad.classList.add("hidden");
   numpadIcon.classList.remove("hidden");
+}
+
+function showInstallPrompt() {
+  // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
+  const installButton = document.getElementById("logo");
+  installButton.addEventListener("click", () => {
+    // Exibe o prompt de instalação
+    deferredPrompt.prompt();
+    // Aguarda o usuário interagir com o prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("Usuário aceitou a instalação da PWA");
+      } else {
+        console.log("Usuário recusou a instalação da PWA");
+      }
+      // Limpa o objeto deferredPrompt para que o prompt não seja mostrado novamente
+      deferredPrompt = null;
+    });
+  });
 }
 
 //----------------------TABELA----------------------

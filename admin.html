@@ -2,6 +2,7 @@
 <link rel="icon" href="images/wfrLogo.jpg" type="image/x-icon">
 <link rel="shortcut icon" href="images/wfrLogo.jpg" type="image/x-icon">
 <link rel="stylesheet" href="css.css">
+<link rel="manifest" href="pwa/manifest.json" /> 
 
 <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/express"></script>
@@ -11,8 +12,9 @@
 <script src="expexcell.js"></script>
 <script src="scriptslogin.js"></script>
 
+
 <body onload="carregarNumpad()">
-<img id="logo" src="images/unnamed.png" alt="Logo">
+<img id="logo" src="images/unnamed.png" alt="Logo" onclick="instalar()">
 
 <div id="content-top">
     <!-- Adicionadar o cabeçalho da corrida -->
@@ -38,7 +40,6 @@
       <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
     </div>
 </div>
-
 <!-- <div id="menu">
     
     <button id="penasdicionar" onclick="abrirPopup(); obterHoraAtual()">Adicionar Linha</button>

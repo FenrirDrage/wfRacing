@@ -45,12 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+//fazer logout
 document.addEventListener("DOMContentLoaded", function () {
   try {
     const logoutButton = document.getElementById("logoutButton");
 
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
+      console.log("1");
       fetch("http://localhost:3000/auth/logout", {
         method: "POST",
         headers: {
@@ -77,6 +79,17 @@ document.addEventListener("DOMContentLoaded", function () {
   } catch (error) {
     console.error("Botao nao disponivel.");
   }
+});
+
+// Verifica se a PWA já foi instalada
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  // Previne o comportamento padrão do browser
+  e.preventDefault();
+  // Armazena o evento para ser usado mais tarde
+  deferredPrompt = e;
+  // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
+  showInstallPrompt();
 });
 
 function handlekeypress(event) {
@@ -163,4 +176,23 @@ function playVideoAndRedirect(data) {
 
   // Executar o vídeo
   video.play();
+}
+
+function showInstallPrompt() {
+  // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
+  const installButton = document.getElementById("logo");
+  installButton.addEventListener("click", () => {
+    // Exibe o prompt de instalação
+    deferredPrompt.prompt();
+    // Aguarda o usuário interagir com o prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("Usuário aceitou a instalação da PWA");
+      } else {
+        console.log("Usuário recusou a instalação da PWA");
+      }
+      // Limpa o objeto deferredPrompt para que o prompt não seja mostrado novamente
+      deferredPrompt = null;
+    });
+  });
 }
