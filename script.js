@@ -1801,19 +1801,44 @@ function updatePosition() {
   }
 }
 
-//Função que vai buscar o numero de corridas á localStorage(que por sua vez foi buscar o numero a base de dados)
+//Função que vai buscar o numero de corridas á localStorage(após a análise de todas as corridas de numero diferente na tabela)
 function carregarOpcoesCorrida() {
+  analisarCorridas();
   const selectCorrida = document.getElementById("pesquisaCorrida");
-  const numCorridas = Number(localStorage.getItem("numCorridas"));
+  const numCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"));
+  const maxCorridas = Math.max(...numCorridas)
+  console.log(maxCorridas)
   if(!popupFiltros){
-    for (i = 1; i <= numCorridas; i++) {
-      const option = document.createElement("option");
-      option.value = i;
-      option.id = `corrida${i}`;
-      option.textContent = `Race nº ${i}`;
-      selectCorrida.appendChild(option);
+    for (let i = 1; i <= maxCorridas; i++) {
+      if(numCorridas.includes(i)){
+        const option = document.createElement("option");
+        option.value = i;
+        option.id = `corrida${i}`;
+        option.textContent = `Race nº ${i}`;
+        selectCorrida.appendChild(option);
+      }
     }
   } 
+}
+
+// Analisa todos os numeros diferentes de corridas na coluna de corridas
+function analisarCorridas() {
+  var table, tr, td, i, txtValue, setNumCorridas;
+  setNumCorridas = new Set();
+  table = document.getElementById("tabela");
+  tr = table.getElementsByTagName("tr");
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[10]; // access the 10th column
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (i !== 0) {
+        setNumCorridas.add(Number(txtValue));
+      }
+    }
+  }
+  console.log(Array.from(setNumCorridas));
+  localStorage.setItem("opcoesCorridas", JSON.stringify(Array.from(setNumCorridas)));
 }
 
 
