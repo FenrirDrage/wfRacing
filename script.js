@@ -648,14 +648,24 @@ function showInstallPrompt() {
 function adicionarLinha() {
   const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
   let corrida = document.getElementById("inputCorrida").value;
+  const userType = localStorage.getItem("usertype");
   // Ir buscar o numero da corrida
-  if (corrida == null || corrida == "") {
-    numpadDBData.forEach((item) => {
-      corrida = item.numberCorrida;
-    });
-  } else {
-    updateNumpad(corrida);
-  }
+  if (userType =="user"){
+    if (corrida == null || corrida == "") {
+      numpadDBData.forEach((item) => {
+        corrida = item.numberCorrida;
+      });
+    }
+  }else{
+        if (corrida == null || corrida == "") {
+          numpadDBData.forEach((item) => {
+            corrida = item.numberCorrida;
+          });
+        } else {
+          updateNumpad(corrida);
+        }
+  } 
+  
 
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
@@ -702,57 +712,6 @@ function adicionarLinha() {
 
 // Adicionar tabela cliente (para impedir que clientes possam alterar o numero da corrida na tabela)
 
-function adicionarLinhaCliente() {
-  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
-  let corrida = document.getElementById("inputCorrida").value;
-  // Ir buscar o numero da corrida
-  if (corrida == null || corrida == "") {
-    numpadDBData.forEach((item) => {
-      corrida = item.numberCorrida;
-    });
-  }
-
-  const tabela = document.querySelector("tbody");
-  const novaLinha = document.createElement("tr");
-
-  // Capturar os valores dos campos do pop-up
-  const camera = document.getElementById("cameraNumber").value;
-  const curva = document.getElementById("curvaInput").value;
-  const hora = document.getElementById("horainput").value;
-  const video = document.getElementById("videoCheck").checked;
-  const report = document.getElementById("reportCheck").checked;
-  const priority = document.getElementById("priorityCheck").checked;
-  let obs = document.getElementById("obsInput").value;
-
-  // Adicionar a corrida ás obs se for start
-  if (curva == "Start" && obs.includes("Race nº:") == false) {
-    obs = `Race Nº:${corrida}\n` + document.getElementById("obsInput").value;
-  }
-
-  // Se report for 0, definir nfa como 1
-  let nfa = false;
-  if (!report) {
-    nfa = null;
-  }
-
-  // Armazenar os dados no localStorage
-  const newData = {
-    corrida: corrida,
-    camera: camera,
-    curva: curva,
-    hora: hora,
-    video: video,
-    report: report,
-    nfa: nfa,
-    priority: priority,
-    obs: obs,
-  };
-
-  // Convertendo para JSON e armazenando no localStorage
-  localStorage.setItem("novaLinhaData", JSON.stringify(newData));
-  enviarJson();
-  location.reload();
-}
 
 //envio dados para servidor
 function enviarJson() {
