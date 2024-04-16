@@ -74,7 +74,7 @@ input[type="submit"]:hover {
 
 #videoContainer {
     display: none;
-    position: fixed; /* Alterado para relative para garantir que o vídeo seja posicionado corretamente */
+    position: relative; /* Alterado para relative para garantir que o vídeo seja posicionado corretamente */
     width: 100%; /* Ajustado para ocupar toda a largura do contêiner */
     height: 0 auto; /* Altura inicialmente definida como 0 */
     padding-bottom: 56.25%; /* Proporção 16:9, 9/16 * 100 = 56.25 */
@@ -84,5 +84,5 @@ input[type="submit"]:hover {
 #videoContainer video {
     position: absolute;
     width: 100%;
-    height: auto;
+    height: 100%;
 }

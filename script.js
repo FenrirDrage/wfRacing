@@ -32,10 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "http://localhost:5500/index.html";
   }
 
-  localStorage.setItem("usertype",userData.usertype)
-  updateHeaderWithLastRaceText()
-  
-
+  localStorage.setItem("usertype", userData.usertype);
+  updateHeaderWithLastRaceText();
 });
 
 // Definir se o campo de pesquisa está selecionado ou não
@@ -351,6 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
+
 //----------------------PAGINA----------------------
 // Define a função para carregar os dados quando a página é carregada
 function carregarDados() {
@@ -372,7 +371,7 @@ function carregarDados() {
 function inputRace() {
   // Verificar se o usuário é admin
   const userType = localStorage.getItem("usertype");
-  console.log(userType)
+  console.log(userType);
 
   if (userType !== "admin") {
     alert("Você não tem permissão para alterar o nome da corrida.");
@@ -403,7 +402,6 @@ function inputRace() {
         console.error("Erro ao adicionar corrida:", error);
       });
   }
-  
 }
 
 //Muda o nome da corrida para a ultima da tabela
@@ -416,15 +414,13 @@ function updateHeaderWithLastRaceText() {
       return response.json();
     })
     .then((data) => {
-      const headerElement = document.getElementById("header")
+      const headerElement = document.getElementById("header");
       const headerClienteElement = document.getElementById("headerCliente");
-      if(headerElement){
+      if (headerElement) {
         headerElement.innerHTML = data.lastRaceText;
-      }
-      else if(headerClienteElement){
+      } else if (headerClienteElement) {
         headerClienteElement.innerHTML = data.lastRaceText;
       }
-    
     })
     .catch((error) => {
       console.error("Erro ao obter o texto da última corrida:", error);
@@ -459,11 +455,13 @@ function abrirPopupNumpad() {
   document.getElementById("popupNumpad").style.display = "block";
   popupNumpadAberto = true;
 }
+
 // Abrir popup password
 function abrirPopupNumpadPassword() {
   document.getElementById("numpad-password").style.display = "block";
   popupNumpadPasswordAberto = true;
 }
+
 // Fechar popup rodaDentada
 function abrirPopupRodaDentada() {
   document.getElementById("popupRodadentada").style.display = "block";
@@ -569,7 +567,7 @@ function scrollToBottomWithDelay() {
   }, 100); // Ajuste o valor do atraso conforme necessário
 }
 
-//
+//atualiza o relogio
 function updateClock() {
   var now = new Date();
   var hours = now.getHours().toString().padStart(2, "0");
@@ -623,6 +621,7 @@ function trocarParaTabela() {
   numpadIcon.classList.remove("hidden");
 }
 
+//install prompt do PWA
 function showInstallPrompt() {
   // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
   const installButton = document.getElementById("logo");
@@ -650,22 +649,21 @@ function adicionarLinha() {
   let corrida = document.getElementById("inputCorrida").value;
   const userType = localStorage.getItem("usertype");
   // Ir buscar o numero da corrida
-  if (userType =="user"){
+  if (userType == "user") {
     if (corrida == null || corrida == "") {
       numpadDBData.forEach((item) => {
         corrida = item.numberCorrida;
       });
     }
-  }else{
-        if (corrida == null || corrida == "") {
-          numpadDBData.forEach((item) => {
-            corrida = item.numberCorrida;
-          });
-        } else {
-          updateNumpad(corrida);
-        }
-  } 
-  
+  } else {
+    if (corrida == null || corrida == "") {
+      numpadDBData.forEach((item) => {
+        corrida = item.numberCorrida;
+      });
+    } else {
+      updateNumpad(corrida);
+    }
+  }
 
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
@@ -709,9 +707,7 @@ function adicionarLinha() {
   location.reload();
 }
 
-
 // Adicionar tabela cliente (para impedir que clientes possam alterar o numero da corrida na tabela)
-
 
 //envio dados para servidor
 function enviarJson() {
