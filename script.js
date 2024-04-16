@@ -308,6 +308,42 @@ window.addEventListener("beforeinstallprompt", (e) => {
   showInstallPrompt();
 });
 
+//fazer logout
+document.addEventListener("DOMContentLoaded", function () {
+  try {
+    const logoutButton = document.getElementById("logoutButton");
+
+    logoutButton.addEventListener("click", function () {
+      // Fazer solicitação para logout
+      console.log("1");
+      fetch("http://localhost:3000/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Inclua o token de autenticação no cabeçalho Authorization
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            // Se o logout for bem-sucedido, limpe o token armazenado no localStorage
+            localStorage.removeItem("responseData");
+            // Redirecionar de volta para a página index.html
+            window.location.href = "index.html";
+          } else {
+            // Se o logout falhar, exiba uma mensagem de erro
+            console.error("Failed to logout");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  } catch (error) {
+    console.error("Botao nao disponivel.");
+  }
+});
+
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 //----------------------PAGINA----------------------
 // Define a função para carregar os dados quando a página é carregada
