@@ -18,7 +18,7 @@ body {
 }
 
 /* Estilo para centralizar o título */
-#header {
+#headerCliente {
 text-align: center; /* Centraliza o texto horizontalmente */
 margin: 0 auto; /* Centraliza horizontalmente */
 max-width: auto; /* Largura máxima para manter o alinhamento */
@@ -342,6 +342,11 @@ line-height: 20px; /* Alinhamento vertical */
   width: 60vw;
 }
 
+.class-Obs{
+  word-wrap: break-word;
+  max-width: 17.5vw; /* optional: set a maximum width for the cell */
+}
+
 #menu {
   position: fixed;
   top: 70%; /* Ajuste a altura conforme necessário */
@@ -388,6 +393,15 @@ filter:invert();
 #rodaDentada:hover{
   cursor: pointer;
   animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); 
+  }
+  100% {
+    transform: rotate(360deg); 
+  }
 }
 
  /* Estilos para linhas com report true */

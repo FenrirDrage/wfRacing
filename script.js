@@ -26,10 +26,16 @@ const url = "http://localhost:3000/";
 document.addEventListener("DOMContentLoaded", function () {
   // Verifica se a variável responseData existe na localStorage
   const responseData = localStorage.getItem("responseData");
+  const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
     window.location.href = "http://localhost:5500/index.html";
   }
+
+  localStorage.setItem("usertype",userData.usertype)
+  updateHeaderWithLastRaceText()
+  
+
 });
 
 // Definir se o campo de pesquisa está selecionado ou não
@@ -366,6 +372,7 @@ function carregarDados() {
 function inputRace() {
   // Verificar se o usuário é admin
   const userType = localStorage.getItem("usertype");
+  console.log(userType)
 
   if (userType !== "admin") {
     alert("Você não tem permissão para alterar o nome da corrida.");
@@ -396,6 +403,7 @@ function inputRace() {
         console.error("Erro ao adicionar corrida:", error);
       });
   }
+  
 }
 
 //Muda o nome da corrida para a ultima da tabela
@@ -408,8 +416,15 @@ function updateHeaderWithLastRaceText() {
       return response.json();
     })
     .then((data) => {
-      const headerElement = document.getElementById("headerr");
-      headerElement.innerHTML = data.lastRaceText;
+      const headerElement = document.getElementById("header")
+      const headerClienteElement = document.getElementById("headerCliente");
+      if(headerElement){
+        headerElement.innerHTML = data.lastRaceText;
+      }
+      else if(headerClienteElement){
+        headerClienteElement.innerHTML = data.lastRaceText;
+      }
+    
     })
     .catch((error) => {
       console.error("Erro ao obter o texto da última corrida:", error);
@@ -684,6 +699,61 @@ function adicionarLinha() {
   location.reload();
 }
 
+
+// Adicionar tabela cliente (para impedir que clientes possam alterar o numero da corrida na tabela)
+
+function adicionarLinhaCliente() {
+  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
+  let corrida = document.getElementById("inputCorrida").value;
+  // Ir buscar o numero da corrida
+  if (corrida == null || corrida == "") {
+    numpadDBData.forEach((item) => {
+      corrida = item.numberCorrida;
+    });
+  }
+
+  const tabela = document.querySelector("tbody");
+  const novaLinha = document.createElement("tr");
+
+  // Capturar os valores dos campos do pop-up
+  const camera = document.getElementById("cameraNumber").value;
+  const curva = document.getElementById("curvaInput").value;
+  const hora = document.getElementById("horainput").value;
+  const video = document.getElementById("videoCheck").checked;
+  const report = document.getElementById("reportCheck").checked;
+  const priority = document.getElementById("priorityCheck").checked;
+  let obs = document.getElementById("obsInput").value;
+
+  // Adicionar a corrida ás obs se for start
+  if (curva == "Start" && obs.includes("Race nº:") == false) {
+    obs = `Race Nº:${corrida}\n` + document.getElementById("obsInput").value;
+  }
+
+  // Se report for 0, definir nfa como 1
+  let nfa = false;
+  if (!report) {
+    nfa = null;
+  }
+
+  // Armazenar os dados no localStorage
+  const newData = {
+    corrida: corrida,
+    camera: camera,
+    curva: curva,
+    hora: hora,
+    video: video,
+    report: report,
+    nfa: nfa,
+    priority: priority,
+    obs: obs,
+  };
+
+  // Convertendo para JSON e armazenando no localStorage
+  localStorage.setItem("novaLinhaData", JSON.stringify(newData));
+  enviarJson();
+  location.reload();
+}
+
 //envio dados para servidor
 function enviarJson() {
   // Recuperar os dados do localStorage
@@ -861,7 +931,7 @@ function atualizarTabela(data) {
       <td contenteditable="false"><input type="checkbox" ${
         item.nfa ? "checked" : ""
       } disabled></td>
-      <td contenteditable="false">${item.obs}</td>
+      <td contenteditable="false" class="class-Obs">${item.obs}</td>
       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
         item._id
       }')"></td>
@@ -1592,7 +1662,7 @@ function checkPassword() {
 }
 
 // Função para determinar qual ação executar com base no popup aberto
-function handleEnterKey(e) {
+/* function handleEnterKey(e) {
   if (e.key === "Enter") {
     // Verifica se o popup regular está aberto
     if (popupAberto) {
@@ -1611,10 +1681,10 @@ function handleEnterKey(e) {
       console.error("Erro: Nenhum popup aberto.");
     }
   }
-}
+} */
 
 // Adicione um ouvinte de evento de teclado ao documento
-document.addEventListener("keydown", handleEnterKey);
+/* document.addEventListener("keydown", handleEnterKey); */
 
 // Mover a linha para cima
 function moveUp(button) {

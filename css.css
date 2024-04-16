@@ -326,6 +326,12 @@ z-index: 10001;
 
 #thcolorObs {
   color: #575656;
+  min-width:17.5vw;
+}
+
+.class-Obs{
+  word-wrap: break-word;
+  max-width: 17.5vw; /* optional: set a maximum width for the cell */
 }
 
 #tbuttons{
@@ -353,14 +359,14 @@ z-index: 10001;
   content:url(images/lapis.png); /* Adiciona a animação ao passar o mouse */
 }
 
-/* @keyframes spin {
+@keyframes spin {
   0% {
     transform: rotate(0deg); 
   }
   100% {
     transform: rotate(360deg); 
   }
-}; */
+}
 
 #tabela thead {
   position: sticky;
