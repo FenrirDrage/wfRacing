@@ -9,7 +9,7 @@
 <script src="scriptslogin.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-<body onload="carregarNumpad()">
+<body onload="">
 <img id="logo" src="images/unnamed.png" alt="Logo">
 
 <div id="content-top">
@@ -22,7 +22,7 @@
     <tr>
       <td id="pesquisaObs">
         <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Search here" />
-        <img src="images/pesquisaGif.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa();carregarOpcoesCorrida()"/>
+        <img src="images/pesquisaGif.png" id="filtroImg" onclick="carregarOpcoesCorrida();abrirPopupFiltros();mudaPesquisa()"/>
         <label for="pesquisa" id="searchFiltro"></label>
       </td>
     </tr>
@@ -35,7 +35,7 @@
     </tr>
   </table>
   <div id ="rodaDentadaDiv" >
-    <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
+    <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada()"/>
   </div>
 </div>
 
@@ -122,6 +122,11 @@
           <select name="raceSelect">
             <option value="1" name="raceOne">RaceOne</option>
           </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="number" id="numberCorrida" placeholder="Numero de corrida" value="" class="hidden">
         </td>
       </tr>
       <tr>

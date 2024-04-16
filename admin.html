@@ -13,7 +13,7 @@
 <script src="scriptslogin.js"></script>
 
 
-<body onload="carregarNumpad()">
+<body onload="">
 <img id="logo" src="images/unnamed.png" alt="Logo" onclick="instalar()">
 
 <div id="content-top">
@@ -31,13 +31,13 @@
       <tr>
         <td id="pesquisaObs">
           <input type="text" id="pesquisa" maxlength="20" onkeyup="pesquisarTabelaPost()" placeholder="Search here" />
-          <img src="images/pesquisaGif.png" id="filtroImg" onclick="abrirPopupFiltros();mudaPesquisa();carregarOpcoesCorrida()"/>
+          <img src="images/pesquisaGif.png" id="filtroImg" onclick="carregarOpcoesCorrida();abrirPopupFiltros();mudaPesquisa();"/>
           <label for="pesquisa" id="searchFiltro"></label>
         </td>
       </tr>
     </table>
     <div id ="rodaDentadaDiv" >
-      <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada();editarNumpad()"/>
+      <img id="rodaDentada" src="images/roda dentada.png" onclick="abrirPopupRodaDentada()"/>
     </div>
 </div>
 <!-- <div id="menu">
@@ -224,7 +224,7 @@
           <p>Escolha o tipo de pesquisa:</p>
         </td>
         <td>
-          <span class="close" onclick="fecharPopupFiltros();resetCorridas()">&times;</span>
+          <span class="close" onclick="fecharPopupFiltros();resetCorridas();resetOpcaoCorrida()">&times;</span>
         </td>
       </tr>
       <tr>

@@ -1,7 +1,7 @@
 const DadosNumpad = require("../models/numpadSchema");
 
 // Função para atualizar os dados pelo ID
-exports.putDataNumpad = async (req, res) => {
+exports.putNumpadData = async (req, res) => {
   const updates = req.body;
 
   try {

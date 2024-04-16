@@ -18,7 +18,7 @@ setInterval(updateClock, 1000);
 let campoPesquisa = false;
 
 //Declarado URL's
-//const url = "http://localhost:3000/";
+const url = "http://localhost:3000/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -109,8 +109,8 @@ document.addEventListener("keydown", function (e) {
 
   if (e.key === "Escape") {
     fecharPopup();
-    fecharPopup2();
     fecharPopupNumpad();
+    fecharPopup2();
     fecharPopupNumpadPassword();
   }
 });
@@ -126,31 +126,32 @@ document.addEventListener("keydown", function (e) {
     popupConfiguracoes == false &&
     campoPesquisa == false
   ) {
-    const corridaData = JSON.parse(localStorage.getItem("numpadNum"));
+    const corridaNumber = Number(localStorage.getItem("numCorridas"));
     let corrida;
-    corridaData.forEach((item) => {
-      console.log("here");
-      console.log(item.numberCorrida);
-      if (item.numberCorrida != null) {
-        corrida = item.numberCorrida;
+
+      if (corridaNumber != null || corridaNumber !="") {
+        corrida = corridaNumber;
       } else {
         corrida = 1;
       }
-    });
-
-    if (e.key === "p" || e.key === "P") {
-      document.getElementById("curvaInput").value = "Start";
-      document.getElementById("obsInput").value = `Race nº: ${corrida}`;
-      obterHoraAtual();
-      adicionarLinha();
-    } else if (e.key === "r" || e.key === "R") {
-      document.getElementById("curvaInput").value = "Red Flag";
-      obterHoraAtual();
-      adicionarLinha();
-    } else if (e.key === "s" || e.key === "S") {
-      document.getElementById("curvaInput").value = "Slow Flag";
-      obterHoraAtual();
-      adicionarLinha();
+    if(document.readyState == 'complete'){
+      setTimeout(()=>{
+        if (e.key === "p" || e.key === "P") {
+          document.getElementById("curvaInput").value = "Start";
+          document.getElementById("obsInput").value = `Race nº: ${corrida}`;
+          obterHoraAtual();
+          adicionarLinha();
+        } else if (e.key === "r" || e.key === "R") {
+          document.getElementById("curvaInput").value = "Red Flag";
+          obterHoraAtual();
+          adicionarLinha();
+        } else if (e.key === "s" || e.key === "S") {
+          document.getElementById("curvaInput").value = "Slow Flag";
+          obterHoraAtual();
+          adicionarLinha();
+        }
+      },300)
+      
     }
   }
 });
@@ -162,13 +163,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const dadosExistentes = localStorage.getItem("dadosTabela");
     const data = JSON.parse(dadosExistentes);
     //filtrarPorStart();
-    let indiceMaximo = 1;
+    let registo = 1;
     if (data != null) {
       data.forEach((item) => {
-        indiceMaximo++;
+        registo++;
       });
     }
-    localStorage.setItem("indiceCorrente", indiceMaximo);
+    localStorage.setItem("Numero de Registos", registo);
   }, 1000); // 1 second delay
 });
 
@@ -254,12 +255,18 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   carregarDados();
   carregarDadosNumpad();
-  const numpadNum = JSON.parse(localStorage.getItem("numpadNum"));
-  numpadNum.forEach((item) => {
-    document.getElementById("numberCorrida").value = Number(item.numberCorrida);
-    localStorage.setItem("numCorridas", item.numberCorrida);
-    localStorage.setItem("numCurvasBD", item.numberButtons);
-  });
+  setTimeout(()=>{
+  const numpadNum = JSON.parse(localStorage.getItem("numpadData"));
+    numpadNum.forEach((item) => {
+      document.getElementById("numberCorrida").value = Number(item.numberCorrida);
+      document.getElementById("numberCurvas").value = Number(item.numberButtons);
+      document.getElementById("inputCorrida").value = Number(item.numberCorrida);
+      localStorage.setItem("numCorridas", item.numberCorrida);
+      localStorage.setItem("numCurvasBD", item.numberButtons);
+      generateNumpad();
+    });
+  },180)
+    
 });
 
 //
@@ -321,7 +328,7 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-    fetch("http://localhost:3000/api/addRace", {
+    fetch("http://localhost:3000/addRace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -450,7 +457,7 @@ function fecharPopupRodaDentada() {
 // Fechar popup Configuracoes
 function fecharPopupConfiguracoes() {
   document.getElementById("popupConfiguracoes").style.display = "none";
-  popupRodaDentada = false;
+  popupConfiguracoes = false;
 }
 
 // Fechar popup Filtros
@@ -576,7 +583,7 @@ function showInstallPrompt() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
-  const numpadDBData = JSON.parse(localStorage.getItem("numpadNum"));
+  const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
   let corrida = document.getElementById("inputCorrida").value;
   // Ir buscar o numero da corrida
   if (corrida == null || corrida == "") {
@@ -584,7 +591,7 @@ function adicionarLinha() {
       corrida = item.numberCorrida;
     });
   } else {
-    adicionarNumpadNum(corrida);
+    updateNumpad(corrida);
   }
 
   const tabela = document.querySelector("tbody");
@@ -843,7 +850,7 @@ function atualizarTabela(data) {
   });
 
   // Carregar o numero currente da corrida
-  const numCorrida = JSON.parse(localStorage.getItem("numpadNum"));
+  const numCorrida = JSON.parse(localStorage.getItem("numpadData"));
   numCorrida.forEach((item) => {
     if (item.numberCorrida != null) {
       document.getElementById("inputCorrida").value = item.numberCorrida;
@@ -883,22 +890,6 @@ function limparTabela() {
 
 //----------------------NUMPAD----------------------
 
-// Função para carregar o mesmo número introduzido no numpad(quando é feito reload)
-function carregarNumpad() {
-  // Se existir um numero na base de dados vai buscar, senão usa localmente
-  const databaseNum = JSON.parse(localStorage.getItem("numpadNum"));
-  if (databaseNum) {
-    databaseNum.forEach((item) => {
-      if (item.numberButtons != null || item.numberButtons != undefined) {
-        document.getElementById("numberCurvas").value = item.numberButtons;
-      }
-    });
-  } else {
-    document.getElementById("numberCurvas").value =
-      localStorage.getItem("numCurves");
-  }
-  generateNumpad();
-}
 
 // Ir buscar dados numpad a database
 function carregarDadosNumpad() {
@@ -909,25 +900,39 @@ function carregarDadosNumpad() {
   const furl = url + endpoint;
 
   fetch(furl)
-    .then((response) => response.json())
-    .then((data) => {
-      // Atualiza a tabela com os dados recebidos
-      // Armazena os dados localmente para uso posterior
-      localStorage.setItem("numpadNum", JSON.stringify(data));
-    })
-    .catch((error) => console.error("Erro ao obter dados:", error));
+  .then((response) => response.json())
+  .then((data) => {
+    // Atualiza a tabela com os dados recebidos
+    // Armazena os dados localmente para uso posterior
+    localStorage.setItem("numpadData", JSON.stringify(data));
+    const databaseNum = JSON.parse(localStorage.getItem("numpadData"));
+    console.log(databaseNum);
+    if (databaseNum) {
+      databaseNum.forEach((item) => {
+        if (item.numberButtons != null || item.numberButtons != undefined) {
+          document.getElementById("numberCurvas").value = item.numberButtons;
+        }
+      });
+    } else {
+      document.getElementById("numberCurvas").value =
+        localStorage.getItem("numCurves");
+    }
+  })
+  .catch((error) => console.error("Erro ao obter dados:", error));
+
+
+  
+    //Preencher com os dados do numpad onload
+   
+    
 }
 
 // Adicionar numero ao numpad
-function adicionarNumpadNum(corrida) {
+function adicionarNumpadNum() {
   const numpadNumber = document.getElementById("numberCurvas").value;
   let corridaNumber;
   // Se tiver recebido alteração por um input na corrida(popup de criação)
-  if (corrida) {
-    corridaNumber = document.getElementById("inputCorrida").value;
-  } else {
-    corridaNumber = document.getElementById("numberCorrida").value;
-  }
+  corridaNumber = document.getElementById("numberCorrida").value;
 
   const newNum = {
     numberButtons: numpadNumber,
@@ -963,11 +968,75 @@ function enviarJsonNumpad() {
       .catch((error) =>
         console.error("Erro ao enviar dados para o servidor:", error)
       );
-    localStorage.removeItem("novoNumpadNum");
   } else {
     console.log("Nenhum dado encontrado no localStorage.");
   }
 }
+
+function updateNumpad(corrida) {
+  // Captura os valores atualizados dos campos do pop-up
+  const numpadNumber = document.getElementById("numberCurvas").value;
+  const corridaNumber = corrida;
+  // Se tiver recebido alteração por um input na corrida(popup de criação)
+
+
+  const updatedNumpadData = {
+    numberButtons: numpadNumber,
+    numberCorrida: corridaNumber,
+  };
+
+  // Recupera o ID dos detalhes armazenados no localStorage
+  const detalhesNumpad = JSON.parse(localStorage.getItem("numpadData"));
+  console.log(detalhesNumpad.id)
+  detalhesNumpad.forEach((item)=>{
+    updatedNumpadData._id = item._id;
+  })
+  // Armazena os dados atualizados no localStorage
+  localStorage.setItem("updatedNumpadData", JSON.stringify(updatedNumpadData));
+
+  envUpNumpadJson();
+}
+
+
+function envUpNumpadJson() {
+  // Obtém os dados atualizados do localStorage
+  const updatedDataString = localStorage.getItem("updatedNumpadData");
+  // Verifica se há dados no localStorage
+  if (updatedDataString) {
+    const updatedData = JSON.parse(updatedDataString);
+
+    // Define o ID do documento a ser atualizado (obtido do localStorage)
+    const id = updatedData._id;
+    // Definir o IP/URL para onde enviar os dados
+    const url = `http://localhost:3000/updateNumpad/${id}`;
+    // Envia os dados atualizados para o servidor
+    console.log(updatedData);
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dados atualizados com sucesso:", data);
+
+        // Limpa os dados do localStorage após a atualização
+        localStorage.removeItem("updatedNumpadData");
+      })
+      .catch((error) => {
+        console.error(
+          "Erro ao enviar dados atualizados para o servidor:",
+          error
+        );
+      });
+  } else {
+    console.error("Nenhum dado encontrado no localStorage para enviar.");
+  }
+}
+
+
 
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
@@ -1041,8 +1110,7 @@ function generateNumpad() {
         numpadTable.appendChild(numpadRow);
       }
     }
-    //Esconder o botão e textbox.
-    /* editarNumpad(); */
+
     //Guardar ultimo numero de curvas guardado
     if (generatedNumber != num) {
       localStorage.setItem("numCurves", generatedNumber);
@@ -1093,7 +1161,6 @@ function generateNumpad() {
     } else {
       localStorage.setItem("numCurves", num);
     }
-    /* editarNumpad(); */
   }
 }
 
@@ -1738,16 +1805,17 @@ function updatePosition() {
 function carregarOpcoesCorrida() {
   const selectCorrida = document.getElementById("pesquisaCorrida");
   const numCorridas = Number(localStorage.getItem("numCorridas"));
-  console.log(numCorridas);
-  for (i = 1; i <= numCorridas; i++) {
-    console.log("inside");
-    const option = document.createElement("option");
-    option.value = i;
-    option.id = `corrida${i}`;
-    option.textContent = `Race nº ${i}`;
-    selectCorrida.appendChild(option);
-  }
+  if(!popupFiltros){
+    for (i = 1; i <= numCorridas; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.id = `corrida${i}`;
+      option.textContent = `Race nº ${i}`;
+      selectCorrida.appendChild(option);
+    }
+  } 
 }
+
 
 // Impedir que a lista seja replicada caso o usuario feixe a janela e abra outra vez(dá clear da lista aquando do fecho da janela)
 function resetCorridas() {

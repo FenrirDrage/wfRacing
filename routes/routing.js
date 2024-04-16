@@ -10,6 +10,7 @@ const {
   getNumpadController,
   addRaceController,
   getRaceController,
+  putNumpadController,
 } = require("../controller/indexcont");
 
 //CRUD
@@ -36,6 +37,9 @@ router.post("/dropDataNumpad", dropNumpadController.dropDataNumpad);
 
 // Rota para consultar numero do numpad
 router.get("/getDataNumpad", getNumpadController.getDataNumpad);
+
+// Rota para atualizar dados do numpad
+router.post("/updateNumpad/:id", putNumpadController.putNumpadData);
 
 // Rota para adicionar RACE
 router.post("/addRace", addRaceController.addRace);
