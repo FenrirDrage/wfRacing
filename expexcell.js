@@ -19,7 +19,7 @@ function exportarTabela() {
 
   // Obter o nome da corrida e o título da página
   const nomeCorrida = headerElement.innerText || "";
-  const tituloPagina = document.title; // Obtém o título da página
+  const tituloPagina = headerElement.innerText || ""; // Obtém o título da página
 
   const hoje = new Date();
   const ano = hoje.getFullYear();
