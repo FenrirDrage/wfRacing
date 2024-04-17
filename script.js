@@ -348,6 +348,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+window.addEventListener('unload', function(event) {
+  // Limpa o localStorage
+  localStorage.clear();
+});
+
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 
 //----------------------PAGINA----------------------
@@ -938,7 +943,7 @@ function limparTabela() {
   // Mensagem de confirmação
   if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
     return; // Se o usuário cancelar, sair da função
-    //location.reload;
+    location.reload;
   }
 
   // Definir o IP/URL para onde enviar os dados
