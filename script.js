@@ -348,11 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-window.addEventListener('unload', function(event) {
-  // Limpa o localStorage
-  localStorage.clear();
-});
-
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 
 //----------------------PAGINA----------------------
