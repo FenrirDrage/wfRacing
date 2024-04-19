@@ -649,6 +649,8 @@ function showInstallPrompt() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
+  const arrayCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"))
+  console.log(arrayCorridas)
   const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
   let corrida = document.getElementById("inputCorrida").value;
   const userType = localStorage.getItem("usertype");
@@ -698,7 +700,14 @@ function adicionarLinha() {
   if (!report) {
     nfa = null;
   }
-
+ // Confirmar se a corrida já foi iniciada ou se está a ser iniciada em duplicado
+  if(curva=="Start" && arrayCorridas.includes(Number(corrida))){
+    window.alert("The same race can't be started twice!")
+    return
+  }else if (curva!="Start" && !arrayCorridas.includes(Number(corrida))){
+    window.alert("The race number written corresponds to a race that has not yet been initialized!")
+    return
+  }
   // Armazenar os dados no localStorage
   const newData = {
     corrida: corrida,
@@ -941,6 +950,9 @@ function atualizarTabela(data) {
     counter++;
     tabela.appendChild(novaLinha);
   });
+
+  // Analisar os numeros das corridas
+  analisarCorridas();
 
   // Carregar o numero currente da corrida
   const numCorrida = JSON.parse(localStorage.getItem("numpadData"));
