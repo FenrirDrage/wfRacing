@@ -10,7 +10,7 @@ let popupFiltros = false;
 
 // Gravar os detalhes da curva (se é Post ou Turn)
 let detalheCurva = "NaN";
-
+let detalheCorrida = 0;
 // Atualizar o relógio a cada segundo
 setInterval(updateClock, 1000);
 
@@ -261,9 +261,14 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     const numpadNum = JSON.parse(localStorage.getItem("numpadData"));
     numpadNum.forEach((item) => {
-      document.getElementById("numberCorrida").value = Number(
-        item.numberCorrida
-      );
+      if(item.corrida>0){
+        document.getElementById("numberCorrida").value = Number(
+          item.numberCorrida
+        );
+      }else{
+        document.getElementById("numberCorrida").value = 1;
+      }
+      
       document.getElementById("numberCurvas").value = Number(
         item.numberButtons
       );
@@ -661,10 +666,17 @@ function adicionarLinha() {
         corrida = item.numberCorrida;
       });
     } else {
-      updateNumpad(corrida);
+      if(corrida>0){
+        updateNumpad(corrida);
+      }else{
+        updateNumpad(1);
+      }
+      
     }
   }
-
+  if(corrida<=0){
+    corrida=1;
+  }
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
 
@@ -742,7 +754,7 @@ function enviarJson() {
 //Funçao para dar update á linha selecionada da tabela
 function updateLinha() {
   // Captura os valores atualizados dos campos do pop-up
-  const corrida = document.getElementById("inputCorrida2").value;
+  let corrida = document.getElementById("inputCorrida2").value;
   const camera = document.getElementById("cameraNumber2").value;
   let curva = document.getElementById("curvaInput2").value;
   const hora = document.getElementById("horainput2").value;
@@ -750,11 +762,20 @@ function updateLinha() {
   const report = document.getElementById("reportCheck2").checked;
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
-  const obs = document.getElementById("obsInput2").value;
+  let obs = document.getElementById("obsInput2").value;
   // Caso tenham sido Post ou Turn anteriormente
   if (!curva.includes("P") && !curva.includes("Turn")) {
     if (detalheCurva == "P" || detalheCurva == "Turn") {
       curva += detalheCurva;
+    }
+  }
+  // Corrida nunca pode ser 0
+  if(corrida==0){
+    corrida=1;
+  }
+  if(curva==("Start")){
+    if(obs.includes(`Race Nº:${detalheCorrida}`)){
+      obs = obs.replace(`Race Nº:${detalheCorrida}`, `Race Nº:${corrida}`)
     }
   }
 
@@ -1044,7 +1065,13 @@ function enviarJsonNumpad() {
 function updateNumpad(corrida) {
   // Captura os valores atualizados dos campos do pop-up
   const numpadNumber = document.getElementById("numberCurvas").value;
-  const corridaNumber = corrida;
+  let corridaNumber;
+  if(corrida<=0){
+    corridaNumber = 1;
+  }else{
+    corridaNumber = corrida;
+  }
+  
   // Se tiver recebido alteração por um input na corrida(popup de criação)
 
   const updatedNumpadData = {
@@ -1529,6 +1556,10 @@ function preencherPopupComDetalhes(detalhes) {
       } else if (curvaInput.value.includes("Turn")) {
         detalheCurva = "Turn";
       }
+
+      //Para poder retirar e substituir nas obs quando mudam a corrida
+      detalheCorrida=detalhes.corrida;
+
     } else {
       console.error(
         "Um ou mais elementos do popup não foram encontrados no DOM."
@@ -1617,7 +1648,7 @@ function checkPassword() {
 }
 
 // Função para determinar qual ação executar com base no popup aberto
-/* function handleEnterKey(e) {
+function handleEnterKey(e) {
   if (e.key === "Enter") {
     // Verifica se o popup regular está aberto
     if (popupAberto) {
@@ -1636,10 +1667,10 @@ function checkPassword() {
       console.error("Erro: Nenhum popup aberto.");
     }
   }
-} */
+}
 
 // Adicione um ouvinte de evento de teclado ao documento
-/* document.addEventListener("keydown", handleEnterKey); */
+document.addEventListener("keydown", handleEnterKey);
 
 // Mover a linha para cima
 function moveUp(button) {
