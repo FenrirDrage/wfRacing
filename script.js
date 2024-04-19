@@ -55,10 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Impedir o refresh quando ao campo de pesquisa se encontra selecionado
-if (campoPesquisa == false) {
   // Chamar a função atualizarPagina a cada 5 segundos
-  setInterval(atualizarPagina, 5000);
-}
+setInterval(atualizarPagina, 5000);
+
 
 // Valor para o segundo input numérico no numpad
 document.addEventListener("keydown", function (e) {
@@ -555,7 +554,7 @@ function atualizarPagina() {
     !popupConfiguracoes
   ) {
     // Lógica para atualizar a página
-    //location.reload();
+   location.reload();
   }
 }
 
@@ -1448,7 +1447,7 @@ function pesquisarCorrida() {
     td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
     if (td) {
       txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      if (txtValue.trim() === filter) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
