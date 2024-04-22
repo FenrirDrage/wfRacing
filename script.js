@@ -130,6 +130,7 @@ document.addEventListener("keydown", function (e) {
     campoPesquisa == false
   ) {
     const corridaNumber = Number(localStorage.getItem("numCorridas"));
+    const userType = localStorage.getItem("usertype");
     let corrida;
 
     if (corridaNumber != null || corridaNumber != "") {
@@ -137,7 +138,7 @@ document.addEventListener("keydown", function (e) {
     } else {
       corrida = 1;
     }
-    if (document.readyState == "complete") {
+    if (document.readyState == "complete" && userType!="user") {
       setTimeout(() => {
         if (e.key === "p" || e.key === "P") {
           document.getElementById("curvaInput").value = "Start";
@@ -551,7 +552,8 @@ function atualizarPagina() {
     !popupAberto &&
     !popup2Aberto &&
     campoPesquisa == false &&
-    !popupConfiguracoes
+    !popupConfiguracoes &&
+    !popupFiltros
   ) {
     // Lógica para atualizar a página
    location.reload();
@@ -1360,6 +1362,7 @@ function mudaPesquisa() {
     const selectedOption =
       pesquisaChoice.options[pesquisaChoice.selectedIndex].text;
     searchFiltro.textContent = selectedOption;
+    localStorage.setItem("labelPesquisa", selectedOption)
     localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
 
     if (pesquisaChoice.value == 1) {
@@ -1383,6 +1386,9 @@ function loadPesquisaChoice() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const choice = localStorage.getItem("pesquisaChoice");
   const pesquisa = document.getElementById("pesquisa");
+  const searchFiltro = document.getElementById("searchFiltro");
+  searchFiltro.textContent = localStorage.getItem("labelPesquisa");
+
   if (choice != null) {
     pesquisaChoice.value = choice;
     if (pesquisaChoice.value == 1) {
@@ -1410,7 +1416,7 @@ function pesquisarTabelaObs() {
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
+  // Loop para percorrer cada linha da tabela, e verificar o conteudo na celula de index especificado(td e o indice é a coluna)
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[7]; //Escolha de qual a coluna onde a pesquisa vai incidir 5->Observações
     if (td) {
@@ -1433,7 +1439,7 @@ function pesquisarTabelaHour() {
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
+  // Loop para percorrer cada linha da tabela, e verificar o conteudo na celula de index especificado(td e o indice é a coluna)
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[3]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
     if (td) {
@@ -1454,12 +1460,14 @@ function pesquisarCorrida() {
   filter = input.value.toUpperCase();
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
-  // Loop through all table rows, and hide those who don't match the search query
+  // Loop para percorrer cada linha da tabela, e nessa linha verificar o conteudo de uma celula(td) de uma coluna especifica
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.trim() === filter) {
+    if (td) { // Se essa coluna existir
+      txtValue = td.textContent || td.innerText; // Obter o seu conteudo
+      if (filter=="") { // Verificar se está vazio (ou seja mostrar todas as corridas)
+        return; //interrompe a função
+      }else if(txtValue.trim() === filter){ //  Se se verificar o valor exato mostra, senão esconde
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
@@ -1477,7 +1485,7 @@ function pesquisarTabelaPost() {
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
+  // Loop para percorrer cada linha da tabela, e verificar o conteudo na celula de index especificado(td e o indice é a coluna)
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[2]; //Escolha de qual a coluna onde a pesquisa vai incidir 0->Post
     if (td) {
@@ -1933,7 +1941,7 @@ function analisarCorridas() {
   setNumCorridas = new Set();
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
-  // Loop through all table rows, and hide those who don't match the search query
+  // Loop para percorrer cada linha da tabela, e verificar o conteudo na celula de index especificado(td e o indice é a coluna)
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[10]; // access the 10th column
     if (td) {
