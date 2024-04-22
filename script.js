@@ -476,7 +476,18 @@ function abrirPopupNumpadPassword() {
 
 // Fechar popup rodaDentada
 function abrirPopupRodaDentada() {
+  const rodaDentada = document.getElementById("popupRodadentada")
   document.getElementById("popupRodadentada").style.display = "block";
+  const userType = localStorage.getItem("usertype")
+  console.log(userType)
+  if(userType!="admin"){
+    document.getElementById("numberCurvas").classList.add("hidden");
+    document.getElementById("numberCorrida").classList.add("hidden");
+    document.getElementById("butaoSettings").classList.add("hidden");
+    document.getElementById("botaoLimparTabela").classList.add("hidden");
+    document.getElementById("butaoGerarNumpad").classList.add("hidden");
+    document.getElementById("labelConfig").classList.add("hidden");
+  }
   popupRodaDentada = true;
 }
 
@@ -559,6 +570,7 @@ function atualizarPagina() {
     !popupAberto &&
     !popup2Aberto &&
     campoPesquisa == false &&
+    !popupRodaDentada &&
     !popupConfiguracoes &&
     !popupFiltros
   ) {
