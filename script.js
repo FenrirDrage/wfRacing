@@ -279,6 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("numCurvasBD", item.numberButtons);
       generateNumpad();
     });
+    pesquisarCorrida(localStorage.getItem("corridaChoice"));
   }, 180);
 });
 
@@ -353,10 +354,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// test 15 second interval method
+
+
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 
 //----------------------PAGINA----------------------
 // Define a função para carregar os dados quando a página é carregada
+
+
+
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
   const url = "http://localhost:3000/getData";
@@ -1354,7 +1361,6 @@ function generateNumpad() {
 function mudaPesquisa() {
   let pesquisaChoice = document.getElementById("pesquisaOptions");
   const historyChoice = localStorage.getItem("pesquisaChoice");
-
   const pesquisa = document.getElementById("pesquisa");
   const searchFiltro = document.getElementById("searchFiltro");
 
@@ -1454,10 +1460,18 @@ function pesquisarTabelaHour() {
 }
 
 // Seleção da corrida no menu de filtros(Por enquanto se o usuário escrever na barra de pesquisa, esta função leva overwrite e são exibidos todos os registo de acordo com a pesquisa)
-function pesquisarCorrida() {
+function pesquisarCorrida(corridaLastChoice) {
   var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("pesquisaCorrida");
-  filter = input.value.toUpperCase();
+
+  if(corridaLastChoice){ //se receber um parametro com um valor
+    input= corridaLastChoice
+    console.log(corridaLastChoice)
+    filter = input
+  }else{
+    input = document.getElementById("pesquisaCorrida");
+    localStorage.setItem("corridaChoice",input.value);
+    filter = input.value.toUpperCase();
+  }
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
   // Loop para percorrer cada linha da tabela, e nessa linha verificar o conteudo de uma celula(td) de uma coluna especifica
