@@ -34,7 +34,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   localStorage.setItem("usertype", userData.usertype);
   updateHeaderWithLastRaceText();
+
+  var posicaoScroll = localStorage.getItem('posicaoScroll');
+  if (posicaoScroll){
+    setTimeout(()=>{
+      window.scrollTo(0, posicaoScroll);
+    },100)
+  }
+  console.log(posicaoScroll)
 });
+
+// função que é ativada antes da página ser desligada
+window.onbeforeunload = function(e) {
+  localStorage.setItem('posicaoScroll', window.scrollY); // Guarda a posição na página do eixo vertical (Y)
+};
 
 // Definir se o campo de pesquisa está selecionado ou não
 document.addEventListener("DOMContentLoaded", function () {
@@ -580,7 +593,7 @@ function atualizarPagina() {
 }
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
-function scrollToBottomWithDelay() {
+/* function scrollToBottomWithDelay() {
   setTimeout(function () {
     var table = document.getElementById("tabela"); // ID da sua tabela
     if (table) {
@@ -590,7 +603,9 @@ function scrollToBottomWithDelay() {
       }
     }
   }, 100); // Ajuste o valor do atraso conforme necessário
-}
+} */
+
+
 
 //atualiza o relogio
 function updateClock() {
