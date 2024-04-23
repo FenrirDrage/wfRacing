@@ -1489,25 +1489,37 @@ function pesquisarTabelaHour() {
 // Seleção da corrida no menu de filtros(Por enquanto se o usuário escrever na barra de pesquisa, esta função leva overwrite e são exibidos todos os registo de acordo com a pesquisa)
 function pesquisarCorrida(corridaLastChoice) {
   var input, filter, table, tr, td, i, txtValue;
-
+  const searchCorrida = document.getElementById("searchCorrida");
+  
   if(corridaLastChoice){ //se receber um parametro com um valor
     input= corridaLastChoice
-    console.log(corridaLastChoice)
     filter = input
+    if(corridaLastChoice!=""){
+      searchCorrida.textContent = ` | Race Nº ${corridaLastChoice}`;
+    }else{
+      searchCorrida.textContent = ` | All Races`;
+    }
+    
   }else{
     input = document.getElementById("pesquisaCorrida");
     localStorage.setItem("corridaChoice",input.value);
     filter = input.value.toUpperCase();
+    if(filter!=""){
+      searchCorrida.textContent = ` | Race Nº ${localStorage.getItem("corridaChoice")}`;
+    }else{
+      searchCorrida.textContent = ` | All Races`;
+    }
   }
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
+  console.log(filter)
   // Loop para percorrer cada linha da tabela, e nessa linha verificar o conteudo de uma celula(td) de uma coluna especifica
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
     if (td) { // Se essa coluna existir
       txtValue = td.textContent || td.innerText; // Obter o seu conteudo
       if (filter=="") { // Verificar se está vazio (ou seja mostrar todas as corridas)
-        return; //interrompe a função
+        tr[i].style.display = "";
       }else if(txtValue.trim() === filter){ //  Se se verificar o valor exato mostra, senão esconde
         tr[i].style.display = "";
       } else {
