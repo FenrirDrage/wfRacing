@@ -1,0 +1,126 @@
+[{
+  "_id": {
+    "$oid": "662f6cd37612644db34fd85d"
+  },
+  "descricao": "ALONE",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662f6dde7612644db34fd865"
+  },
+  "descricao": "BLACK FLAG",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa1f2255c1123b07abd88"
+  },
+  "descricao": "ALONE",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa1fb255c1123b07abd8a"
+  },
+  "descricao": "BLACK FLAG",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa200255c1123b07abd8c"
+  },
+  "descricao": "CASINO",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa205255c1123b07abd8e"
+  },
+  "descricao": "COLISION",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa20b255c1123b07abd90"
+  },
+  "descricao": "CUT TRACK",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa212255c1123b07abd92"
+  },
+  "descricao": "DIDN'T START",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa218255c1123b07abd94"
+  },
+  "descricao": "GAINNING POSITION",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa21e255c1123b07abd96"
+  },
+  "descricao": "HARD DEFENDING",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa224255c1123b07abd98"
+  },
+  "descricao": "MIDDLE OF THE GROUP",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa229255c1123b07abd9a"
+  },
+  "descricao": "PUSHING",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa230255c1123b07abd9c"
+  },
+  "descricao": "PUSHING OUT OF THE TRACK",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa235255c1123b07abd9e"
+  },
+  "descricao": "RED LINE",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa237255c1123b07abda0"
+  },
+  "descricao": "TL",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa23c255c1123b07abda2"
+  },
+  "descricao": "2 WHEELS OUT",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fa240255c1123b07abda4"
+  },
+  "descricao": "WRONG CORRIDOR",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662fb3954b8c284c7d16116e"
+  },
+  "descricao": "ADD",
+  "__v": 0
+}]

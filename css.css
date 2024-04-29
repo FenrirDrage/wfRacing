@@ -370,7 +370,7 @@ z-index: 10001;
 
 #tabela thead {
   position: sticky;
-  top: 156px; /* Adjust this value according to your header's height */
+  top: 18.8vh; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }
@@ -595,6 +595,18 @@ tr.priority-set td{
   margin-left: 40px;
 }
 
+#popupAdicionaObservações{
+  z-index: 10006;
+}
+
+@media screen and (min-width: 1370px) {
+  #tabela thead{
+      top: 22.2vh;
+  }
+  #tabela{
+    margin-top: 23vh;
+  }
+}
 
 .buttaoUpDown{
   margin-bottom: 0;

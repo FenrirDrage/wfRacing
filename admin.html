@@ -158,9 +158,11 @@
       <input type="number" id="inputCorrida" placeholder="Numero Corrida">&nbsp;<label>Race nº</label><br>
       <input type="checkbox" id="videoCheck">Vídeo<br>
       <input type="checkbox" id="reportCheck">Report<br>
-      <input type="checkbox" id="priorityCheck"> Priority<br>
-      <label>Observations</label><br>
-      <textarea id="obsInput" placeholder="obs"></textarea><br>
+      <input type="checkbox" id="priorityCheck"> Priority<br><br>
+      <select id="obsInputSelect" >
+        <option value="">Observations</option>
+      </select><br>
+      <textarea class="hidden" id="obsInput" placeholder="obs"></textarea><br>
       <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
     </div>
   </div>
@@ -175,9 +177,11 @@
       <input type="checkbox" id="videoCheck2"> Vídeo<br>
       <input type="checkbox" id="reportCheck2"> Report<br>
       <input type="checkbox" id="nfacheck2"> N.F.A.<br>
-      <input type="checkbox" id="priorityCheck2"> Priority<br>
-      <label>Observations</label><br>
-      <textarea id="obsInput2" placeholder="obs"></textarea><br>
+      <input type="checkbox" id="priorityCheck2"> Priority<br><br>
+      <select  id="obsInputSelect2">
+        <option value="">Observations</option>
+      </select><br>
+      <textarea class="hidden" id="obsInput2" placeholder="obs"></textarea><br>
       <button onclick="fecharPopup2(); updateLinha()">Update</button>
       <button onclick="fecharPopup2(); deleteLinha()">Delete</button>
     </div>
@@ -195,6 +199,9 @@
         <td>
           <button onclick="showWorkInProgress()">User List (WIP)</button>
         </td>
+        <td>
+          <button onclick="abrirPopupAdicionaObservacoes()">Acrescentar Opções Obs</button>
+        </td>
       </tr>
       <tr>
         <td>
@@ -207,6 +214,14 @@
         </td>
       </tr>
     </table>
+  </div>
+</div>
+
+<div id="popupAdicionaObservações" class="popup">
+  <div class="popup-content">
+  <span class="close" onclick="fecharPopupAdicionaObservacoes()">&times;</span><br>
+    <input type="text" id="newObs" placeholder="New Obs Option">
+    <button onclick="adicionarObsOptions();">Add</button> <!-- fecharPopupAdicionaObservacoes(); -->
   </div>
 </div>
 

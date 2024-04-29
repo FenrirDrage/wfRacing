@@ -7,6 +7,7 @@ let popupNumpadPasswordAberto = false;
 let popupRodaDentada = false;
 let popupConfiguracoes = false;
 let popupFiltros = false;
+let popupAdicionaObs = false;
 
 // Gravar os detalhes da curva (se é Post ou Turn)
 let detalheCurva = "NaN";
@@ -69,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Impedir o refresh quando ao campo de pesquisa se encontra selecionado
   // Chamar a função atualizarPagina a cada 5 segundos
-setInterval(atualizarPagina, 5000);
+setInterval(atualizarPagina, 100000);
 
 
 // Valor para o segundo input numérico no numpad
@@ -271,6 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   carregarDados();
   carregarDadosNumpad();
+  carregarObsOptions();
   setTimeout(() => {
     const numpadNum = JSON.parse(localStorage.getItem("numpadData"));
     numpadNum.forEach((item) => {
@@ -510,6 +512,12 @@ function abrirPopupConfiguracoes() {
   popupConfiguracoes = true;
 }
 
+// abrir popup para Observações adicionais
+function abrirPopupAdicionaObservacoes() {
+  document.getElementById("popupAdicionaObservações").style.display = "block";
+  popupAdicionaObs = true;
+}
+
 // Fechar popup filtros
 function abrirPopupFiltros() {
   document.getElementById("popupFiltros").style.display = "block";
@@ -555,6 +563,13 @@ function fecharPopupRodaDentada() {
 function fecharPopupConfiguracoes() {
   document.getElementById("popupConfiguracoes").style.display = "none";
   popupConfiguracoes = false;
+}
+
+// Fecha o popup para acrescentar Observações
+function fecharPopupAdicionaObservacoes() {
+  document.getElementById("popupAdicionaObservações").style.display = "none";
+
+  popupAdicionaObs = false;
 }
 
 // Fechar popup Filtros
@@ -724,11 +739,11 @@ function adicionarLinha() {
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
   const priority = document.getElementById("priorityCheck").checked;
-  let obs = document.getElementById("obsInput").value;
+  let obs = document.getElementById("obsInputSelect").value;
 
   // Adicionar a corrida ás obs se for start
   if (curva == "Start" && obs.includes("Race nº:") == false) {
-    obs = `Race Nº:${corrida}\n` + document.getElementById("obsInput").value;
+    obs = `Race Nº:${corrida}\n` + document.getElementById("obsInputSelect2").value;
   }
 
   // Se report for 0, definir nfa como 1
@@ -806,7 +821,7 @@ function updateLinha() {
   const report = document.getElementById("reportCheck2").checked;
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
-  let obs = document.getElementById("obsInput2").value;
+  let obs = document.getElementById("obsInputSelect2").value;
   // Caso tenham sido Post ou Turn anteriormente
   if (!curva.includes("P") && !curva.includes("Turn")) {
     if (detalheCurva == "P" || detalheCurva == "Turn") {
@@ -936,32 +951,149 @@ function atualizarTabela(data) {
   // Adiciona linhas à tabela com os dados recebidos
   var counter = 1;
   data.forEach((item) => {
+
     const novaLinha = document.createElement("tr");
-    novaLinha.innerHTML = `
-      <td class="hidden">${item._id}</td>
-      <td contenteditable="false">${item.camera}</td>
-      <td contenteditable="false">${item.curva}</td>
-      <td contenteditable="false">${item.hora}</td>
-      <td contenteditable="false"><input type="checkbox" ${
-        item.video ? "checked" : ""
-      } disabled></td>
-      <td contenteditable="false"><input type="checkbox" ${
-        item.report ? "checked" : ""
-      } disabled></td>
-      <td contenteditable="false"><input type="checkbox" ${
-        item.nfa ? "checked" : ""
-      } disabled></td>
-      <td contenteditable="false" class="class-Obs">${item.obs}</td>
-      <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
-        item._id
-      }')"></td>
-      <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${
-        item._id
-      }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
-      item._id
-    }" onclick="moveDown(this)">↓</button>
-     <td class="hidden">${item.corrida}</td>
-      `;
+
+    // Id
+
+    const IdCell = document.createElement("td");
+    IdCell.classList.add("hidden");
+    IdCell.contenteditable = false;
+    IdCell.textContent = `${item._id}`;
+
+    // Camera
+
+    const CameraCell = document.createElement("td");
+    CameraCell.contenteditable = false;
+    CameraCell.textContent = `${item.camera}`;
+
+    // Curva    
+
+    const CurvaCell = document.createElement("td");
+    CurvaCell.contenteditable = false;
+    CurvaCell.textContent = `${item.curva}`
+
+    // Hora
+
+    const HoraCell = document.createElement("td");
+    HoraCell.contenteditable = false;
+    HoraCell.textContent = `${item.hora}`
+
+    //Checkboxes
+
+    //Video
+    const VideoCell = document.createElement("td");
+    VideoCell.contenteditable = "False";
+    const VideosCheck = document.createElement("input");
+    VideosCheck.type="checkbox";
+    VideosCheck.contenteditable="False";
+    if(item.video==true){
+        VideosCheck.checked = true; // unceirtain
+    }else{
+        VideosCheck.checked = false; // unceirtain
+    }
+    VideosCheck.disabled=true;
+    VideoCell.appendChild(VideosCheck);
+
+    // Report
+
+    const ReportCell = document.createElement("td");
+    ReportCell.contenteditable = "False";
+    const ReportCheck = document.createElement("input");
+    ReportCheck.type="checkbox";
+    ReportCheck.contenteditable=false;
+    if(item.report==true){
+        ReportCheck.checked = true; // unceirtain
+    }else{
+        ReportCheck.checked = false; // unceirtain
+    }
+    ReportCheck.disabled=true;
+    ReportCell.appendChild(ReportCheck);
+
+    // NFA
+
+    const NFACell = document.createElement("td");
+    NFACell.contenteditable = false;
+    const NFACheck = document.createElement("input");
+    NFACheck.type="checkbox";
+    NFACheck.contenteditable= false;
+    if(item.nfa==true){
+        NFACheck.checked = true; // unceirtain
+    }else{
+        NFACheck.checked = false; // unceirtain
+    }
+    NFACheck.disabled=true;
+    NFACell.appendChild(NFACheck);
+
+
+    // Obs
+
+    const ObsCell = document.createElement("td");
+    ObsCell.contenteditable = false;
+    ObsCell.textContent = `${item.obs}`;
+
+   // Editar
+
+    const EditarCell = document.createElement("td");
+    EditarCell.id="tdlg";
+    const ImageEditCell = document.createElement("img");
+    ImageEditCell.id = "editlg";
+    ImageEditCell.src = "images/pen.png";
+    ImageEditCell.alt = "Editar";
+    
+    ImageEditCell.onclick = function () {
+         abrirDetalhes(`${item._id}`);
+    };
+
+    EditarCell.appendChild(ImageEditCell);
+    
+   // Cell for both buttons
+    
+    // Up
+
+    const ButtonsCell = document.createElement("td");
+    ButtonsCell.id = "positionButton";
+    ButtonsCell.classList.add("hidden");
+    const ButtonUp = document.createElement("button");
+    ButtonUp.classList.add("buttaoUpDown");
+    ButtonUp.id = `buttonUp${item._id}`;
+    ButtonUp.onclick = function () {
+         moveUp(this);
+    };
+    ButtonUp.textContent="↑";
+   
+    //Down
+
+    const ButtonDown = document.createElement("button");
+    ButtonDown.classList.add("buttaoUpDown");
+    ButtonDown.id = `buttonDown${item._id}`;
+    ButtonDown.onclick = function () {
+         moveDown(this);
+    };
+    ButtonDown.textContent="↓";
+
+    ButtonsCell.appendChild(ButtonUp);
+    ButtonsCell.appendChild(ButtonDown);
+
+    const CorridaCell = document.createElement("td");
+    CorridaCell.classList.add("hidden")
+    CorridaCell.contenteditable = false;
+    CorridaCell.textContent = `${item.corrida}`;
+
+    novaLinha.appendChild(IdCell);
+    novaLinha.appendChild(CameraCell);
+    novaLinha.appendChild(CurvaCell);
+    novaLinha.appendChild(HoraCell);
+    novaLinha.appendChild(VideoCell);
+    novaLinha.appendChild(ReportCell);
+    novaLinha.appendChild(NFACell);
+    novaLinha.appendChild(ObsCell);
+    novaLinha.appendChild(EditarCell);
+    novaLinha.appendChild(ButtonsCell);
+    novaLinha.appendChild(CorridaCell);
+
+
+
 
     // Adiciona classes CSS com base nos valores de report e nfa
     if (item.report) {
@@ -987,18 +1119,6 @@ function atualizarTabela(data) {
     tabela.appendChild(novaLinha);
   });
 
-  // Analisar os numeros das corridas
-  analisarCorridas();
-
-  // Carregar o numero currente da corrida
-  const numCorrida = JSON.parse(localStorage.getItem("numpadData"));
-  numCorrida.forEach((item) => {
-    if (item.numberCorrida != null) {
-      document.getElementById("inputCorrida").value = item.numberCorrida;
-    } else {
-      document.getElementById("inputCorrida").value = 1;
-    }
-  });
 }
 
 // Adicionada a função para limpar a tabela
@@ -2015,4 +2135,88 @@ function analisarCorridas() {
 function resetCorridas() {
   const selectCorrida = document.getElementById("pesquisaCorrida");
   selectCorrida.innerHTML = '<option value="">Race</option>';
+}
+
+
+// Carregar opções para Obs
+function carregarObsOptions() {
+  // Definir o IP/URL para onde enviar os dados
+  const url = "http://localhost:3000/getObsOptions";
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      // Atualiza a tabela com os dados recebidos
+      atualizarObsOptions(data);
+      // Armazena os dados localmente para uso posterior
+      localStorage.setItem("obsOptions", JSON.stringify(data));
+    })
+    .catch((error) => console.error("Erro ao obter dados:", error));
+}
+
+
+
+// Adicionar Acontecimentos as observacoes
+function adicionarObsOptions(){
+  const descricao = document.getElementById("newObs").value;
+
+  const newData = {
+    descricao: descricao
+  };
+
+  localStorage.setItem("newOption", JSON.stringify(newData));
+  enviarObsOptionJson();
+
+}
+
+function enviarObsOptionJson(){
+  const localStorageData = localStorage.getItem("newOption");
+  console.log(localStorageData);
+
+  // Definir o IP/URL para onde enviar os dados
+  const url = "http://localhost:3000/addObsOptions";
+
+  // Verificar se existem dados no localStorage
+  if (localStorageData) {
+    const parsedData = JSON.parse(localStorageData);
+    // Enviar os dados para o servidor
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error("Erro ao enviar dados para o servidor:", error)
+      );
+  } else {
+    console.log("Nenhum dado encontrado no localStorage.");
+  }
+}
+
+
+// Ir buscar acontecimentos para observações
+function atualizarObsOptions(data) {
+  const selectObs = document.getElementById("obsInputSelect");
+  const selectOBSUpdate = document.getElementById("obsInputSelect2")
+  const obsOptions = JSON.parse(localStorage.getItem("obsOptions"));
+
+  data.forEach((item)=>{
+    const option = document.createElement("option")
+    option.value = item.descricao;
+    option.textContent = item.descricao;
+    selectObs.appendChild(option);
+  })
+
+  data.forEach((item)=>{
+    const option = document.createElement("option")
+    option.value = item.descricao;
+    option.textContent = item.descricao;
+    selectOBSUpdate.appendChild(option);
+  })
+  
+    
 }
