@@ -746,12 +746,19 @@ function adicionarLinha() {
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
   const priority = document.getElementById("priorityCheck").checked;
-  let obs = document.getElementById("obsInputSelect").value;
+  let obs = document.getElementById("obsInput").value;
+  let obsDropDown = document.getElementById("obsInputSelect").value;
+
+  if(obs!="" && obsDropDown!=""){
+    obs = obs + " - " + obsDropDown;
+  }else if(obs=="" && obsDropDown!=""){
+    obs = obsDropDown;
+  }
 
   // Adicionar a corrida ás obs se for start
   if (curva == "Start" && obs.includes("Race nº:") == false) {
     obs =
-      `Race Nº:${corrida}\n` + document.getElementById("obsInputSelect2").value;
+      `Race Nº:${corrida}\n` + document.getElementById("obsInput").value + document.getElementById("obsInputSelect2").value;
   }
 
   // Se report for 0, definir nfa como 1
@@ -831,7 +838,7 @@ function updateLinha() {
   const report = document.getElementById("reportCheck2").checked;
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
-  let obs = document.getElementById("obsInputSelect2").value;
+  let obs = document.getElementById("obsInput2").value;
   // Caso tenham sido Post ou Turn anteriormente
   if (!curva.includes("P") && !curva.includes("Turn")) {
     if (detalheCurva == "P" || detalheCurva == "Turn") {
@@ -1724,7 +1731,7 @@ function preencherPopupComDetalhes(detalhes) {
     const videoCheck = document.getElementById("videoCheck2");
     const reportCheck = document.getElementById("reportCheck2");
     const priorityCheck = document.getElementById("priorityCheck2");
-    const obsInput = document.getElementById("obsInputSelect2");
+    const obsInput = document.getElementById("obsInput2");
     const nfaCheck = document.getElementById("nfacheck2");
     const corridaInput = document.getElementById("inputCorrida2");
 

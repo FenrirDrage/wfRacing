@@ -368,6 +368,7 @@ z-index: 10001;
   }
 }
 
+
 #tabela thead {
   position: sticky;
   top: 18.8vh; /* Adjust this value according to your header's height */
@@ -378,6 +379,39 @@ z-index: 10001;
 #tabela{
   margin-top: 190.2px;
 }
+
+/* Teste responsive subsurface*/
+/* @media screen and (max-width: 1370px) {
+  #tabela thead{
+      top: 18.9vh;
+  }
+  #tabela{
+    margin-top: 4vh;
+  }
+
+  #extraButtons button{
+    width: 50%;
+    margin-left: 20px;
+  }
+
+  #numpad-table{
+    width: 30%;
+  }
+  #numpad{
+    width: 50%;
+  }
+  #numpad button{
+    width: 30%;
+  }
+  #logo{
+    width: 15%;
+    margin-top: 3%;
+  }
+  #clock{
+    padding: 0px;
+  }
+}
+ */
 
 #menu {
   position: fixed;

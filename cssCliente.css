@@ -331,17 +331,32 @@ line-height: 20px; /* Alinhamento vertical */
 
 #tabela thead {
   position: sticky;
-  top: 34.5vh; /* Adjust this value according to your header's height */
+  top: 30.8vh; /* Adjust this value according to your header's height */
   background-color: #ffffff; /* Change this to your desired background color */
   z-index: 999; /* Ensures the header stays above other content */
 }
 
 #tabela{
-  margin-top:36vh;
+  margin-top:30vh;
   margin-right:18.2vw;
   width: 60vw;
 }
 
+/* @media screen and (max-width: 1370px) {
+  #tabela thead{
+      top: 25.8vh;
+  }
+  #tabela{
+    margin-top: 26vh;
+  }
+
+  #logo{
+    width: 15%;
+    margin-top: 3%;
+  }
+
+}
+ */
 .class-Obs{
   word-wrap: break-word;
   max-width: 17.5vw; /* optional: set a maximum width for the cell */
