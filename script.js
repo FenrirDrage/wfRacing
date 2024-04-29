@@ -36,18 +36,18 @@ document.addEventListener("DOMContentLoaded", function () {
   localStorage.setItem("usertype", userData.usertype);
   updateHeaderWithLastRaceText();
 
-  var posicaoScroll = localStorage.getItem('posicaoScroll');
-  if (posicaoScroll){
-    setTimeout(()=>{
+  var posicaoScroll = localStorage.getItem("posicaoScroll");
+  if (posicaoScroll) {
+    setTimeout(() => {
       window.scrollTo(0, posicaoScroll);
-    },100)
+    }, 100);
   }
-  console.log(posicaoScroll)
+  console.log(posicaoScroll);
 });
 
 // função que é ativada antes da página ser desligada
-window.onbeforeunload = function(e) {
-  localStorage.setItem('posicaoScroll', window.scrollY); // Guarda a posição na página do eixo vertical (Y)
+window.onbeforeunload = function (e) {
+  localStorage.setItem("posicaoScroll", window.scrollY); // Guarda a posição na página do eixo vertical (Y)
 };
 
 // Definir se o campo de pesquisa está selecionado ou não
@@ -69,9 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Impedir o refresh quando ao campo de pesquisa se encontra selecionado
-  // Chamar a função atualizarPagina a cada 5 segundos
+// Chamar a função atualizarPagina a cada 5 segundos
 setInterval(atualizarPagina, 100000);
-
 
 // Valor para o segundo input numérico no numpad
 document.addEventListener("keydown", function (e) {
@@ -152,7 +151,7 @@ document.addEventListener("keydown", function (e) {
     } else {
       corrida = 1;
     }
-    if (document.readyState == "complete" && userType!="user") {
+    if (document.readyState == "complete" && userType != "user") {
       setTimeout(() => {
         if (e.key === "p" || e.key === "P") {
           document.getElementById("curvaInput").value = "Start";
@@ -276,14 +275,14 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     const numpadNum = JSON.parse(localStorage.getItem("numpadData"));
     numpadNum.forEach((item) => {
-      if(item.corrida>0){
+      if (item.corrida > 0) {
         document.getElementById("numberCorrida").value = Number(
           item.numberCorrida
         );
-      }else{
+      } else {
         document.getElementById("numberCorrida").value = 1;
       }
-      
+
       document.getElementById("numberCurvas").value = Number(
         item.numberButtons
       );
@@ -371,13 +370,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // test 15 second interval method
 
-
 //--------------------------------------------------------FUNÇÕES-------------------------------------------------------------
 
 //----------------------PAGINA----------------------
 // Define a função para carregar os dados quando a página é carregada
-
-
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
@@ -491,11 +487,11 @@ function abrirPopupNumpadPassword() {
 
 // Fechar popup rodaDentada
 function abrirPopupRodaDentada() {
-  const rodaDentada = document.getElementById("popupRodadentada")
+  const rodaDentada = document.getElementById("popupRodadentada");
   document.getElementById("popupRodadentada").style.display = "block";
-  const userType = localStorage.getItem("usertype")
-  console.log(userType)
-  if(userType!="admin"){
+  const userType = localStorage.getItem("usertype");
+  console.log(userType);
+  if (userType != "admin") {
     document.getElementById("numberCurvas").classList.add("hidden");
     document.getElementById("numberCorrida").classList.add("hidden");
     document.getElementById("butaoSettings").classList.add("hidden");
@@ -593,18 +589,32 @@ function refreshPage() {
 }
 
 //função para atualizar a pagina
+function getData() {
+  const url = "http://localhost:3000/getData";
+
+  return fetch(url)
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error("Erro ao obter dados:", error);
+      return null;
+    });
+}
+
 function atualizarPagina() {
-  if (
-    !popupAberto &&
-    !popup2Aberto &&
-    campoPesquisa == false &&
-    !popupRodaDentada &&
-    !popupConfiguracoes &&
-    !popupFiltros
-  ) {
-    // Lógica para atualizar a página
-   location.reload();
-  }
+  getData().then((data) => {
+    if (data) {
+      const dadosAntigos = localStorage.getItem("dadosTabela");
+      const dadosNovos = JSON.stringify(data);
+
+      // Verifica se há novos dados comparando com os dados armazenados localmente
+      if (dadosNovos !== dadosAntigos) {
+        // Atualiza os dados na Local Storage
+        localStorage.setItem("dadosTabela", dadosNovos);
+        // Recarrega a página
+        location.reload();
+      }
+    }
+  });
 }
 
 // Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
@@ -619,8 +629,6 @@ function atualizarPagina() {
     }
   }, 100); // Ajuste o valor do atraso conforme necessário
 } */
-
-
 
 //atualiza o relogio
 function updateClock() {
@@ -700,8 +708,8 @@ function showInstallPrompt() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
-  const arrayCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"))
-  console.log(arrayCorridas)
+  const arrayCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"));
+  console.log(arrayCorridas);
   const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
   let corrida = document.getElementById("inputCorrida").value;
   const userType = localStorage.getItem("usertype");
@@ -718,16 +726,15 @@ function adicionarLinha() {
         corrida = item.numberCorrida;
       });
     } else {
-      if(corrida>0){
+      if (corrida > 0) {
         updateNumpad(corrida);
-      }else{
+      } else {
         updateNumpad(1);
       }
-      
     }
   }
-  if(corrida<=0){
-    corrida=1;
+  if (corrida <= 0) {
+    corrida = 1;
   }
   const tabela = document.querySelector("tbody");
   const novaLinha = document.createElement("tr");
@@ -743,7 +750,8 @@ function adicionarLinha() {
 
   // Adicionar a corrida ás obs se for start
   if (curva == "Start" && obs.includes("Race nº:") == false) {
-    obs = `Race Nº:${corrida}\n` + document.getElementById("obsInputSelect2").value;
+    obs =
+      `Race Nº:${corrida}\n` + document.getElementById("obsInputSelect2").value;
   }
 
   // Se report for 0, definir nfa como 1
@@ -751,13 +759,15 @@ function adicionarLinha() {
   if (!report) {
     nfa = null;
   }
- // Confirmar se a corrida já foi iniciada ou se está a ser iniciada em duplicado
-  if(curva=="Start" && arrayCorridas.includes(Number(corrida))){
-    window.alert("The same race can't be started twice!")
-    return
-  }else if (curva!="Start" && !arrayCorridas.includes(Number(corrida))){
-    window.alert("The race number written corresponds to a race that has not yet been initialized!")
-    return
+  // Confirmar se a corrida já foi iniciada ou se está a ser iniciada em duplicado
+  if (curva == "Start" && arrayCorridas.includes(Number(corrida))) {
+    window.alert("The same race can't be started twice!");
+    return;
+  } else if (curva != "Start" && !arrayCorridas.includes(Number(corrida))) {
+    window.alert(
+      "The race number written corresponds to a race that has not yet been initialized!"
+    );
+    return;
   }
   // Armazenar os dados no localStorage
   const newData = {
@@ -829,12 +839,12 @@ function updateLinha() {
     }
   }
   // Corrida nunca pode ser 0
-  if(corrida==0){
-    corrida=1;
+  if (corrida == 0) {
+    corrida = 1;
   }
-  if(curva==("Start")){
-    if(obs.includes(`Race Nº:${detalheCorrida}`)){
-      obs = obs.replace(`Race Nº:${detalheCorrida}`, `Race Nº:${corrida}`)
+  if (curva == "Start") {
+    if (obs.includes(`Race Nº:${detalheCorrida}`)) {
+      obs = obs.replace(`Race Nº:${detalheCorrida}`, `Race Nº:${corrida}`);
     }
   }
 
@@ -951,7 +961,6 @@ function atualizarTabela(data) {
   // Adiciona linhas à tabela com os dados recebidos
   var counter = 1;
   data.forEach((item) => {
-
     const novaLinha = document.createElement("tr");
 
     // Id
@@ -967,17 +976,17 @@ function atualizarTabela(data) {
     CameraCell.contenteditable = false;
     CameraCell.textContent = `${item.camera}`;
 
-    // Curva    
+    // Curva
 
     const CurvaCell = document.createElement("td");
     CurvaCell.contenteditable = false;
-    CurvaCell.textContent = `${item.curva}`
+    CurvaCell.textContent = `${item.curva}`;
 
     // Hora
 
     const HoraCell = document.createElement("td");
     HoraCell.contenteditable = false;
-    HoraCell.textContent = `${item.hora}`
+    HoraCell.textContent = `${item.hora}`;
 
     //Checkboxes
 
@@ -985,14 +994,14 @@ function atualizarTabela(data) {
     const VideoCell = document.createElement("td");
     VideoCell.contenteditable = "False";
     const VideosCheck = document.createElement("input");
-    VideosCheck.type="checkbox";
-    VideosCheck.contenteditable="False";
-    if(item.video==true){
-        VideosCheck.checked = true; // unceirtain
-    }else{
-        VideosCheck.checked = false; // unceirtain
+    VideosCheck.type = "checkbox";
+    VideosCheck.contenteditable = "False";
+    if (item.video == true) {
+      VideosCheck.checked = true; // unceirtain
+    } else {
+      VideosCheck.checked = false; // unceirtain
     }
-    VideosCheck.disabled=true;
+    VideosCheck.disabled = true;
     VideoCell.appendChild(VideosCheck);
 
     // Report
@@ -1000,14 +1009,14 @@ function atualizarTabela(data) {
     const ReportCell = document.createElement("td");
     ReportCell.contenteditable = "False";
     const ReportCheck = document.createElement("input");
-    ReportCheck.type="checkbox";
-    ReportCheck.contenteditable=false;
-    if(item.report==true){
-        ReportCheck.checked = true; // unceirtain
-    }else{
-        ReportCheck.checked = false; // unceirtain
+    ReportCheck.type = "checkbox";
+    ReportCheck.contenteditable = false;
+    if (item.report == true) {
+      ReportCheck.checked = true; // unceirtain
+    } else {
+      ReportCheck.checked = false; // unceirtain
     }
-    ReportCheck.disabled=true;
+    ReportCheck.disabled = true;
     ReportCell.appendChild(ReportCheck);
 
     // NFA
@@ -1015,16 +1024,15 @@ function atualizarTabela(data) {
     const NFACell = document.createElement("td");
     NFACell.contenteditable = false;
     const NFACheck = document.createElement("input");
-    NFACheck.type="checkbox";
-    NFACheck.contenteditable= false;
-    if(item.nfa==true){
-        NFACheck.checked = true; // unceirtain
-    }else{
-        NFACheck.checked = false; // unceirtain
+    NFACheck.type = "checkbox";
+    NFACheck.contenteditable = false;
+    if (item.nfa == true) {
+      NFACheck.checked = true; // unceirtain
+    } else {
+      NFACheck.checked = false; // unceirtain
     }
-    NFACheck.disabled=true;
+    NFACheck.disabled = true;
     NFACell.appendChild(NFACheck);
-
 
     // Obs
 
@@ -1032,23 +1040,23 @@ function atualizarTabela(data) {
     ObsCell.contenteditable = false;
     ObsCell.textContent = `${item.obs}`;
 
-   // Editar
+    // Editar
 
     const EditarCell = document.createElement("td");
-    EditarCell.id="tdlg";
+    EditarCell.id = "tdlg";
     const ImageEditCell = document.createElement("img");
     ImageEditCell.id = "editlg";
     ImageEditCell.src = "images/pen.png";
     ImageEditCell.alt = "Editar";
-    
+
     ImageEditCell.onclick = function () {
-         abrirDetalhes(`${item._id}`);
+      abrirDetalhes(`${item._id}`);
     };
 
     EditarCell.appendChild(ImageEditCell);
-    
-   // Cell for both buttons
-    
+
+    // Cell for both buttons
+
     // Up
 
     const ButtonsCell = document.createElement("td");
@@ -1058,25 +1066,25 @@ function atualizarTabela(data) {
     ButtonUp.classList.add("buttaoUpDown");
     ButtonUp.id = `buttonUp${item._id}`;
     ButtonUp.onclick = function () {
-         moveUp(this);
+      moveUp(this);
     };
-    ButtonUp.textContent="↑";
-   
+    ButtonUp.textContent = "↑";
+
     //Down
 
     const ButtonDown = document.createElement("button");
     ButtonDown.classList.add("buttaoUpDown");
     ButtonDown.id = `buttonDown${item._id}`;
     ButtonDown.onclick = function () {
-         moveDown(this);
+      moveDown(this);
     };
-    ButtonDown.textContent="↓";
+    ButtonDown.textContent = "↓";
 
     ButtonsCell.appendChild(ButtonUp);
     ButtonsCell.appendChild(ButtonDown);
 
     const CorridaCell = document.createElement("td");
-    CorridaCell.classList.add("hidden")
+    CorridaCell.classList.add("hidden");
     CorridaCell.contenteditable = false;
     CorridaCell.textContent = `${item.corrida}`;
 
@@ -1091,9 +1099,6 @@ function atualizarTabela(data) {
     novaLinha.appendChild(EditarCell);
     novaLinha.appendChild(ButtonsCell);
     novaLinha.appendChild(CorridaCell);
-
-
-
 
     // Adiciona classes CSS com base nos valores de report e nfa
     if (item.report) {
@@ -1118,7 +1123,6 @@ function atualizarTabela(data) {
     counter++;
     tabela.appendChild(novaLinha);
   });
-
 }
 
 // Adicionada a função para limpar a tabela
@@ -1233,12 +1237,12 @@ function updateNumpad(corrida) {
   // Captura os valores atualizados dos campos do pop-up
   const numpadNumber = document.getElementById("numberCurvas").value;
   let corridaNumber;
-  if(corrida<=0){
+  if (corrida <= 0) {
     corridaNumber = 1;
-  }else{
+  } else {
     corridaNumber = corrida;
   }
-  
+
   // Se tiver recebido alteração por um input na corrida(popup de criação)
 
   const updatedNumpadData = {
@@ -1515,7 +1519,7 @@ function mudaPesquisa() {
     const selectedOption =
       pesquisaChoice.options[pesquisaChoice.selectedIndex].text;
     searchFiltro.textContent = selectedOption;
-    localStorage.setItem("labelPesquisa", selectedOption)
+    localStorage.setItem("labelPesquisa", selectedOption);
     localStorage.setItem("pesquisaChoice", pesquisaChoice.value);
 
     if (pesquisaChoice.value == 1) {
@@ -1610,37 +1614,42 @@ function pesquisarTabelaHour() {
 function pesquisarCorrida(corridaLastChoice) {
   var input, filter, table, tr, td, i, txtValue;
   const searchCorrida = document.getElementById("searchCorrida");
-  
-  if(corridaLastChoice){ //se receber um parametro com um valor
-    input= corridaLastChoice
-    filter = input
-    if(corridaLastChoice!=""){
+
+  if (corridaLastChoice) {
+    //se receber um parametro com um valor
+    input = corridaLastChoice;
+    filter = input;
+    if (corridaLastChoice != "") {
       searchCorrida.textContent = ` | Race Nº ${corridaLastChoice}`;
-    }else{
+    } else {
       searchCorrida.textContent = ` | All Races`;
     }
-    
-  }else{
+  } else {
     input = document.getElementById("pesquisaCorrida");
-    localStorage.setItem("corridaChoice",input.value);
+    localStorage.setItem("corridaChoice", input.value);
     filter = input.value.toUpperCase();
-    if(filter!=""){
-      searchCorrida.textContent = ` | Race Nº ${localStorage.getItem("corridaChoice")}`;
-    }else{
+    if (filter != "") {
+      searchCorrida.textContent = ` | Race Nº ${localStorage.getItem(
+        "corridaChoice"
+      )}`;
+    } else {
       searchCorrida.textContent = ` | All Races`;
     }
   }
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
-  console.log(filter)
+  console.log(filter);
   // Loop para percorrer cada linha da tabela, e nessa linha verificar o conteudo de uma celula(td) de uma coluna especifica
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
-    if (td) { // Se essa coluna existir
+    if (td) {
+      // Se essa coluna existir
       txtValue = td.textContent || td.innerText; // Obter o seu conteudo
-      if (filter=="") { // Verificar se está vazio (ou seja mostrar todas as corridas)
+      if (filter == "") {
+        // Verificar se está vazio (ou seja mostrar todas as corridas)
         tr[i].style.display = "";
-      }else if(txtValue.trim() === filter){ //  Se se verificar o valor exato mostra, senão esconde
+      } else if (txtValue.trim() === filter) {
+        //  Se se verificar o valor exato mostra, senão esconde
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
@@ -1750,8 +1759,7 @@ function preencherPopupComDetalhes(detalhes) {
       }
 
       //Para poder retirar e substituir nas obs quando mudam a corrida
-      detalheCorrida=detalhes.corrida;
-
+      detalheCorrida = detalhes.corrida;
     } else {
       console.error(
         "Um ou mais elementos do popup não foram encontrados no DOM."
@@ -2137,7 +2145,6 @@ function resetCorridas() {
   selectCorrida.innerHTML = '<option value="">Race</option>';
 }
 
-
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
@@ -2154,22 +2161,19 @@ function carregarObsOptions() {
     .catch((error) => console.error("Erro ao obter dados:", error));
 }
 
-
-
 // Adicionar Acontecimentos as observacoes
-function adicionarObsOptions(){
+function adicionarObsOptions() {
   const descricao = document.getElementById("newObs").value;
 
   const newData = {
-    descricao: descricao
+    descricao: descricao,
   };
 
   localStorage.setItem("newOption", JSON.stringify(newData));
   enviarObsOptionJson();
-
 }
 
-function enviarObsOptionJson(){
+function enviarObsOptionJson() {
   const localStorageData = localStorage.getItem("newOption");
   console.log(localStorageData);
 
@@ -2197,26 +2201,23 @@ function enviarObsOptionJson(){
   }
 }
 
-
 // Ir buscar acontecimentos para observações
 function atualizarObsOptions(data) {
   const selectObs = document.getElementById("obsInputSelect");
-  const selectOBSUpdate = document.getElementById("obsInputSelect2")
+  const selectOBSUpdate = document.getElementById("obsInputSelect2");
   const obsOptions = JSON.parse(localStorage.getItem("obsOptions"));
 
-  data.forEach((item)=>{
-    const option = document.createElement("option")
+  data.forEach((item) => {
+    const option = document.createElement("option");
     option.value = item.descricao;
     option.textContent = item.descricao;
     selectObs.appendChild(option);
-  })
+  });
 
-  data.forEach((item)=>{
-    const option = document.createElement("option")
+  data.forEach((item) => {
+    const option = document.createElement("option");
     option.value = item.descricao;
     option.textContent = item.descricao;
     selectOBSUpdate.appendChild(option);
-  })
-  
-    
+  });
 }
