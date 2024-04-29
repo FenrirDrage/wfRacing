@@ -1715,7 +1715,7 @@ function preencherPopupComDetalhes(detalhes) {
     const videoCheck = document.getElementById("videoCheck2");
     const reportCheck = document.getElementById("reportCheck2");
     const priorityCheck = document.getElementById("priorityCheck2");
-    const obsInput = document.getElementById("obsInput2");
+    const obsInput = document.getElementById("obsInputSelect2");
     const nfaCheck = document.getElementById("nfacheck2");
     const corridaInput = document.getElementById("inputCorrida2");
 

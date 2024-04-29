@@ -156,9 +156,10 @@
     <input type="number" id="inputCorrida" placeholder="Numero Corrida">&nbsp;<label>Race nº</label><br>
     <input type="checkbox" id="videoCheck">Vídeo<br>
     <input type="checkbox" id="reportCheck">Report<br>
-    <input type="checkbox" id="priorityCheck"> Priority<br>
-    <label>Observations</label><br>
-    <textarea id="obsInput" placeholder="obs"></textarea><br>
+    <select id="obsInputSelect" >
+      <option value="">Observations</option>
+    </select><br>
+    <textarea class="hidden" id="obsInput" placeholder="obs"></textarea><br>
     <button onclick="fecharPopup(); adicionarLinha()">Add Report</button>
   </div>
 </div>
@@ -173,9 +174,11 @@
   <input type="checkbox" id="videoCheck2"> Vídeo<br>
   <input type="checkbox" id="reportCheck2"> Report<br>
   <input type="checkbox" id="nfacheck2"> N.F.A.<br>
-  <input type="checkbox" id="priorityCheck2"> Priority<br>
-  <label>Observations</label><br>
-  <textarea id="obsInput2" placeholder="obs"></textarea><br>
+  <input type="checkbox" id="priorityCheck2"> Priority<br><br>
+      <select  id="obsInputSelect2">
+        <option value="">Observations</option>
+      </select><br>
+      <textarea class="hidden" id="obsInput2" placeholder="obs"></textarea><br>
   <button onclick="fecharPopup2(); updateLinha()">Update</button>
   <button onclick="fecharPopup2(); deleteLinha()">Delete</button>
   </div>
