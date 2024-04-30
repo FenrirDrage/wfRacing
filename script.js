@@ -155,7 +155,6 @@ document.addEventListener("keydown", function (e) {
       setTimeout(() => {
         if (e.key === "p" || e.key === "P") {
           document.getElementById("curvaInput").value = "Start";
-          document.getElementById("obsInput").value = `Race nº: ${corrida}`;
           obterHoraAtual();
           adicionarLinha();
         } else if (e.key === "r" || e.key === "R") {
@@ -708,6 +707,7 @@ function showInstallPrompt() {
 
 // Adicionadar função para adicionar nova linha à tabela
 function adicionarLinha() {
+  const registos = JSON.parse(localStorage.getItem("dadosTabela"));
   const arrayCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"));
   console.log(arrayCorridas);
   const numpadDBData = JSON.parse(localStorage.getItem("numpadData"));
@@ -741,7 +741,7 @@ function adicionarLinha() {
 
   // Capturar os valores dos campos do pop-up
   const camera = document.getElementById("cameraNumber").value;
-  const curva = document.getElementById("curvaInput").value;
+  let curva = document.getElementById("curvaInput").value;
   const hora = document.getElementById("horainput").value;
   const video = document.getElementById("videoCheck").checked;
   const report = document.getElementById("reportCheck").checked;
@@ -768,8 +768,10 @@ function adicionarLinha() {
   }
   // Confirmar se a corrida já foi iniciada ou se está a ser iniciada em duplicado
   if (curva == "Start" && arrayCorridas.includes(Number(corrida))) {
-    window.alert("The same race can't be started twice!");
-    return;
+
+    window.alert("You can't start a race twice!");
+    return
+
   } else if (curva != "Start" && !arrayCorridas.includes(Number(corrida))) {
     window.alert(
       "The race number written corresponds to a race that has not yet been initialized!"
@@ -1130,14 +1132,17 @@ function atualizarTabela(data) {
     counter++;
     tabela.appendChild(novaLinha);
   });
+
+  analisarCorridas(); //Analisar nº corridas no fim
 }
 
 // Adicionada a função para limpar a tabela
 function limparTabela() {
   // Mensagem de confirmação
   if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
+    location.reload();
     return; // Se o usuário cancelar, sair da função
-    location.reload;
+    
   }
 
   // Definir o IP/URL para onde enviar os dados
