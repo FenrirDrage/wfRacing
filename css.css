@@ -41,7 +41,7 @@ transform: translateX(-50%); /* Centraliza horizontalmente */
 width: 100%;
 max-width: 900px;
 background-color: #E30613;
-padding: 8px;
+padding: 18px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 z-index: 998;
 text-align: center; /* Centraliza os elementos dentro de #content-top */
@@ -80,7 +80,7 @@ table {
   border-collapse: collapse;
   width: 50%;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 10px;
   background-color: white;
 }
 

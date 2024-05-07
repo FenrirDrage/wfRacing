@@ -19,7 +19,7 @@ setInterval(updateClock, 1000);
 let campoPesquisa = false;
 
 //Declarado URL's
-const url = "http://localhost:3000/";
+const url = "http://192.168.1.53:3000/";
 
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://localhost:5500/index.html";
+    window.location.href = "http://192.168.1.53:5500/index.html";
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Impedir o refresh quando ao campo de pesquisa se encontra selecionado
 // Chamar a função atualizarPagina a cada 5 segundos
-setInterval(atualizarPagina, 100000);
+setInterval(atualizarPagina, 1000);
 
 // Valor para o segundo input numérico no numpad
 document.addEventListener("keydown", function (e) {
@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
       console.log("1");
-      fetch("http://localhost:3000/auth/logout", {
+      fetch("http://192.168.1.53:3000/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/getData";
+  const url = "http://192.168.1.53:3000/getData";
 
   fetch(url)
     .then((response) => response.json())
@@ -404,7 +404,7 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-    fetch("http://localhost:3000/addRace", {
+    fetch("http://192.168.1.53:3000/addRace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -428,7 +428,7 @@ function inputRace() {
 
 //Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
-  fetch("http://localhost:3000/getLRace")
+  fetch("http://192.168.1.53:3000/getLRace")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro ao obter o texto da última corrida");
@@ -589,7 +589,13 @@ function refreshPage() {
 
 //função para atualizar a pagina
 function getData() {
-  const url = "http://localhost:3000/getData";
+
+  // Verifica se os popups estão abertos
+  if (popupAberto || popup2Aberto || campoPesquisa || popupConfiguracoes || popupFiltros) {
+    return Promise.resolve(null); // Retorna uma promessa resolvida com null se algum popup estiver aberto
+  }
+
+  const url = "http://192.168.1.53:3000/getData";
 
   return fetch(url)
     .then((response) => response.json())
@@ -806,7 +812,7 @@ function enviarJson() {
   console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/addData";
+  const url = "http://192.168.1.53:3000/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -841,6 +847,9 @@ function updateLinha() {
   const priority = document.getElementById("priorityCheck2").checked;
   const nfa = document.getElementById("nfacheck2").checked;
   let obs = document.getElementById("obsInput2").value;
+  let obsDropDown = document.getElementById("obsInputSelect2").value;
+
+
   // Caso tenham sido Post ou Turn anteriormente
   if (!curva.includes("P") && !curva.includes("Turn")) {
     if (detalheCurva == "P" || detalheCurva == "Turn") {
@@ -854,6 +863,13 @@ function updateLinha() {
   if (curva == "Start") {
     if (obs.includes(`Race Nº:${detalheCorrida}`)) {
       obs = obs.replace(`Race Nº:${detalheCorrida}`, `Race Nº:${corrida}`);
+    }
+  }else{
+    
+    if(obs!="" && obsDropDown!=""){
+      obs = obs + " - " + obsDropDown;
+    }else if(obs=="" && obsDropDown!=""){
+      obs = obsDropDown;
     }
   }
 
@@ -902,7 +918,7 @@ function envUpJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://192.168.1.53:3000/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -937,7 +953,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-    fetch(`http://localhost:3000/dropData/${detalhes._id}`, {
+    fetch(`http://192.168.1.53:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -1146,7 +1162,7 @@ function limparTabela() {
   }
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/dropData";
+  const url = "http://192.168.1.53:3000/dropData";
 
   fetch(url, {
     method: "POST",
@@ -1222,7 +1238,7 @@ function enviarJsonNumpad() {
   const localStorageData = localStorage.getItem("novoNumpadNum");
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/addDataNumpad";
+  const url = "http://192.168.1.53:3000/addDataNumpad";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1284,7 +1300,7 @@ function envUpNumpadJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:3000/updateNumpad/${id}`;
+    const url = `http://192.168.1.53:3000/updateNumpad/${id}`;
     // Envia os dados atualizados para o servidor
     console.log(updatedData);
     fetch(url, {
@@ -1315,7 +1331,7 @@ function envUpNumpadJson() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/dropDataNumpad";
+  const url = "http://192.168.1.53:3000/dropDataNumpad";
 
   fetch(url, {
     method: "POST",
@@ -2048,7 +2064,7 @@ function updatePosition() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
     // Definir o IP/URL para onde enviar os dados
-    const url = `http://localhost:3000/updateData/${id}`;
+    const url = `http://192.168.1.53:3000/updateData/${id}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url, {
@@ -2079,7 +2095,7 @@ function updatePosition() {
     const id2 = updatedData2._id;
 
     // Definir o IP/URL para onde enviar os dados
-    const url2 = `http://localhost:3000/updateData/${id2}`;
+    const url2 = `http://192.168.1.53:3000/updateData/${id2}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url2, {
@@ -2160,7 +2176,7 @@ function resetCorridas() {
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/getObsOptions";
+  const url = "http://192.168.1.53:3000/getObsOptions";
 
   fetch(url)
     .then((response) => response.json())
@@ -2190,7 +2206,7 @@ function enviarObsOptionJson() {
   console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://localhost:3000/addObsOptions";
+  const url = "http://192.168.1.53:3000/addObsOptions";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
