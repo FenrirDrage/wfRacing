@@ -52,8 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
+<<<<<<< Updated upstream
       console.log("1");
       fetch("http://192.168.1.53:3000/auth/logout", {
+=======
+      fetch("http://localhost:3000/auth/logout", {
+>>>>>>> Stashed changes
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,6 +95,20 @@ window.addEventListener("beforeinstallprompt", (e) => {
   // Exibe um botão ou elemento na interface do usuário para solicitar a instalação
   showInstallPrompt();
 });
+
+// Registra o Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('../pwa/service-worker.js')
+    console.log("ve so isto")
+      .then(function(registration) {
+        console.log("ve so isto2")
+        console.log('ServiceWorker registration successful with scope:', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed:', err);
+      });
+  });
+}
 
 function handlekeypress(event) {
   if (event.key === "Enter") {
