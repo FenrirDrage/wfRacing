@@ -83,8 +83,8 @@ table {
   margin: auto;
   margin-top: 20px;
   background-color: white;
-  right: 0px;
 }
+
 
 th, td {
   border: 1px solid #ddd;
@@ -196,6 +196,10 @@ line-height: 20px; /* Alinhamento vertical */
   background: transparent;
   border:none; /*tirar as borders de vestígio*/
 }
+#popupAdicionaObservações{
+  z-index: 10006;
+}
+
 .primary-numpad-Button{
   width: 5vw;
   height: 5vh;
@@ -357,6 +361,10 @@ line-height: 20px; /* Alinhamento vertical */
 
 }
  */
+ #thcolorObs {
+  color: #575656;
+  min-width:17.5vw;
+}
 .class-Obs{
   word-wrap: break-word;
   max-width: 17.5vw; /* optional: set a maximum width for the cell */

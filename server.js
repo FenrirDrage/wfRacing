@@ -3,6 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const https = require("https");
+const fs = require("fs");
 
 //login
 const authRoutes = require("../wfRacing/routes/authRoutes");
@@ -15,7 +17,12 @@ const {
 } = require("./controller/indexcont");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 443;
+
+const options = {
+  key: fs.readFileSync("pwa/chave.key"),
+  cert: fs.readFileSync("pwa/certificado.crt")
+};
 
 //iniciar cors
 app.use(
@@ -44,6 +51,8 @@ app.use("/auth", authRoutes);
 app.use(express.json());
 app.use(routes);
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+const server = https.createServer(options, app);
+
+server.listen(port, () => {
+  console.log(`Servidor rodando em https://localhost:${port}`);
 });
