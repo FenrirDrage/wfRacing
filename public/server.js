@@ -33,10 +33,6 @@ mongoose.connect("mongodb://localhost:27017/local", {
 // Middleware para análise de dados JSON
 app.use(bodyParser.json());
 
-//static files
-app.use(express.static('public'));
-app.use(express.static('js'));
-
 app.post("/addData", addController.addData);
 app.get("/getData", getController.getData);
 app.put("/updateData/:id", putController.putData);

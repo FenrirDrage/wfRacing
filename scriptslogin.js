@@ -52,12 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
-<<<<<<< Updated upstream
       console.log("1");
-      fetch("http://192.168.1.53:3000/auth/logout", {
-=======
-      fetch("http://localhost:3000/auth/logout", {
->>>>>>> Stashed changes
+      fetch("http://192.168.1.148:3000/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,20 +92,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
   showInstallPrompt();
 });
 
-// Registra o Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('../pwa/service-worker.js')
-    console.log("ve so isto")
-      .then(function(registration) {
-        console.log("ve so isto2")
-        console.log('ServiceWorker registration successful with scope:', registration.scope);
-      }, function(err) {
-        console.log('ServiceWorker registration failed:', err);
-      });
-  });
-}
-
 function handlekeypress(event) {
   if (event.key === "Enter") {
     login();
@@ -125,7 +107,7 @@ function login() {
   };
 
   // Enviar solicitação HTTP para validar o login
-  fetch("http://192.168.1.53:3000/auth/login", {
+  fetch("http://192.168.1.148:3000/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -18,13 +18,6 @@ setInterval(updateClock, 1000);
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
 
-//Declarado URL's
-<<<<<<< Updated upstream
-const url = "http://192.168.1.53:3000/";
-=======
-const url = "http://localhost:4430/";
->>>>>>> Stashed changes
-
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
 //VALIDAÇÃO DE TOKEN!!!!!!!
@@ -34,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://192.168.1.53:5500/index.html";
+    window.location.href = "http://192.168.1.148:5500/index.html";
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -347,12 +340,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
-<<<<<<< Updated upstream
       console.log("1");
-      fetch("http://192.168.1.53:3000/auth/logout", {
-=======
-      fetch("http://localhost:4430/auth/logout", {
->>>>>>> Stashed changes
+      fetch("http://192.168.1.148:3000/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -389,12 +378,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/getData";
-=======
-  const url = "http://localhost:4430/getData";
->>>>>>> Stashed changes
-
+  const url = "http://192.168.1.148:3000/getData";
+  
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -420,11 +405,9 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-<<<<<<< Updated upstream
-    fetch("http://192.168.1.53:3000/addRace", {
-=======
-    fetch("http://localhost:4430/addRace", {
->>>>>>> Stashed changes
+
+    fetch("http://192.168.1.148:3000/addRace", {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -448,11 +431,9 @@ function inputRace() {
 
 //Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
-<<<<<<< Updated upstream
-  fetch("http://192.168.1.53:3000/getLRace")
-=======
-  fetch("http://localhost:4430/getLRace")
->>>>>>> Stashed changes
+
+  fetch("http://192.168.1.148:3000/getLRace")
+
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro ao obter o texto da última corrida");
@@ -612,17 +593,14 @@ function refreshPage() {
 
 //função para atualizar a pagina
 function getData() {
-<<<<<<< Updated upstream
+
 
   // Verifica se os popups estão abertos
   if (popupAberto || popup2Aberto || campoPesquisa || popupConfiguracoes || popupFiltros) {
     return Promise.resolve(null); // Retorna uma promessa resolvida com null se algum popup estiver aberto
   }
 
-  const url = "http://192.168.1.53:3000/getData";
-=======
-  const url = "http://localhost:4430/getData";
->>>>>>> Stashed changes
+  const url = "http://192.168.1.148:3000/getData";
 
   return fetch(url)
     .then((response) => response.json())
@@ -834,11 +812,8 @@ function enviarJson() {
   const localStorageData = localStorage.getItem("novaLinhaData");
 
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/addData";
-=======
-  const url = "http://localhost:4430/addData";
->>>>>>> Stashed changes
+
+  const url = "http://192.168.1.148:3000/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -944,11 +919,9 @@ function envUpJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-    const url = `http://192.168.1.53:3000/updateData/${id}`;
-=======
-    const url = `http://localhost:4430/updateData/${id}`;
->>>>>>> Stashed changes
+
+    const url = `http://192.168.1.148:3000/updateData/${id}`;
+
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -983,11 +956,9 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-<<<<<<< Updated upstream
-    fetch(`http://192.168.1.53:3000/dropData/${detalhes._id}`, {
-=======
-    fetch(`http://localhost:4430/dropData/${detalhes._id}`, {
->>>>>>> Stashed changes
+
+    fetch(`http://192.168.1.148:3000/dropData/${detalhes._id}`, {
+
       method: "DELETE",
     })
       .then((response) => {
@@ -1196,11 +1167,8 @@ function limparTabela() {
   }
 
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/dropData";
-=======
-  const url = "http://localhost:4430/dropData";
->>>>>>> Stashed changes
+
+  const url = "http://192.168.1.148:3000/dropData";
 
   fetch(url, {
     method: "POST",
@@ -1274,11 +1242,9 @@ function enviarJsonNumpad() {
   const localStorageData = localStorage.getItem("novoNumpadNum");
 
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/addDataNumpad";
-=======
-  const url = "http://localhost:4430/addDataNumpad";
->>>>>>> Stashed changes
+
+  const url = "http://192.168.1.148:3000/addDataNumpad";
+
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1339,11 +1305,9 @@ function envUpNumpadJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-    const url = `http://192.168.1.53:3000/updateNumpad/${id}`;
-=======
-    const url = `http://localhost:4430/updateNumpad/${id}`;
->>>>>>> Stashed changes
+
+    const url = `http://192.168.1.148:3000/updateNumpad/${id}`;
+
     // Envia os dados atualizados para o servidor
     console.log(updatedData);
     fetch(url, {
@@ -1374,11 +1338,8 @@ function envUpNumpadJson() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/dropDataNumpad";
-=======
-  const url = "http://localhost:4430/dropDataNumpad";
->>>>>>> Stashed changes
+
+  const url = "http://192.168.1.148:3000/dropDataNumpad";
 
   fetch(url, {
     method: "POST",
@@ -2029,11 +1990,8 @@ function updatePosition() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
     // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-    const url = `http://192.168.1.53:3000/updateData/${id}`;
-=======
-    const url = `http://localhost:4430/updateData/${id}`;
->>>>>>> Stashed changes
+
+    const url = `http://192.168.1.148:3000/updateData/${id}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url, {
@@ -2064,11 +2022,9 @@ function updatePosition() {
     const id2 = updatedData2._id;
 
     // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-    const url2 = `http://192.168.1.53:3000/updateData/${id2}`;
-=======
-    const url2 = `http://localhost:4430/updateData/${id2}`;
->>>>>>> Stashed changes
+
+    const url2 = `http://192.168.1.148:3000/updateData/${id2}`;
+
 
     // Envia os dados atualizados para o servidor
     fetch(url2, {
@@ -2147,11 +2103,9 @@ function resetCorridas() {
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/getObsOptions";
-=======
-  const url = "http://localhost:4430/getObsOptions";
->>>>>>> Stashed changes
+
+  const url = "http://192.168.1.148:3000/getObsOptions";
+changes
 
   fetch(url)
     .then((response) => response.json())
@@ -2180,11 +2134,8 @@ function enviarObsOptionJson() {
   const localStorageData = localStorage.getItem("newOption");
 
   // Definir o IP/URL para onde enviar os dados
-<<<<<<< Updated upstream
-  const url = "http://192.168.1.53:3000/addObsOptions";
-=======
-  const url = "http://localhost:4430/addObsOptions";
->>>>>>> Stashed changes
+
+  const url = "http://192.168.1.148:3000/addObsOptions";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
