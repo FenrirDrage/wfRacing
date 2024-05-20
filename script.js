@@ -18,6 +18,9 @@ setInterval(updateClock, 1000);
 //Verificar se o campo de pesquisa esta ativo
 let campoPesquisa = false;
 
+//Declarado URL's
+const url = "http://192.168.1.98:3000/";
+
 //-------------------------------------------------------DOC LISTENERS--------------------------------------------------------
 
 //VALIDAÇÃO DE TOKEN!!!!!!!
@@ -27,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const userData = JSON.parse(responseData);
   if (!responseData) {
     // Se a variável responseData não existir, redirecione o usuário para index.html
-    window.location.href = "http://192.168.1.148:5500/index.html";
+    window.location.href = "http://192.168.1.98:5500/index.html";
   }
 
   localStorage.setItem("usertype", userData.usertype);
@@ -39,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
       window.scrollTo(0, posicaoScroll);
     }, 100);
   }
+  console.log(posicaoScroll);
 });
 
 // função que é ativada antes da página ser desligada
@@ -73,6 +77,7 @@ document.addEventListener("keydown", function (e) {
   if (popupNumpadAberto == true) {
     let curvaInput = document.getElementById("curvaInput");
     const maxCurvas = localStorage.getItem("numCurvasBD");
+    console.log(maxCurvas);
     if (
       e.key == 0 ||
       e.key == 1 ||
@@ -126,7 +131,7 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-//atalho de teclado para criar eventos PRS
+//
 document.addEventListener("keydown", function (e) {
   if (
     popupAberto == false &&
@@ -166,7 +171,7 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-//delay para a local storage atualizar devidamente
+//
 document.addEventListener("DOMContentLoaded", function () {
   // é necessário um pequeno delay para a local storage atualizar devidamente
   setTimeout(() => {
@@ -207,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-//RELOGIO
+//
 document.addEventListener("DOMContentLoaded", function () {
   const horaInput = document.getElementById("horainput2");
 
@@ -291,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 180);
 });
 
-//PESQUISA
+//
 document.addEventListener("DOMContentLoaded", function () {
   const pesquisaOptions = document.getElementById("pesquisaOptions");
 
@@ -304,6 +309,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Chamar a função updateClock() para exibir a hora atual quando a página for carregada
 window.addEventListener("load", updateClock);
+
+// Chamar a função para rolar até o final da página quando a página for carregada
+window.addEventListener("load", function () {
+  scrollToBottomWithDelay();
+});
 
 //Muda o nome da corrida para a ultima da tabela
 document.addEventListener("DOMContentLoaded", function () {
@@ -321,18 +331,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
   showInstallPrompt();
 });
 
-// Registra o Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/pwa/service-worker.js')
-      .then(function(registration) {
-        console.log('ServiceWorker registration successful with scope:', registration.scope);
-      }, function(err) {
-        console.log('ServiceWorker registration failed:', err);
-      });
-  });
-}
-
 //fazer logout
 document.addEventListener("DOMContentLoaded", function () {
   try {
@@ -341,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutButton.addEventListener("click", function () {
       // Fazer solicitação para logout
       console.log("1");
-      fetch("http://192.168.1.148:3000/auth/logout", {
+      fetch("http://192.168.1.98:3000/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -378,8 +376,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function carregarDados() {
   // Definir o IP/URL para onde enviar os dados
-  const url = "http://192.168.1.148:3000/getData";
-  
+  const url = "http://192.168.1.98:3000/getData";
+
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -395,6 +393,7 @@ function carregarDados() {
 function inputRace() {
   // Verificar se o usuário é admin
   const userType = localStorage.getItem("usertype");
+  console.log(userType);
 
   if (userType !== "admin") {
     alert("Você não tem permissão para alterar o nome da corrida.");
@@ -405,9 +404,7 @@ function inputRace() {
   if (rname != null) {
     document.getElementById("header").innerHTML = rname;
     // Enviar o nome da corrida para o backend
-
-    fetch("http://192.168.1.148:3000/addRace", {
-
+    fetch("http://192.168.1.98:3000/addRace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -431,9 +428,7 @@ function inputRace() {
 
 //Muda o nome da corrida para a ultima da tabela
 function updateHeaderWithLastRaceText() {
-
-  fetch("http://192.168.1.148:3000/getLRace")
-
+  fetch("http://192.168.1.98:3000/getLRace")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Erro ao obter o texto da última corrida");
@@ -494,6 +489,7 @@ function abrirPopupRodaDentada() {
   const rodaDentada = document.getElementById("popupRodadentada");
   document.getElementById("popupRodadentada").style.display = "block";
   const userType = localStorage.getItem("usertype");
+  console.log(userType);
   if (userType != "admin") {
     document.getElementById("numberCurvas").classList.add("hidden");
     document.getElementById("numberCorrida").classList.add("hidden");
@@ -593,14 +589,18 @@ function refreshPage() {
 
 //função para atualizar a pagina
 function getData() {
-
-
   // Verifica se os popups estão abertos
-  if (popupAberto || popup2Aberto || campoPesquisa || popupConfiguracoes || popupFiltros) {
+  if (
+    popupAberto ||
+    popup2Aberto ||
+    campoPesquisa ||
+    popupConfiguracoes ||
+    popupFiltros
+  ) {
     return Promise.resolve(null); // Retorna uma promessa resolvida com null se algum popup estiver aberto
   }
 
-  const url = "http://192.168.1.148:3000/getData";
+  const url = "http://192.168.1.98:3000/getData";
 
   return fetch(url)
     .then((response) => response.json())
@@ -626,6 +626,19 @@ function atualizarPagina() {
     }
   });
 }
+
+// Função para rolar até o final da página (última linha da tabela) com um pequeno atraso
+/* function scrollToBottomWithDelay() {
+  setTimeout(function () {
+    var table = document.getElementById("tabela"); // ID da sua tabela
+    if (table) {
+      var lastRow = table.rows[table.rows.length - 1];
+      if (lastRow) {
+        lastRow.scrollIntoView();
+      }
+    }
+  }, 100); // Ajuste o valor do atraso conforme necessário
+} */
 
 //atualiza o relogio
 function updateClock() {
@@ -747,16 +760,18 @@ function adicionarLinha() {
   let obs = document.getElementById("obsInput").value;
   let obsDropDown = document.getElementById("obsInputSelect").value;
 
-  if(obs!="" && obsDropDown!=""){
+  if (obs != "" && obsDropDown != "") {
     obs = obs + " - " + obsDropDown;
-  }else if(obs=="" && obsDropDown!=""){
+  } else if (obs == "" && obsDropDown != "") {
     obs = obsDropDown;
   }
 
   // Adicionar a corrida ás obs se for start
   if (curva == "Start" && obs.includes("Race nº:") == false) {
     obs =
-      `Race Nº:${corrida}\n` + document.getElementById("obsInput").value + document.getElementById("obsInputSelect2").value;
+      `Race Nº:${corrida}\n` +
+      document.getElementById("obsInput").value +
+      document.getElementById("obsInputSelect2").value;
   }
 
   // Se report for 0, definir nfa como 1
@@ -770,20 +785,23 @@ function adicionarLinha() {
   if (arrayRFlag && arrayRFlag.length > 0) {
     // Obter o último objeto do array (última linha de dados)
     const ultimaLinha = arrayRFlag[arrayRFlag.length - 1];
-    console.log(ultimaLinha)
+    console.log(ultimaLinha);
 
     // Verificar se a última linha está marcada como "Red Flag" e se a corrida está na lista de corridas
-    if (ultimaLinha.curva === "Red Flag" && arrayCorridas.includes(Number(corrida))) {
-        window.alert("DD");
-        console.log("DD")
+    if (
+      ultimaLinha.curva === "Red Flag" &&
+      arrayCorridas.includes(Number(corrida))
+    ) {
+      window.alert("Race Restarted");
+      console.log("DD");
     } else {
-        // Se a última linha não estiver marcada como "Red Flag", aplicar a condição
-        if (curva === "Start" && arrayCorridas.includes(Number(corrida))) {
-            window.alert("You can't start a race twice!");
-            return;
-        }
+      // Se a última linha não estiver marcada como "Red Flag", aplicar a condição
+      if (curva === "Start" && arrayCorridas.includes(Number(corrida))) {
+        window.alert("You can't start a race twice!");
+        return;
+      }
     }
-}
+  }
 
   // Armazenar os dados no localStorage
   const newData = {
@@ -810,10 +828,10 @@ function adicionarLinha() {
 function enviarJson() {
   // Recuperar os dados do localStorage
   const localStorageData = localStorage.getItem("novaLinhaData");
+  console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-
-  const url = "http://192.168.1.148:3000/addData";
+  const url = "http://192.168.1.98:3000/addData";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -850,7 +868,6 @@ function updateLinha() {
   let obs = document.getElementById("obsInput2").value;
   let obsDropDown = document.getElementById("obsInputSelect2").value;
 
-
   // Caso tenham sido Post ou Turn anteriormente
   if (!curva.includes("P") && !curva.includes("Turn")) {
     if (detalheCurva == "P" || detalheCurva == "Turn") {
@@ -865,11 +882,10 @@ function updateLinha() {
     if (obs.includes(`Race Nº:${detalheCorrida}`)) {
       obs = obs.replace(`Race Nº:${detalheCorrida}`, `Race Nº:${corrida}`);
     }
-  }else{
-    
-    if(obs!="" && obsDropDown!=""){
+  } else {
+    if (obs != "" && obsDropDown != "") {
       obs = obs + " - " + obsDropDown;
-    }else if(obs=="" && obsDropDown!=""){
+    } else if (obs == "" && obsDropDown != "") {
       obs = obsDropDown;
     }
   }
@@ -919,9 +935,7 @@ function envUpJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-
-    const url = `http://192.168.1.148:3000/updateData/${id}`;
-
+    const url = `http://192.168.1.98:3000/updateData/${id}`;
     // Envia os dados atualizados para o servidor
     fetch(url, {
       method: "PUT",
@@ -956,9 +970,7 @@ function deleteLinha() {
   // Verifica se o ID está disponível nos detalhes
   if (detalhes && detalhes._id) {
     // Faz uma solicitação DELETE para excluir a linha com o ID especificado
-
-    fetch(`http://192.168.1.148:3000/dropData/${detalhes._id}`, {
-
+    fetch(`http://192.168.1.98:3000/dropData/${detalhes._id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -1163,12 +1175,10 @@ function limparTabela() {
   if (!confirm("Tem certeza de que deseja apagar a tabela?")) {
     location.reload();
     return; // Se o usuário cancelar, sair da função
-    
   }
 
   // Definir o IP/URL para onde enviar os dados
-
-  const url = "http://192.168.1.148:3000/dropData";
+  const url = "http://192.168.1.98:3000/dropData";
 
   fetch(url, {
     method: "POST",
@@ -1179,6 +1189,7 @@ function limparTabela() {
     .then((response) => response.json())
     .then((data) => {
       location.reload;
+      console.log(data.message);
       fecharPopupRodaDentada(); // Mensagem retornada pelo servidor
     })
     .catch((error) => {
@@ -1203,6 +1214,7 @@ function carregarDadosNumpad() {
       // Armazena os dados localmente para uso posterior
       localStorage.setItem("numpadData", JSON.stringify(data));
       const databaseNum = JSON.parse(localStorage.getItem("numpadData"));
+      console.log(databaseNum);
       if (databaseNum) {
         databaseNum.forEach((item) => {
           if (item.numberButtons != null || item.numberButtons != undefined) {
@@ -1242,9 +1254,7 @@ function enviarJsonNumpad() {
   const localStorageData = localStorage.getItem("novoNumpadNum");
 
   // Definir o IP/URL para onde enviar os dados
-
-  const url = "http://192.168.1.148:3000/addDataNumpad";
-
+  const url = "http://192.168.1.98:3000/addDataNumpad";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
@@ -1286,6 +1296,7 @@ function updateNumpad(corrida) {
 
   // Recupera o ID dos detalhes armazenados no localStorage
   const detalhesNumpad = JSON.parse(localStorage.getItem("numpadData"));
+  console.log(detalhesNumpad.id);
   detalhesNumpad.forEach((item) => {
     updatedNumpadData._id = item._id;
   });
@@ -1305,9 +1316,7 @@ function envUpNumpadJson() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData._id;
     // Definir o IP/URL para onde enviar os dados
-
-    const url = `http://192.168.1.148:3000/updateNumpad/${id}`;
-
+    const url = `http://192.168.1.98:3000/updateNumpad/${id}`;
     // Envia os dados atualizados para o servidor
     console.log(updatedData);
     fetch(url, {
@@ -1338,8 +1347,7 @@ function envUpNumpadJson() {
 // Dar reset ao numero de numpad
 function eliminarNumpadNum() {
   // Definir o IP/URL para onde enviar os dados
-
-  const url = "http://192.168.1.148:3000/dropDataNumpad";
+  const url = "http://192.168.1.98:3000/dropDataNumpad";
 
   fetch(url, {
     method: "POST",
@@ -1419,6 +1427,7 @@ function generateNumpad() {
     //Caso já exista uma, remover e adicionar novo input
     const num = document.getElementById("numberCurvas").value;
     const databaseNum = localStorage.getItem("numCurvasBD");
+    console.log(databaseNum);
     if (databaseNum != undefined || databaseNum != null) {
       generatedNumber = databaseNum;
     } else {
@@ -1462,6 +1471,85 @@ function generateNumpad() {
 }
 
 //----------------------PESQUISA----------------------
+
+//----------------------------------------------------------------------------vPROTOTYPO PESQUISAR COM CORRIDA SELECTEDv--------------------------------------------
+/* function atualizarTabelaPesquisa(data, numCorrida){
+  const tabela = document.getElementById("tabela");
+  const tabelaPesquisa = document.getElementById("tabelaCorrida");
+ 
+   // Limpa apenas as linhas de dados da tabela, mantendo o cabeçalho
+   while (tabelaPesquisa.rows.length > 1) {
+     tabelaPesquisa.deleteRow(1);
+   }
+ 
+   // Adiciona linhas à tabela com os dados recebidos
+   var counter = 1;
+ if(numCorrida){
+    tabela.classList.add("hidden")
+    tabelaPesquisa.classList.remove("hidden")
+   data.forEach((item) => {
+     if(item.corrida==numCorrida){
+ 
+     const novaLinha = document.createElement("tr");
+     novaLinha.innerHTML = `
+       <td class="hidden">${item._id}</td>
+       <td contenteditable="false">${item.camera}</td>
+       <td contenteditable="false">${item.curva}</td>
+       <td contenteditable="false">${item.hora}</td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.video ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.report ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false"><input type="checkbox" ${
+         item.nfa ? "checked" : ""
+       } disabled></td>
+       <td contenteditable="false">${item.obs}</td>
+       <td id="tdlg"><img src="images/pen.png" alt="Editar" id="editlg" onclick="abrirDetalhes('${
+         item._id
+       }')"></td>
+       <td id="positionButton" class="hidden"><button class="buttaoUpDown" id="buttonUp${
+         item._id
+       }" onclick="moveUp(this)">↑</button><button class="buttaoUpDown"  id="buttonDown${
+       item._id
+     }" onclick="moveDown(this)">↓</button>
+      <td class="hidden">${item.corrida}</td>
+       `;
+ 
+     // Adiciona classes CSS com base nos valores de report e nfa
+     if (item.report) {
+       novaLinha.classList.add("report-true");
+     }
+     if (item.nfa) {
+       novaLinha.classList.add("nfa-true");
+     }
+     if (item.priority) {
+       novaLinha.classList.add("priority-set");
+     }
+     if (item.curva == "Start") {
+       novaLinha.classList.add("post-start");
+     }
+     if (item.curva == "Slow Flag") {
+       novaLinha.classList.add("post-slow");
+     }
+     if (item.curva == "Red Flag") {
+       novaLinha.classList.add("post-redflag");
+     }
+     }
+     counter++;
+     tabelaPesquisa.appendChild(novaLinha);
+   });
+ }else{
+    tabela.classList.remove("hidden")
+    tabelaPesquisa.classList.add("hidden")
+ }
+ 
+ }
+ */
+
+//----------------------------------------------------------------------------^PROTOTYPO PESQUISAR COM CORRIDA SELECTED ^-------------------------------------------
+
 //Quando a página acaba de carregar verifica o indice máximo corrente
 
 //Função que muda a pesquisa quando o usuário seleciona uma opção no menu de filtros (Lupa)
@@ -1594,7 +1682,7 @@ function pesquisarCorrida(corridaLastChoice) {
   }
   table = document.getElementById("tabela");
   tr = table.getElementsByTagName("tr");
-  
+  console.log(filter);
   // Loop para percorrer cada linha da tabela, e nessa linha verificar o conteudo de uma celula(td) de uma coluna especifica
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[10]; //Escolha de qual a coluna onde a pesquisa vai incidir 1->Hour
@@ -1769,7 +1857,9 @@ function obterHoraAtual() {
 
 //Red Flag e Start
 function obterStartOrRF(valor) {
-  document.getElementById("curvaInput").value = document.getElementById(`race${valor}`).value;
+  document.getElementById("curvaInput").value = document.getElementById(
+    `race${valor}`
+  ).value;
 }
 
 //Adicionar Camera ou Post no field Curva/Post
@@ -1990,8 +2080,7 @@ function updatePosition() {
     // Define o ID do documento a ser atualizado (obtido do localStorage)
     const id = updatedData1._id;
     // Definir o IP/URL para onde enviar os dados
-
-    const url = `http://192.168.1.148:3000/updateData/${id}`;
+    const url = `http://192.168.1.98:3000/updateData/${id}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url, {
@@ -2022,9 +2111,7 @@ function updatePosition() {
     const id2 = updatedData2._id;
 
     // Definir o IP/URL para onde enviar os dados
-
-    const url2 = `http://192.168.1.148:3000/updateData/${id2}`;
-
+    const url2 = `http://192.168.1.98:3000/updateData/${id2}`;
 
     // Envia os dados atualizados para o servidor
     fetch(url2, {
@@ -2058,7 +2145,8 @@ function carregarOpcoesCorrida() {
   analisarCorridas();
   const selectCorrida = document.getElementById("pesquisaCorrida");
   const numCorridas = JSON.parse(localStorage.getItem("opcoesCorridas"));
-  const maxCorridas = Math.max(...numCorridas)
+  const maxCorridas = Math.max(...numCorridas);
+  console.log(maxCorridas);
   if (!popupFiltros) {
     for (let i = 1; i <= maxCorridas; i++) {
       if (numCorridas.includes(i)) {
@@ -2088,6 +2176,7 @@ function analisarCorridas() {
       }
     }
   }
+  console.log(Array.from(setNumCorridas));
   localStorage.setItem(
     "opcoesCorridas",
     JSON.stringify(Array.from(setNumCorridas))
@@ -2103,9 +2192,7 @@ function resetCorridas() {
 // Carregar opções para Obs
 function carregarObsOptions() {
   // Definir o IP/URL para onde enviar os dados
-
-  const url = "http://192.168.1.148:3000/getObsOptions";
-changes
+  const url = "http://192.168.1.98:3000/getObsOptions";
 
   fetch(url)
     .then((response) => response.json())
@@ -2132,10 +2219,10 @@ function adicionarObsOptions() {
 
 function enviarObsOptionJson() {
   const localStorageData = localStorage.getItem("newOption");
+  console.log(localStorageData);
 
   // Definir o IP/URL para onde enviar os dados
-
-  const url = "http://192.168.1.148:3000/addObsOptions";
+  const url = "http://192.168.1.98:3000/addObsOptions";
 
   // Verificar se existem dados no localStorage
   if (localStorageData) {
